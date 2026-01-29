@@ -10,8 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-indigo-500"
-    style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+<body class="bg-indigo-500">
 
     <div class="flex justify-center items-center h-screen px-10">
         <div class="flex flex-col w-full sm:w-96 justify-center py-8 px-6 lg:px-8 bg-white rounded-2xl">
