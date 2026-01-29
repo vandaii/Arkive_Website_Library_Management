@@ -7,7 +7,7 @@
                     <x-search-input></x-search-input>
                 </form>
                 <a class="mt-1" href="">Kategori</a>
-                <a class="mt-1" href="">Peminjaman</a>
+                <a class="hidden mt-1" href="">Peminjaman</a>
             </div>
         </li>
         <li>

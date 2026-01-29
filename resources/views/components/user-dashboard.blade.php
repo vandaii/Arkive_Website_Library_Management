@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-500/10">
+<body class="bg-gray-500/10 w-full">
     <header class="px-10 sticky top-0 bg-white py-5 shadow-md">
         <x-navigation.navbar></x-navigation.navbar>
     </header>
