@@ -1,4 +1,4 @@
-<nav>
+<nav hidden>
     <ul class="flex justify-between space-x-15 items-center">
         <li>
             <div class="flex space-x-10 text-lg w-6xl">
@@ -17,6 +17,21 @@
                 <a class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                     href="{{ route('login') }}">Login</a>
                 <a class="hidden" href="">
+                    <p class="text-lg/tight">User</p>
+                    <p class="text-sm/tight hover:underline">user@example.com</p>
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<nav>
+    <ul class="flex justify-between space-x-15 items-center">
+        <li class="ml-75">
+            <h1>Admin Dashboard</h1>
+        </li>
+        <li>
+            <div class="space-x-5">
+                <a href="">
                     <p class="text-lg/tight">User</p>
                     <p class="text-sm/tight hover:underline">user@example.com</p>
                 </a>

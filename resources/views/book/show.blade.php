@@ -1,9 +1,9 @@
-<x-user-dashboard>
-    <div class="flex mt-10">
+<x-layouts.user-dashboard>
+    <div class="flex mt-10 gap-20">
         <div class="w-70">
             <img class="h-auto rounded-md" src="{{ asset('img/cover/cover-bumi.jpg') }}" alt="">
         </div>
-        <div class="flex flex-col ml-10 px-10 justify-around outline-1 outline-black/20 rounded-lg">
+        <div class="flex flex-col px-10 justify-around outline-1 outline-black/20 rounded-lg">
             <div class="flex justify-between">
                 <div>
                     <div>
@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <form action="" method="">
-                    <button class="flex items-center cursor-pointer text-indigo-500 hover:text-indigo-600"><svg
+                    <button type="submit"
+                        class="flex items-center cursor-pointer text-indigo-500 hover:text-indigo-600"><svg
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-4 mx-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -38,5 +39,8 @@
                 </form>
             </div>
         </div>
+        <div class="px-10 py-5 outline-1 outline-black/20 w-sm rounded-lg">
+            <h1 class="text-2xl font-bold">Ulasan</h1>
+        </div>
     </div>
-</x-user-dashboard>
+</x-layouts.user-dashboard>

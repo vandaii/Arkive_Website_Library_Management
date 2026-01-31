@@ -17,3 +17,7 @@ Route::get('/login', function () {
 Route::get('/show', function () {
     return view('book.show');
 })->name('book.show');
+
+Route::get('/admin', function () {
+    return view('admin.index');
+})->name('admin.index');

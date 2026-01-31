@@ -1,8 +1,9 @@
-<x-user-dashboard>
+<x-layouts.user-dashboard>
     <div class="flex gap-10 flex-wrap w-full">
         <a href="{{ route('book.show') }}">
             <div class="w-70 sm:w-55 rounded-lg px-2 py-4 shadow-md/30">
-                <img class="border h-49 rounded-lg mx-auto" src="{{ asset('img/cover/cover-bumi.jpg') }}" alt="cover">
+                <img class="border h-49 rounded-lg mx-auto border-none" src="{{ asset('img/cover/cover-bumi.jpg') }}"
+                    alt="cover">
                 <div>
                     <h1 class="font-bold text-xl mt-2">Bumi</h1>
                     <h2 class="text-lg">Tere Liye</h2>
@@ -18,4 +19,4 @@
             </div>
         </a>
     </div>
-</x-user-dashboard>
+</x-layouts.user-dashboard>

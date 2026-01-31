@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="bg-gray-500/10 w-full">
+    <header class="px-10 sticky top-0 bg-white py-5 shadow-md">
+        <x-navigation.navbar></x-navigation.navbar>
+    </header>
+
+    <aside class="fixed top-0 left-0">
+        <x-navigation.sidebar></x-navigation.sidebar>
+    </aside>
+
+    <main class="px-30 mt-5">
+        {{ $slot }}
+    </main>
+</body>
+
+</html>
