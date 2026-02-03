@@ -3,7 +3,7 @@
         <ul class="flex justify-between space-x-15 items-center">
             <li>
                 <div class="flex space-x-10 text-lg w-6xl">
-                    <div class="w-53">
+                    <div class="w-70">
                         <a href="{{ route('index') }}">
                             <h1 class="mt-1">Perpustakaan Saya</h1>
                         </a>
@@ -12,19 +12,25 @@
                         <x-search-input></x-search-input>
                     </form>
                     <a class="mt-1" href="">Kategori</a>
-                    <a class="hidden mt-1" href="">Peminjaman</a>
+                    @if (Auth::check())
+                        <a class="mt-1" href="">Peminjaman</a>
+                    @endif
                 </div>
             </li>
             <li>
                 <div class="space-x-5">
-                    <a class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
-                        href="{{ route('register') }}">Register</a>
-                    <a class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
-                        href="{{ route('login') }}">Login</a>
-                    <a class="hidden" href="">
-                        <p class="text-lg/tight">User</p>
-                        <p class="text-sm/tight hover:underline">user@example.com</p>
-                    </a>
+                    @if (Auth::check())
+                        <a class="" href="">
+                            <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
+                            <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>
+                        </a>
+                    @else
+                        <a hidden class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
+                            href="{{ route('auth.register') }}">Register</a>
+                        <a hidden
+                            class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
+                            href="{{ route('login') }}">Login</a>
+                    @endif
                 </div>
             </li>
         </ul>
@@ -38,8 +44,8 @@
             <li>
                 <div class="space-x-5">
                     <a href="">
-                        <p class="text-lg/tight">User</p>
-                        <p class="text-sm/tight hover:underline">user@example.com</p>
+                        <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
+                        <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>
                     </a>
                 </div>
             </li>
