@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-500/10 w-full">
+<body class="bg-gray-100 w-full">
     <header class="px-10 sticky top-0 bg-white py-5 shadow-md">
         <x-navigation.navbar></x-navigation.navbar>
     </header>
@@ -18,7 +18,7 @@
         <x-navigation.sidebar></x-navigation.sidebar>
     </aside>
 
-    <main class="px-30 mt-5">
+    <main class="px-30 mt-5 w-full">
         {{ $slot }}
     </main>
 </body>

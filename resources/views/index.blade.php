@@ -4,7 +4,7 @@
             <div class="w-70 sm:w-55 rounded-lg px-2 py-4 shadow-md/30">
                 <img class="border h-49 rounded-lg mx-auto border-none" src="{{ asset('img/cover/cover-bumi.jpg') }}"
                     alt="cover">
-                <div>
+                <div class="translate-x-3">
                     <h1 class="font-bold text-xl mt-2">Bumi</h1>
                     <h2 class="text-lg">Tere Liye</h2>
                     <div class="flex space-x-1.5 items-center">

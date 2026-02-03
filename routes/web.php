@@ -21,3 +21,7 @@ Route::get('/show', function () {
 Route::get('/admin', function () {
     return view('admin.index');
 })->name('admin.index');
+
+Route::get('/admin/kelola-user/', function () {
+    return view('admin.user-management.index');
+})->name('user-management.index');
