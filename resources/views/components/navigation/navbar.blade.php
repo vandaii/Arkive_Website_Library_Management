@@ -18,17 +18,21 @@
                 </div>
             </li>
             <li>
-                <div class="space-x-5">
+                <div class="space-x-5 items-center flex">
                     @if (Auth::check())
-                        <a class="" href="">
+                        <a href="">
                             <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
                             <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>
                         </a>
-                    @else
                         <a hidden class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                             href="{{ route('auth.register') }}">Register</a>
                         <a hidden
                             class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
+                            href="{{ route('login') }}">Login</a>
+                    @else
+                        <a class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
+                            href="{{ route('auth.register') }}">Register</a>
+                        <a class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                             href="{{ route('login') }}">Login</a>
                     @endif
                 </div>
