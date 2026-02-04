@@ -47,10 +47,14 @@
     <nav>
         <ul class="flex justify-between space-x-15 items-center">
             <li class="ml-65">
-                <h1>Admin Dashboard</h1>
+                <h1 class="capitalize">{{ __('dashboard ' . Auth::user()->role) }}</h1>
             </li>
             <li>
                 <div class="space-x-5">
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button type="submit">Logout</button>
+                    </form>
                     <a href="">
                         <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
                         <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>

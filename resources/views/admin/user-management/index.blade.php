@@ -1,16 +1,17 @@
 <x-layouts.admin-dashboard>
-
+    <x-slot:title>{{ $title }}</x-slot:title>
     <div class="ml-45 bg-white px-10 py-8 rounded-lg">
 
         <div class="mb-10">
-            <h1 class="capitalize text-xl">kelola user</h1>
+            <h1 class="capitalize text-xl">{{ __($title) }}</h1>
         </div>
 
         <div class="flex justify-between items-center mb-5">
             <form class="relative w-1/2" action="">
                 <x-search-input></x-search-input>
             </form>
-            <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="">Tambah User</a>
+            <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="{{ route('user-management.create') }}">Tambah
+                User</a>
         </div>
 
         <table class="table-auto w-full">
@@ -32,7 +33,7 @@
                     <td>dasda</td>
                     <td>dasda</td>
                     <td class="flex py-3 gap-x-2">
-                        <a href="">
+                        <a href="{{ route('user-management.show') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-5">
                                 <path stroke-linecap="round" stroke-linejoin="round"

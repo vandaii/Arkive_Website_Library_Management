@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,9 +20,18 @@ Route::get('/show', function () {
 })->name('book.show');
 
 Route::get('/admin', function () {
-    return view('admin.index');
+    $user_count = User::all()->count();
+    return view('admin.index', compact('user_count'), ['title' => 'Dashboard Admin']);
 })->name('admin.index');
 
 Route::get('/admin/kelola-user/', function () {
-    return view('admin.user-management.index');
+    return view('admin.user-management.index', ['title' => 'Kelola User']);
 })->name('user-management.index');
+
+Route::get('/admin/kelola-user/tambah', function () {
+    return view('admin.user-management.create', ['title' => 'Tambah User']);
+})->name('user-management.create');
+
+Route::get('/admin/kelola-user/edit', function () {
+    return view('admin.user-management.edit', ['title' => 'edit user']);
+})->name('user-management.show');
