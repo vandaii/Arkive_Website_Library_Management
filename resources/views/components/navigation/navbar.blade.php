@@ -20,6 +20,10 @@
             <li>
                 <div class="space-x-5 items-center flex">
                     @if (Auth::check())
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit">Logout</button>
+                        </form>
                         <a href="">
                             <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
                             <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>

@@ -19,7 +19,8 @@
             </div>
 
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="#" method="POST" class="space-y-4">
+                <form action="{{ route('login') }}" method="POST" class="space-y-4">
+                    @csrf
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-800">Email address</label>
                         <div class="mt-2">

@@ -6,7 +6,7 @@
             <h1 class="capitalize text-xl">kelola user</h1>
         </div>
 
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex justify-between items-center mb-5">
             <form class="relative w-1/2" action="">
                 <x-search-input></x-search-input>
             </form>

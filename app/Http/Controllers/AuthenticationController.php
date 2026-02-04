@@ -36,4 +36,34 @@ class AuthenticationController extends Controller
 
         return redirect()->route('index')->with('success', 'Selamat datang di Arkivr');
     }
+
+    public function loginPage()
+    {
+        return view('authentication.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('index'))->with('success', 'Login berhasil');
+        }
+
+        return back()->withErrors(['email' => 'dahgdahda'])->onlyInput('email');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('index')->with('success', 'Log Out berhasil.');
+    }
 }
