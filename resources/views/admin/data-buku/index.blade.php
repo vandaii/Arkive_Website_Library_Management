@@ -16,20 +16,19 @@
 
         <table class="table-auto w-full">
             <thead>
-                <tr class="border-b-2 border-gray-500/40">
-                    <td class="py-3">No.</td>
-                    <td>Cover Buku</td>
-                    <td>Judul</td>
-                    <td>Penulis</td>
-                    <td>Penerbit</td>
-                    <td>Tahun Terbit</td>
-                    <td>Aksi</td>
+                <tr class="border-b-2 border-gray-500/40 text-left">
+                    <th class="py-3">Cover Buku</th>
+                    <th>Judul</th>
+                    <th>Penulis</th>
+                    <th>Penerbit</th>
+                    <th>Tahun Terbit</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="border-b-2 border-gray-500/40">
-                    <td>1</td>
-                    <td class="py-3">
+                    <td class="py-3 px-2">
                         <img class="rounded-sm w-15 h-auto" src="{{ asset('img/cover/cover-bumi.jpg') }}"
                             alt="">
                     </td>
@@ -37,6 +36,7 @@
                     <td>Tere Liye</td>
                     <td>Gramedia</td>
                     <td>2017</td>
+                    <td>10</td>
                     <td>
                         <div class="flex gap-x-2">
                             <a href="{{ route('data-buku.show') }}">

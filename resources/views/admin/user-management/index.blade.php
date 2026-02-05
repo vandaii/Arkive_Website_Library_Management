@@ -14,14 +14,14 @@
                 User</a>
         </div>
 
-        <table class="table-auto w-full">
+        <table class="table-auto w-full text-left">
             <thead>
                 <tr class="border-b-2 border-gray-500/40">
-                    <td class="py-3">Nama Lengkap</td>
-                    <td>Username</td>
-                    <td>Email</td>
-                    <td>Posisi</td>
-                    <td>Aksi</td>
+                    <th class="py-3">Nama Lengkap</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Posisi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,7 +55,9 @@
                         </td>
                     </tr>
                 @empty
-                    <h1>Tidak ada data</h1>
+                    <tr>
+                        <td class="text-base text-gray-600 pt-5">Tidak ada data</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

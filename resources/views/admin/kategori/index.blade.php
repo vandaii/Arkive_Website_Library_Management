@@ -16,9 +16,9 @@
 
         <table class="table-fixed w-full">
             <thead>
-                <tr class="border-b-2 border-gray-500/40">
-                    <td class="w-5/6">Nama Kategori</td>
-                    <td>Aksi</td>
+                <tr class="border-b-2 border-gray-500/40 text-left">
+                    <th class="w-11/12 py-3">Nama Kategori</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +36,7 @@
                             <form onsubmit="return confirm('Yakin?')"
                                 action="{{ route('kategori.destroy', $category->id) }}" method="POST">
                                 @csrf
+                                @method('DELETE')
                                 <button type="submit" class="cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-5 stroke-red-600">
@@ -48,6 +49,9 @@
                         </td>
                     </tr>
                 @empty
+                    <tr>
+                        <td class="text-base text-gray-600 pt-5">Tidak ada data</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

@@ -13,8 +13,8 @@
                 <div>
                     <label for="nama_kategori" class="block text-sm/6 font-medium text-gray-800">Nama Kategori</label>
                     <div class="mt-1">
-                        <input id="nama_kategori" placeholder="John Doe" value="{{ old('nama_kategori') }}"
-                            type="text" name="nama_kategori" required autocomplete="nama_kategori"
+                        <input id="nama_kategori" placeholder="Novel" value="{{ old('nama_kategori') }}" type="text"
+                            name="nama_kategori" required autocomplete="nama_kategori"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6 
                                 @error('nama_kategori') 
                                     input-error 
