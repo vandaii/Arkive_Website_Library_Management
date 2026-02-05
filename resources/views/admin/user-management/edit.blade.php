@@ -6,14 +6,16 @@
         </div>
 
         <div>
-            <form class="grid grid-cols-2 gap-5" action="">
+            <form class="grid grid-cols-2 gap-5" action="{{ route('user-management.update', $user->id) }}" method="POST">
+                @csrf
 
                 {{-- Nama Lengkap --}}
                 <div>
                     <label for="nama_lengkap" class="block text-sm/6 font-medium text-gray-800">Nama Lengkap</label>
                     <div class="mt-1">
-                        <input id="nama_lengkap" placeholder="John Doe" value="{{ old('nama_lengkap') }}" type="text"
-                            name="nama_lengkap" required autocomplete="nama_lengkap"
+                        <input id="nama_lengkap" placeholder="John Doe"
+                            value="{{ old('nama_lengkap', $user->nama_lengkap) }}" type="text" name="nama_lengkap"
+                            required autocomplete="nama_lengkap"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6 
                                 @error('nama_lengkap') 
                                     input-error 
@@ -31,7 +33,7 @@
                     <label for="username" class="block text-sm/6 font-medium text-gray-800">Username</label>
                     <div class="mt-1">
                         <input id="username" placeholder="johndoe33" type="text" name="username" required
-                            autocomplete="username" value="{{ old('username') }}"
+                            autocomplete="username" value="{{ old('username', $user->username) }}"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
                                 @error('username') 
                                     input-error    
@@ -49,13 +51,31 @@
                     <label for="email" class="block text-sm/6 font-medium text-gray-800">Email address</label>
                     <div class="mt-1">
                         <input id="email" type="email" name="email" placeholder="johndoe@example.com"
-                            value="{{ old('email') }}" required autocomplete="email"
+                            value="{{ old('email', $user->email) }}" required autocomplete="email"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
                                 @error('email')
                                     input-error
                                 @enderror" />
                     </div>
                     @error('email')
+                        <div class="">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+
+                {{-- Alamat --}}
+                <div>
+                    <label for="alamat" class="block text-sm/6 font-medium text-gray-800">Alamat</label>
+                    <div class="mt-1">
+                        <input id="alamat" placeholder="Jakarta" value="{{ old('alamat', $user->alamat) }}"
+                            type="text" name="alamat" autocomplete="alamat"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
+                                @error('alamat')
+                                    input-error
+                                @enderror" />
+                    </div>
+                    @error('alamat')
                         <div class="">
                             <span>{{ $message }}</span>
                         </div>
@@ -73,6 +93,27 @@
                     </div>
                 </div>
 
+                {{-- Role --}}
+                <div>
+                    <label for="role" class="block text-sm/6 font-medium text-gray-800">Role</label>
+                    <div class="mt-1">
+                        <select
+                            class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/70 bg-black/5 text-base  text-gray-800"
+                            name="role" id="role">
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih Kategori
+                            </option>
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="admin"
+                                {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="peminjam"
+                                {{ $user->role == 'peminjam' ? 'selected' : '' }}>Peminjam
+                            </option>
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="petugas"
+                                {{ $user->role == 'petugas' ? 'selected' : '' }}>Petugas
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 {{-- Konfirmasi Password --}}
                 <div>
                     <div class="flex items-center justify-between">
@@ -85,27 +126,9 @@
                     </div>
                 </div>
 
-                {{-- Alamat --}}
-                <div>
-                    <label for="alamat" class="block text-sm/6 font-medium text-gray-800">Alamat</label>
-                    <div class="mt-1">
-                        <input id="alamat" placeholder="Jakarta" value="{{ old('alamat') }}" type="text"
-                            name="alamat" required autocomplete="alamat"
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
-                                @error('alamat')
-                                    input-error
-                                @enderror" />
-                    </div>
-                    @error('alamat')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
-                </div>
-
                 <div class="col-span-2 w-fit">
                     <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">edit
+                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
                         user</button>
                 </div>
 

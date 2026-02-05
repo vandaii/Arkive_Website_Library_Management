@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\UserManagementController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -23,29 +25,19 @@ Route::get('/admin', function () {
     return view('admin.index', ['title' => 'Dashboard Admin']);
 })->name('admin.index')->middleware('auth');
 
-Route::get('/admin/kelola-user/', function () {
-    return view('admin.user-management.index', ['title' => 'Kelola User']);
-})->name('user-management.index');
+Route::get('/admin/kelola-user/', [UserManagementController::class, 'index'])->name('user-management.index');
+Route::get('/admin/kelola-user/tambah', [UserManagementController::class, 'create'])->name('user-management.create');
+Route::post('/admin/kelola-user/tambah/', [UserManagementController::class, 'store'])->name('user-management.store');
+Route::get('/admin/kelola-user/{id}/', [UserManagementController::class, 'show'])->name('user-management.show');
+Route::put('/admin/kelola-user/{id}/update', [UserManagementController::class, 'update'])->name('user-management.update');
+Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class, 'destroy'])->name('user-management.destroy');
 
-Route::get('/admin/kelola-user/tambah', function () {
-    return view('admin.user-management.create', ['title' => 'Tambah User']);
-})->name('user-management.create');
-
-Route::get('/admin/kelola-user/edit', function () {
-    return view('admin.user-management.edit', ['title' => 'edit user']);
-})->name('user-management.show');
-
-Route::get('/data-kategori', function () {
-    return view('admin.kategori.index', ['title' => 'kategori']);
-})->name('kategori.index');
-
-Route::get('/data-kategori/tambah', function () {
-    return view('admin.kategori.create', ['title' => 'tambah kategori']);
-})->name('kategori.create');
-
-Route::get('/data-kategori/edit', function () {
-    return view('admin.kategori.edit', ['title' => 'edit kategori']);
-})->name('kategori.show');
+Route::get('/admin/data-kategori/', [KategoriController::class, 'index'])->name('kategori.index');
+Route::get('/admin/data-kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');
+Route::post('/admin/data-kategori/tambah/', [KategoriController::class, 'store'])->name('kategori.store');
+Route::get('/admin/data-kategori/{id}/', [KategoriController::class, 'show'])->name('kategori.show');
+Route::put('/admin/data-kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
+Route::delete('/admin/data-kategori/{id}/delete', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
 Route::get('/data-buku', function () {
     return view('admin.data-buku.index', ['title' => 'data buku']);

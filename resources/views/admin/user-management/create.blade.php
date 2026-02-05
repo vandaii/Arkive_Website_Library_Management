@@ -6,7 +6,8 @@
         </div>
 
         <div>
-            <form class="grid grid-cols-2 gap-5" action="">
+            <form class="grid grid-cols-2 gap-5" action="{{ route('user-management.store') }}" method="POST">
+                @csrf
 
                 {{-- Nama Lengkap --}}
                 <div>
@@ -67,7 +68,7 @@
                     <label for="alamat" class="block text-sm/6 font-medium text-gray-800">Alamat</label>
                     <div class="mt-1">
                         <input id="alamat" placeholder="Jakarta" value="{{ old('alamat') }}" type="text"
-                            name="alamat" required autocomplete="alamat"
+                            name="alamat" autocomplete="alamat"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
                                 @error('alamat')
                                     input-error
