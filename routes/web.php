@@ -20,9 +20,8 @@ Route::get('/show', function () {
 })->name('book.show');
 
 Route::get('/admin', function () {
-    $user_count = User::all()->count();
-    return view('admin.index', compact('user_count'), ['title' => 'Dashboard Admin']);
-})->name('admin.index');
+    return view('admin.index', ['title' => 'Dashboard Admin']);
+})->name('admin.index')->middleware('auth');
 
 Route::get('/admin/kelola-user/', function () {
     return view('admin.user-management.index', ['title' => 'Kelola User']);

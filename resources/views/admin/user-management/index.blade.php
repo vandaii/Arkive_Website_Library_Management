@@ -19,19 +19,19 @@
                 <tr class="border-b-2 border-gray-500/40">
                     <td class="py-3">No.</td>
                     <td>Nama Lengkap</td>
-                    <td>Nama Lengkap</td>
-                    <td>Nama Lengkap</td>
-                    <td>Nama Lengkap</td>
+                    <td>Username</td>
+                    <td>Email</td>
+                    <td>Role</td>
                     <td>Aksi</td>
                 </tr>
             </thead>
             <tbody>
                 <tr class="border-b-2 border-gray-500/40">
                     <td class="py-3">1</td>
-                    <td>dasda</td>
-                    <td>dasda</td>
-                    <td>dasda</td>
-                    <td>dasda</td>
+                    <td>Udin</td>
+                    <td>udin12</td>
+                    <td>udin@example.com</td>
+                    <td>Admin</td>
                     <td class="flex py-3 gap-x-2">
                         <a href="{{ route('user-management.show') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

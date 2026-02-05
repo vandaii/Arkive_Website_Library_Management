@@ -50,7 +50,7 @@
                 <h1 class="capitalize">{{ __('dashboard ' . Auth::user()->role) }}</h1>
             </li>
             <li>
-                <div class="space-x-5">
+                <div class="space-x-5 flex">
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
                         <button type="submit">Logout</button>
