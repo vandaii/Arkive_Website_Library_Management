@@ -5,11 +5,14 @@
                 <h1 class="">Logo</h1>
             </div>
         </li>
-        <li class="px-5 space-y-5 flex flex-col py-10">
+        <li class="px-5 space-y-3 flex flex-col py-10">
             <x-sidebar-link href="{{ route('admin.index') }}" :active="request()->routeIs('admin.index')">Dashboard</x-sidebar-link>
             <x-sidebar-link href="{{ route('user-management.index') }}" :active="request()->routeIs('user-management.index') ||
                 request()->routeIs('user-management.create') ||
                 request()->routeIs('user-management.show')">Kelola User</x-sidebar-link>
+            <x-sidebar-link href="{{ route('kategori.index') }}" :active="request()->routeIs('kategori.index') ||
+                request()->routeIs('kategori.create') ||
+                request()->routeIs('kategori.show')">Kategori</x-sidebar-link>
         </li>
     </ul>
 </div>

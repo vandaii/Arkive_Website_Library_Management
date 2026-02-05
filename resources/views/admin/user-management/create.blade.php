@@ -103,7 +103,7 @@
                     @enderror
                 </div>
 
-                <div class="col-span-2 w-30">
+                <div class="col-span-2 w-fit">
                     <button type="submit"
                         class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
                         user</button>

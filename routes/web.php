@@ -34,3 +34,15 @@ Route::get('/admin/kelola-user/tambah', function () {
 Route::get('/admin/kelola-user/edit', function () {
     return view('admin.user-management.edit', ['title' => 'edit user']);
 })->name('user-management.show');
+
+Route::get('/data-kategori', function () {
+    return view('admin.kategori.index', ['title' => 'kategori']);
+})->name('kategori.index');
+
+Route::get('/data-kategori/tambah', function () {
+    return view('admin.kategori.create', ['title' => 'tambah kategori']);
+})->name('kategori.create');
+
+Route::get('/data-kategori/edit', function () {
+    return view('admin.kategori.edit', ['title' => 'edit kategori']);
+})->name('kategori.show');
