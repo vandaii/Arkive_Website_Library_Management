@@ -26,105 +26,97 @@
                     @enderror
                 </div>
 
-                {{-- Username --}}
+                {{-- Judul --}}
                 <div>
-                    <label for="username" class="block text-sm/6 font-medium text-gray-800">Username</label>
+                    <label for="judul" class="block text-sm/6 font-medium text-gray-800">Judul</label>
                     <div class="mt-1">
-                        <input id="username" placeholder="johndoe33" type="text" name="username" required
-                            autocomplete="username" value="{{ old('username') }}"
+                        <input id="judul" placeholder="Pulang" type="text" name="judul" required
+                            autocomplete="judul" value="{{ old('judul') }}"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
-                                @error('username') 
+                                @error('judul') 
                                     input-error    
                                 @enderror" />
                     </div>
-                    @error('username')
+                    @error('judul')
                         <div class="">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
                 </div>
 
-                {{-- Email --}}
+                {{-- Penulis --}}
                 <div>
-                    <label for="email" class="block text-sm/6 font-medium text-gray-800">Email address</label>
+                    <label for="penulis" class="block text-sm/6 font-medium text-gray-800">Penulis</label>
                     <div class="mt-1">
-                        <input id="email" type="email" name="email" placeholder="johndoe@example.com"
-                            value="{{ old('email') }}" required autocomplete="email"
+                        <input id="penulis" type="text" name="penulis" placeholder="Tere Liye"
+                            value="{{ old('penulis') }}" required autocomplete="penulis"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
-                                @error('email')
+                                @error('penulis')
                                     input-error
                                 @enderror" />
                     </div>
-                    @error('email')
+                    @error('penulis')
                         <div class="">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
                 </div>
 
-                {{-- Alamat --}}
+                {{-- Penerbit --}}
                 <div>
-                    <label for="alamat" class="block text-sm/6 font-medium text-gray-800">Alamat</label>
+                    <label for="penerbit" class="block text-sm/6 font-medium text-gray-800">Penerbit</label>
                     <div class="mt-1">
-                        <input id="alamat" placeholder="Jakarta" value="{{ old('alamat') }}" type="text"
-                            name="alamat" required autocomplete="alamat"
+                        <input id="penerbit" placeholder="Gramedia" value="{{ old('penerbit') }}" type="text"
+                            name="penerbit" required autocomplete="penerbit"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
-                                @error('alamat')
+                                @error('penerbit')
                                     input-error
                                 @enderror" />
                     </div>
-                    @error('alamat')
+                    @error('penerbit')
                         <div class="">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
                 </div>
 
-                {{-- Password --}}
+                {{-- Penerbit --}}
                 <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm/6 font-medium text-gray-800">Password</label>
-                    </div>
+                    <label for="tahun_terbit" class="block text-sm/6 font-medium text-gray-800">Tahun Terbit</label>
                     <div class="mt-1">
-                        <input id="password" type="password" name="password" required autocomplete="current-password"
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6" />
+                        <input id="tahun_terbit" placeholder="2020" value="{{ old('tahun_terbit') }}" type="number"
+                            name="tahun_terbit" required autocomplete="tahun_terbit"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
+                                @error('tahun_terbit')
+                                    input-error
+                                @enderror" />
                     </div>
+                    @error('tahun_terbit')
+                        <div class="">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
                 </div>
 
-                {{-- Role --}}
+                {{-- Kategori --}}
                 <div>
-                    <label for="role" class="block text-sm/6 font-medium text-gray-800">Role</label>
+                    <label for="kategori_id" class="block text-sm/6 font-medium text-gray-800">Kategori</label>
                     <div class="mt-1">
                         <select
                             class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/70 bg-black/5 text-base  text-gray-800"
-                            name="role" id="role">
+                            name="kategori_id" id="kategori_id">
                             <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih Kategori
                             </option>
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="admin">Admin</option>
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="peminjam">Peminjam
-                            </option>
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="petugas">Petugas
-                            </option>
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">haha</option>
+                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">hihi</option>
                         </select>
-                    </div>
-                </div>
-
-                {{-- Konfirmasi Password --}}
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-800">Konfirmasi
-                            Password</label>
-                    </div>
-                    <div class="mt-1">
-                        <input id="password_confirmation" type="password" name="password_confirmation" required
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6" />
                     </div>
                 </div>
 
                 <div class="col-span-2 w-fit">
                     <button type="submit"
                         class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
-                        user</button>
+                        buku</button>
                 </div>
 
             </form>

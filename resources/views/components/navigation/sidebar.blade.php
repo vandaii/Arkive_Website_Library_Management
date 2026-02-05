@@ -13,6 +13,9 @@
             <x-sidebar-link href="{{ route('kategori.index') }}" :active="request()->routeIs('kategori.index') ||
                 request()->routeIs('kategori.create') ||
                 request()->routeIs('kategori.show')">Kategori</x-sidebar-link>
+            <x-sidebar-link href="{{ route('data-buku.index') }}" :active="request()->routeIs('data-buku.index') ||
+                request()->routeIs('data-buku.create') ||
+                request()->routeIs('data-buku.show')">Data Buku</x-sidebar-link>
         </li>
     </ul>
 </div>

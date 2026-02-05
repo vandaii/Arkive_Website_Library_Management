@@ -46,3 +46,15 @@ Route::get('/data-kategori/tambah', function () {
 Route::get('/data-kategori/edit', function () {
     return view('admin.kategori.edit', ['title' => 'edit kategori']);
 })->name('kategori.show');
+
+Route::get('/data-buku', function () {
+    return view('admin.data-buku.index', ['title' => 'data buku']);
+})->name('data-buku.index');
+
+Route::get('/data-buku/tambah', function () {
+    return view('admin.data-buku.create', ['title' => 'tambah buku']);
+})->name('data-buku.create');
+
+Route::get('/data-buku/edit', function () {
+    return view('admin.data-buku.edit', ['title' => 'edit buku']);
+})->name('data-buku.show');
