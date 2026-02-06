@@ -7,6 +7,10 @@
         </li>
         <li class="px-5 space-y-3 flex flex-col py-10">
             <x-sidebar-link href="{{ route('admin.index') }}" :active="request()->routeIs('admin.index')">Dashboard</x-sidebar-link>
+            <x-sidebar-link href="{{ route('employee-management.index') }}" :active="request()->routeIs('employee-management.index') ||
+                request()->routeIs('employee-management.create') ||
+                request()->routeIs('employee-management.show')">Kelola
+                Petugas</x-sidebar-link>
             <x-sidebar-link href="{{ route('user-management.index') }}" :active="request()->routeIs('user-management.index') ||
                 request()->routeIs('user-management.create') ||
                 request()->routeIs('user-management.show')">Kelola User</x-sidebar-link>

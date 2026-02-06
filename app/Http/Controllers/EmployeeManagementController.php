@@ -7,17 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserManagementController extends Controller
+class EmployeeManagementController extends Controller
 {
     public function index()
     {
-        $users = DB::table('users')->where('isActive', '!=', false)->get();
-        return view('admin.user-management.index', compact('users'), ['title' => 'Kelola User']);
+        $users = DB::table('users')->where('isActive', '!=', false)->where('role', '!=', 'peminjam')->get();
+        return view('admin.employee-management.index', compact('users'), ['title' => 'Kelola User']);
     }
 
     public function create()
     {
-        return view('admin.user-management.create', ['title' => 'Tambah User']);
+        return view('admin.employee-management.create', ['title' => 'Tambah User']);
     }
 
     public function store(Request $request)
@@ -40,13 +40,13 @@ class UserManagementController extends Controller
             'role' => $validated['role']
         ]);
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success');
     }
 
     public function show($id)
     {
         $user = User::find($id);
-        return view('admin.user-management.edit', compact('user'), ['title' => 'edit user']);
+        return view('admin.employee-management.edit', compact('user'), ['title' => 'edit user']);
     }
 
     public function update(Request $request, $id)
@@ -70,7 +70,7 @@ class UserManagementController extends Controller
             'role' => $validated['role']
         ]);
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success');
     }
 
     public function destroy($id)
@@ -78,7 +78,7 @@ class UserManagementController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success');
     }
 
     public function deactivate(Request $request, $id)
@@ -88,6 +88,6 @@ class UserManagementController extends Controller
             'isActive' => false
         ]);
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success');
     }
 }

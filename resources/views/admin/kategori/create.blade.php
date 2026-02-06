@@ -28,9 +28,13 @@
                 </div>
 
                 <div class="col-span-2 w-fit">
-                    <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
-                        kategori</button>
+                    <div class="flex gap-x-5">
+                        <button type="submit"
+                            class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
+                            kategori</button>
+                        <a href="{{ route('kategori.index') }}"
+                            class="flex justify-center rounded-md bg-amber-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">Kembali</a>
+                    </div>
                 </div>
 
             </form>

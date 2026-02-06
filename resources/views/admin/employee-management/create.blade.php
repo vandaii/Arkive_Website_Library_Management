@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <form class="grid grid-cols-2 gap-5" action="{{ route('user-management.store') }}" method="POST">
+            <form class="grid grid-cols-2 gap-5" action="{{ route('employee-management.store') }}" method="POST">
                 @csrf
 
                 {{-- Nama Lengkap --}}
@@ -128,7 +128,7 @@
                             class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
                             user</button>
 
-                        <a href="{{ route('user-management.index') }}"
+                        <a href="{{ route('employee-management.index') }}"
                             class="flex justify-center rounded-md bg-amber-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">Kembali</a>
                     </div>
                 </div>

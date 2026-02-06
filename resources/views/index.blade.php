@@ -1,7 +1,7 @@
 <x-layouts.user-dashboard>
     <div class="flex gap-10 flex-wrap w-full">
         <a href="{{ route('book.show') }}">
-            <div class="w-70 sm:w-55 rounded-lg px-2 py-4 shadow-md/30">
+            <div class="w-70 sm:w-55 rounded-lg px-2 py-4 shadow-md/30 bg-white">
                 <img class="border h-49 rounded-lg mx-auto border-none" src="{{ asset('img/cover/cover-bumi.jpg') }}"
                     alt="cover">
                 <div class="translate-x-3">

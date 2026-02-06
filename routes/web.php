@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\EmployeeManagementController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\User;
@@ -30,7 +31,16 @@ Route::get('/admin/kelola-user/tambah', [UserManagementController::class, 'creat
 Route::post('/admin/kelola-user/tambah/', [UserManagementController::class, 'store'])->name('user-management.store');
 Route::get('/admin/kelola-user/{id}/', [UserManagementController::class, 'show'])->name('user-management.show');
 Route::put('/admin/kelola-user/{id}/update', [UserManagementController::class, 'update'])->name('user-management.update');
+Route::patch('/admin/kelola-user/{id}/deactivate', [UserManagementController::class, 'deactivate'])->name('user-management.deactivate');
 Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class, 'destroy'])->name('user-management.destroy');
+
+Route::get('/admin/kelola-employee/', [EmployeeManagementController::class, 'index'])->name('employee-management.index');
+Route::get('/admin/kelola-employee/tambah', [EmployeeManagementController::class, 'create'])->name('employee-management.create');
+Route::post('/admin/kelola-employee/tambah/', [EmployeeManagementController::class, 'store'])->name('employee-management.store');
+Route::get('/admin/kelola-employee/{id}/', [EmployeeManagementController::class, 'show'])->name('employee-management.show');
+Route::put('/admin/kelola-employee/{id}/update', [EmployeeManagementController::class, 'update'])->name('employee-management.update');
+Route::patch('/admin/kelola-employee/{id}/deactivate', [EmployeeManagementController::class, 'deactivate'])->name('employee-management.deactivate');
+Route::delete('/admin/kelola-employee/{id}/delete', [EmployeeManagementController::class, 'destroy'])->name('employee-management.destroy');
 
 Route::get('/admin/data-kategori/', [KategoriController::class, 'index'])->name('kategori.index');
 Route::get('/admin/data-kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');

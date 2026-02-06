@@ -50,8 +50,12 @@ class AuthenticationController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('index'))->with('success', 'Login berhasil');
+            if (Auth::user()->isActive == true) {
+                $request->session()->regenerate();
+                return redirect()->intended(route('index'))->with('success', 'Login berhasil');
+            }
+
+            return back();
         }
 
         return back()->withErrors(['email' => 'dahgdahda'])->onlyInput('email');

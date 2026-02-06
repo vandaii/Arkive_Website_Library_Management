@@ -10,8 +10,9 @@
             <form class="relative w-1/2" action="">
                 <x-search-input></x-search-input>
             </form>
-            {{-- <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="{{ route('user-management.create') }}">Tambah
-                User</a> --}}
+            <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg"
+                href="{{ route('employee-management.create') }}">Tambah
+                User</a>
         </div>
 
         <table class="table-auto w-full text-left">
@@ -32,7 +33,7 @@
                         <td>{{ $user->email }}</td>
                         <td class="capitalize">{{ $user->role }}</td>
                         <td class="flex py-3 gap-x-2">
-                            <a href="{{ route('user-management.show', $user->id) }}">
+                            <a href="{{ route('employee-management.show', $user->id) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -40,7 +41,7 @@
                                 </svg>
                             </a>
                             <form onsubmit="return confirm('Yakin?')"
-                                action="{{ route('user-management.deactivate', $user->id) }}" method="POST">
+                                action="{{ route('employee-management.deactivate', $user->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="cursor-pointer">
