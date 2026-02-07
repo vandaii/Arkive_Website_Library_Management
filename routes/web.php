@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\EmployeeManagementController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\UserManagementController;
+use App\Models\Buku;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\EmployeeManagementController;
 
 Route::get('/', function () {
-    return view('index');
+    $books = Buku::with('kategoriBukuRelasi.kategori')->get();
+    return view('index', compact('books'));
 })->name('index');
 
 // Authentication
@@ -26,6 +29,7 @@ Route::get('/admin', function () {
     return view('admin.index', ['title' => 'Dashboard Admin']);
 })->name('admin.index')->middleware('auth');
 
+// Kelola Peminjam
 Route::get('/admin/kelola-user/', [UserManagementController::class, 'index'])->name('user-management.index');
 Route::get('/admin/kelola-user/tambah', [UserManagementController::class, 'create'])->name('user-management.create');
 Route::post('/admin/kelola-user/tambah/', [UserManagementController::class, 'store'])->name('user-management.store');
@@ -34,6 +38,7 @@ Route::put('/admin/kelola-user/{id}/update', [UserManagementController::class, '
 Route::patch('/admin/kelola-user/{id}/deactivate', [UserManagementController::class, 'deactivate'])->name('user-management.deactivate');
 Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class, 'destroy'])->name('user-management.destroy');
 
+// Kelola Admin/Petugas
 Route::get('/admin/kelola-employee/', [EmployeeManagementController::class, 'index'])->name('employee-management.index');
 Route::get('/admin/kelola-employee/tambah', [EmployeeManagementController::class, 'create'])->name('employee-management.create');
 Route::post('/admin/kelola-employee/tambah/', [EmployeeManagementController::class, 'store'])->name('employee-management.store');
@@ -42,20 +47,18 @@ Route::put('/admin/kelola-employee/{id}/update', [EmployeeManagementController::
 Route::patch('/admin/kelola-employee/{id}/deactivate', [EmployeeManagementController::class, 'deactivate'])->name('employee-management.deactivate');
 Route::delete('/admin/kelola-employee/{id}/delete', [EmployeeManagementController::class, 'destroy'])->name('employee-management.destroy');
 
-Route::get('/admin/data-kategori/', [KategoriController::class, 'index'])->name('kategori.index');
-Route::get('/admin/data-kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');
-Route::post('/admin/data-kategori/tambah/', [KategoriController::class, 'store'])->name('kategori.store');
-Route::get('/admin/data-kategori/{id}/', [KategoriController::class, 'show'])->name('kategori.show');
-Route::put('/admin/data-kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
-Route::delete('/admin/data-kategori/{id}/delete', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+// Kategori
+Route::get('/data-kategori/', [KategoriController::class, 'index'])->name('kategori.index');
+Route::get('/data-kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');
+Route::post('/data-kategori/tambah/', [KategoriController::class, 'store'])->name('kategori.store');
+Route::get('/data-kategori/{id}/', [KategoriController::class, 'show'])->name('kategori.show');
+Route::put('/data-kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
+Route::delete('/data-kategori/{id}/delete', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
-Route::get('/data-buku', function () {
-    return view('admin.data-buku.index', ['title' => 'data buku']);
-})->name('data-buku.index');
-
-Route::get('/data-buku/tambah', function () {
-    return view('admin.data-buku.create', ['title' => 'tambah buku']);
-})->name('data-buku.create');
+// Data Buku
+Route::get('/data-buku/', [BukuController::class, 'index'])->name('data-buku.index');
+Route::get('/data-buku/tambah', [BukuController::class, 'create'])->name('data-buku.create');
+Route::post('/data-buku/tambah', [BukuController::class, 'store'])->name('data-buku.store');
 
 Route::get('/data-buku/edit', function () {
     return view('admin.data-buku.edit', ['title' => 'edit buku']);

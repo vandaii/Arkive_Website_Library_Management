@@ -6,24 +6,32 @@
         </div>
 
         <div>
-            <form class="grid grid-cols-2 gap-5" action="">
+            <form class="grid grid-cols-2 gap-5" action="{{ route('data-buku.store') }}" enctype="multipart/form-data"
+                method="POST">
+                @csrf
 
-                {{-- Nama Lengkap --}}
-                <div>
-                    <label for="nama_lengkap" class="block text-sm/6 font-medium text-gray-800">Nama Lengkap</label>
-                    <div class="mt-1">
-                        <input id="nama_lengkap" placeholder="John Doe" value="{{ old('nama_lengkap') }}" type="text"
-                            name="nama_lengkap" required autocomplete="nama_lengkap"
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6 
-                                @error('nama_lengkap') 
-                                    input-error 
-                                @enderror" />
+                {{-- Cover --}}
+                <div class="col-span-2 flex gap-x-15">
+                    <div>
+                        <img class="w-40 h-auto border-dashed rounded-md" src="{{ asset('img/cover/cover-bumi.jpg') }}"
+                            alt="">
                     </div>
-                    @error('name')
-                        <div class="">
-                            <span>{{ $message }}</span>
+                    <div class="w-full">
+                        <label for="cover_buku" class="block text-sm/6 font-medium text-gray-800">Cover Buku</label>
+                        <div class="mt-1">
+                            <input id="cover_buku" value="{{ old('cover_buku') }}" accept="image/*" type="file"
+                                name="cover_buku" required autocomplete="cover_buku"
+                                class="w-full cursor-pointer hover:file:text-black/80 rounded-md bg-black/5 text-base file:bg-gray-200 file:cursor-pointer file:text-black/60 file:py-1.5 file:px-3 file:border-r-2 file:border-r-gray-300 text-gray-800 outline-1 -outline-offset-1 outline-black/20
+                                    @error('cover_buku') 
+                                        input-error 
+                                    @enderror" />
                         </div>
-                    @enderror
+                        @error('cover_buku')
+                            <div class="">
+                                <span>{{ $message }}</span>
+                            </div>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Judul --}}
@@ -98,17 +106,39 @@
                     @enderror
                 </div>
 
+                {{-- Stok --}}
+                <div>
+                    <label for="stok" class="block text-sm/6 font-medium text-gray-800">Stok</label>
+                    <div class="mt-1">
+                        <input id="stok" placeholder="100" value="{{ old('stok') }}" type="text"
+                            name="stok" required autocomplete="stok"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6 
+                                @error('stok') 
+                                    input-error 
+                                @enderror" />
+                    </div>
+                    @error('stok')
+                        <div class="">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+
                 {{-- Kategori --}}
                 <div>
-                    <label for="kategori_id" class="block text-sm/6 font-medium text-gray-800">Kategori</label>
+                    <label for="kategori" class="block text-sm/6 font-medium text-gray-800">Kategori</label>
                     <div class="mt-1">
                         <select
                             class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/70 bg-black/5 text-base  text-gray-800"
-                            name="kategori_id" id="kategori_id">
+                            name="kategori" id="kategori">
                             <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih Kategori
                             </option>
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">haha</option>
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">hihi</option>
+
+                            @foreach ($categories as $category)
+                                <option class="outline-2 -outline-offset-1 outline-black/70"
+                                    value="{{ $category->id }}">
+                                    {{ $category->nama_kategori }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
