@@ -59,7 +59,6 @@ Route::delete('/data-kategori/{id}/delete', [KategoriController::class, 'destroy
 Route::get('/data-buku/', [BukuController::class, 'index'])->name('data-buku.index');
 Route::get('/data-buku/tambah', [BukuController::class, 'create'])->name('data-buku.create');
 Route::post('/data-buku/tambah', [BukuController::class, 'store'])->name('data-buku.store');
-
-Route::get('/data-buku/edit', function () {
-    return view('admin.data-buku.edit', ['title' => 'edit buku']);
-})->name('data-buku.show');
+Route::get('/data-buku/{id}', [BukuController::class, 'show'])->name('data-buku.show');
+Route::put('/data-buku/{id}/update', [BukuController::class, 'update'])->name('data-buku.update');
+Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->name('data-buku.destroy');

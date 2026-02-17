@@ -13,8 +13,8 @@
                 {{-- Cover --}}
                 <div class="col-span-2 flex gap-x-15">
                     <div>
-                        <img class="w-40 h-auto border-dashed rounded-md" src="{{ asset('img/cover/cover-bumi.jpg') }}"
-                            alt="">
+                        <img class="w-40 h-45 bg-gray-200 border-2 border-dashed border-gray-400 rounded-md"
+                            alt="" id="img-preview">
                     </div>
                     <div class="w-full">
                         <label for="cover_buku" class="block text-sm/6 font-medium text-gray-800">Cover Buku</label>
@@ -24,7 +24,8 @@
                                 class="w-full cursor-pointer hover:file:text-black/80 rounded-md bg-black/5 text-base file:bg-gray-200 file:cursor-pointer file:text-black/60 file:py-1.5 file:px-3 file:border-r-2 file:border-r-gray-300 text-gray-800 outline-1 -outline-offset-1 outline-black/20
                                     @error('cover_buku') 
                                         input-error 
-                                    @enderror" />
+                                    @enderror"
+                                onchange="previewImage(event)" />
                         </div>
                         @error('cover_buku')
                             <div class="">
@@ -145,11 +146,30 @@
 
                 <div class="col-span-2 w-fit">
                     <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
+                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize cursor-pointer">tambah
                         buku</button>
                 </div>
 
             </form>
         </div>
     </div>
+
+    <Script>
+        function previewImage(event) {
+            const preview = document.getElementById('img-preview');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+                preview.classList.remove('bg-gray-200');
+                preview.classList.remove('border-2');
+                preview.classList.remove('h-50');
+                preview.classList.add('h-auto');
+            }
+
+            reader.readAsDataURL(file);
+        }
+    </Script>
 </x-layouts.admin-dashboard>
