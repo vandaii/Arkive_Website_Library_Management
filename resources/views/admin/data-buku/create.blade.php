@@ -17,7 +17,8 @@
                             alt="" id="img-preview">
                     </div>
                     <div class="w-full">
-                        <label for="cover_buku" class="block text-sm/6 font-medium text-gray-800">Cover Buku</label>
+                        <label for="cover_buku" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Cover
+                            Buku</label>
                         <div class="mt-1">
                             <input id="cover_buku" value="{{ old('cover_buku') }}" accept="image/*" type="file"
                                 name="cover_buku" required autocomplete="cover_buku"
@@ -37,7 +38,7 @@
 
                 {{-- Judul --}}
                 <div>
-                    <label for="judul" class="block text-sm/6 font-medium text-gray-800">Judul</label>
+                    <label for="judul" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Judul</label>
                     <div class="mt-1">
                         <input id="judul" placeholder="Pulang" type="text" name="judul" required
                             autocomplete="judul" value="{{ old('judul') }}"
@@ -55,7 +56,8 @@
 
                 {{-- Penulis --}}
                 <div>
-                    <label for="penulis" class="block text-sm/6 font-medium text-gray-800">Penulis</label>
+                    <label for="penulis"
+                        class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Penulis</label>
                     <div class="mt-1">
                         <input id="penulis" type="text" name="penulis" placeholder="Tere Liye"
                             value="{{ old('penulis') }}" required autocomplete="penulis"
@@ -73,7 +75,8 @@
 
                 {{-- Penerbit --}}
                 <div>
-                    <label for="penerbit" class="block text-sm/6 font-medium text-gray-800">Penerbit</label>
+                    <label for="penerbit"
+                        class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Penerbit</label>
                     <div class="mt-1">
                         <input id="penerbit" placeholder="Gramedia" value="{{ old('penerbit') }}" type="text"
                             name="penerbit" required autocomplete="penerbit"
@@ -91,7 +94,8 @@
 
                 {{-- Penerbit --}}
                 <div>
-                    <label for="tahun_terbit" class="block text-sm/6 font-medium text-gray-800">Tahun Terbit</label>
+                    <label for="tahun_terbit" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Tahun
+                        Terbit</label>
                     <div class="mt-1">
                         <input id="tahun_terbit" placeholder="2020" value="{{ old('tahun_terbit') }}" type="number"
                             name="tahun_terbit" required autocomplete="tahun_terbit"
@@ -109,7 +113,7 @@
 
                 {{-- Stok --}}
                 <div>
-                    <label for="stok" class="block text-sm/6 font-medium text-gray-800">Stok</label>
+                    <label for="stok" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Stok</label>
                     <div class="mt-1">
                         <input id="stok" placeholder="100" value="{{ old('stok') }}" type="text"
                             name="stok" required autocomplete="stok"
@@ -126,27 +130,35 @@
                 </div>
 
                 {{-- Kategori --}}
-                <div>
-                    <label for="kategori" class="block text-sm/6 font-medium text-gray-800">Kategori</label>
-                    <div class="mt-1">
-                        <select
-                            class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/70 bg-black/5 text-base  text-gray-800"
-                            name="kategori" id="kategori">
-                            <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih Kategori
-                            </option>
+                <div class="col-span-2">
+                    <label for="kategori"
+                        class="block text-base/6 sm:text-base/6 font-medium text-gray-800">Kategori</label>
+                    <div id="parent-input">
+                        <div class="mt-2 flex gap-x-10" id="child-input">
+                            <select
+                                class="w-full outline-2 px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/30 bg-black/5 text-base  text-gray-800"
+                                name="kategori[]" id="kategori">
+                                <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih
+                                    Kategori
+                                </option>
 
-                            @foreach ($categories as $category)
-                                <option class="outline-2 -outline-offset-1 outline-black/70"
-                                    value="{{ $category->id }}">
-                                    {{ $category->nama_kategori }}</option>
-                            @endforeach
-                        </select>
+                                @foreach ($categories as $category)
+                                    <option class="outline-2 -outline-offset-1 outline-black/70"
+                                        value="{{ $category->id }}">
+                                        {{ $category->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="delete-button cursor-pointer hidden"
+                                onclick="deleteButtonCategory(this)">Delete</button>
+                        </div>
                     </div>
+                    <button type="button" class="text-base/10 cursor-pointer" onclick="addButtonCategory()">Tambah
+                        Kategori</button>
                 </div>
 
                 <div class="col-span-2 w-fit">
                     <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize cursor-pointer">tambah
+                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 sm:text-base/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize cursor-pointer">tambah
                         buku</button>
                 </div>
 
@@ -155,6 +167,9 @@
     </div>
 
     <Script>
+        const parent = document.getElementById('parent-input');
+        const deleteButton = document.getElementById('delete-button');
+
         function previewImage(event) {
             const preview = document.getElementById('img-preview');
             const file = event.target.files[0];
@@ -170,6 +185,26 @@
             }
 
             reader.readAsDataURL(file);
+        }
+
+        function addButtonCategory() {
+            const node = document.getElementById('child-input');
+            const clone = node.cloneNode(true);
+            const cloneBtn = clone.querySelector('.delete-button');
+            cloneBtn.classList.remove('hidden');
+
+            parent.appendChild(clone);
+            node.querySelector('.delete-button').classList.remove('hidden');
+        }
+
+        function deleteButtonCategory(blyat) {
+            if (parent.children.length > 1) {
+                blyat.closest('#child-input').remove();
+            }
+
+            if (parent.children.length === 1) {
+                parent.children[0].querySelector('.delete-button').classList.add('hidden');
+            }
         }
     </Script>
 </x-layouts.admin-dashboard>

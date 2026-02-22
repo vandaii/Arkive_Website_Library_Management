@@ -1,18 +1,14 @@
 <?php
 
-use App\Models\Buku;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeManagementController;
+use App\Http\Controllers\PageController;
 
-Route::get('/', function () {
-    $books = Buku::with('kategoriBukuRelasi.kategori')->get();
-    return view('index', compact('books'));
-})->name('index');
+Route::get('/', [PageController::class, 'index'])->name('index');
 
 // Authentication
 Route::get('/register', [AuthenticationController::class, 'registerPage'])->name('auth.register');
@@ -21,9 +17,7 @@ Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('auth
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
-Route::get('/show', function () {
-    return view('book.show');
-})->name('book.show');
+Route::get('/show/{id}', [PageController::class, 'show'])->name('book.show');
 
 Route::get('/admin', function () {
     return view('admin.index', ['title' => 'Dashboard Admin']);

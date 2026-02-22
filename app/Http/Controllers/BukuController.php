@@ -12,7 +12,7 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $books = Buku::with('kategoriBukuRelasi.kategori')->get();
+        $books = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')->get();
         return view('admin.data-buku.index', compact('books'), ['title' => 'Data Buku']);
     }
 
@@ -31,7 +31,8 @@ class BukuController extends Controller
             'penerbit' => 'required|string',
             'tahun_terbit' => 'required|integer',
             'stok' => 'required|integer',
-            'kategori' => 'required'
+            'kategori' => 'required|array',
+            'kategori.*' => 'required|exists:kategoris,id'
         ]);
 
         $coverPath = $request->file('cover_buku')->store('cover', 'public');
@@ -45,19 +46,25 @@ class BukuController extends Controller
             'stok' => $validated['stok'],
         ]);
 
-        KategoriBukuRelasi::create([
-            'buku_id' => $book->id,
-            'kategori_id' => $validated['kategori']
-        ]);
+        foreach ($request->kategori as $kategori) {
+            KategoriBukuRelasi::create([
+                'buku_id' => $book->id,
+                'kategori_id' => $kategori
+            ]);
+        }
 
         return redirect()->route('data-buku.index')->with('success');
     }
 
     public function show($id)
     {
-        $book = Buku::with('kategoriBukuRelasi')->find($id);
-        $categories = Kategori::with('kategoriBukuRelasi.buku')->get();
-        return view('admin.data-buku.edit', compact('book', 'categories'), ['title' => 'Edit Buku']);
+        $book = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')
+            ->with(['kategoriBukuRelasi' => function ($q) {
+                $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
+            }])->find($id);
+        $categories = Kategori::select('id', 'nama_kategori')->with('kategoriBukuRelasi.buku')->get();
+        $relations = KategoriBukuRelasi::where('buku_id', $book->id)->get();
+        return view('admin.data-buku.edit', compact('book', 'categories', 'relations'), ['title' => 'Edit Buku']);
     }
 
     public function update(Request $request, $id)
@@ -69,17 +76,20 @@ class BukuController extends Controller
             'penerbit' => 'required|string',
             'tahun_terbit' => 'required|integer',
             'stok' => 'required|integer',
-            'kategori' => 'required'
+            'kategori' => 'required|array',
+            'kategori.*' => 'required|exists:kategoris,id'
         ]);
 
         $book = Buku::with('kategoriBukuRelasi.kategori')->find($id);
 
         if ($request->has('kategori')) {
             KategoriBukuRelasi::with('buku')->where('buku_id', $book->id)->delete();
-            KategoriBukuRelasi::create([
-                'buku_id' => $book->id,
-                'kategori_id' => $validated['kategori']
-            ]);
+            foreach ($request->kategori as $kategori) {
+                KategoriBukuRelasi::create([
+                    'buku_id' => $book->id,
+                    'kategori_id' => $kategori
+                ]);
+            }
         }
 
         $book->update([
@@ -113,7 +123,7 @@ class BukuController extends Controller
             File::delete(public_path($oldCoverPath));
         }
 
-        $relation = KategoriBukuRelasi::with('buku')->where('buku_id', $book->id)->delete();
+        KategoriBukuRelasi::with('buku')->where('buku_id', $book->id)->delete();
         $book->delete();
 
         return redirect()->route('data-buku.index')->with('success');

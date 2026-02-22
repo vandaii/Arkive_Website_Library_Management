@@ -14,30 +14,30 @@
                 Buku</a>
         </div>
 
-        <table class="table-auto w-full">
+        <table class="table-fixed w-full">
             <thead>
                 <tr class="border-b-2 border-gray-500/40 text-left">
-                    <th class="py-3">Cover Buku</th>
-                    <th>Judul</th>
-                    <th>Penulis</th>
-                    <th>Penerbit</th>
-                    <th>Tahun Terbit</th>
-                    <th>Stok</th>
-                    <th>Aksi</th>
+                    <th class="py-3 w-2/12">Cover Buku</th>
+                    <th class="w-3/12">Judul</th>
+                    <th class="w-2/12">Penulis</th>
+                    <th class="w-2/12">Penerbit</th>
+                    <th class="w-1/12">Tahun Terbit</th>
+                    <th class="w-1/12">Stok</th>
+                    <th class="w-1/12">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($books as $book)
                     <tr class="border-b-2 border-gray-500/40">
-                        <td class="py-3 px-2">
-                            <img class="rounded-sm w-15 h-auto" src="{{ asset('storage/' . $book->cover_buku) }}"
+                        <td class="py-3 pr-2">
+                            <img class="rounded-sm h-25" src="{{ asset('storage/' . $book->cover_buku) }}"
                                 alt="">
                         </td>
-                        <td>{{ $book->judul }}</td>
-                        <td>{{ $book->penulis }}</td>
-                        <td>{{ $book->penerbit }}</td>
-                        <td>{{ $book->tahun_terbit }}</td>
-                        <td>{{ $book->stok }}</td>
+                        <td class="pr-2">{{ $book->judul }}</td>
+                        <td class="pr-2">{{ $book->penulis }}</td>
+                        <td class="pr-2">{{ $book->penerbit }}</td>
+                        <td class="pr-2">{{ $book->tahun_terbit }}</td>
+                        <td class="pr-2">{{ $book->stok }}</td>
                         <td>
                             <div class="flex gap-x-2">
                                 <a href="{{ route('data-buku.show', $book->id) }}">

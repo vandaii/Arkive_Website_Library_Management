@@ -10,11 +10,11 @@
 </head>
 
 <body class="bg-gray-100 w-full">
-    <header class="px-10 sticky top-0 bg-white py-5 shadow-md">
+    <header class="px-10 sticky top-0 bg-white py-5 shadow-md z-5">
         <x-navigation.navbar></x-navigation.navbar>
     </header>
 
-    <aside class="fixed top-0 left-0">
+    <aside class="fixed top-0 left-0 z-10">
         <x-navigation.sidebar></x-navigation.sidebar>
     </aside>
 

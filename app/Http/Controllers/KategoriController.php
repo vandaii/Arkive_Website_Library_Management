@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class KategoriController extends Controller
 {
