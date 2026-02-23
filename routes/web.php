@@ -6,7 +6,9 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeManagementController;
+use App\Http\Controllers\KelolaPinjamController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PinjamController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
@@ -56,3 +58,9 @@ Route::post('/data-buku/tambah', [BukuController::class, 'store'])->name('data-b
 Route::get('/data-buku/{id}', [BukuController::class, 'show'])->name('data-buku.show');
 Route::put('/data-buku/{id}/update', [BukuController::class, 'update'])->name('data-buku.update');
 Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->name('data-buku.destroy');
+
+// Pinjam
+Route::get('/peminjaman/', [PinjamController::class, 'index'])->name('peminjaman.index');
+
+// Kelola Pinjam
+Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');

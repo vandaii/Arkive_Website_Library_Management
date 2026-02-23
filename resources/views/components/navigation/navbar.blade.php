@@ -1,4 +1,4 @@
-@if (Route::is('index') || Route::is('book.show'))
+@if (Route::is('index') || Route::is('book.show') || Route::is('peminjaman.index'))
     <nav>
         <ul class="flex justify-between space-x-15 items-center">
             <li>
@@ -13,7 +13,7 @@
                     </form>
                     <a class="mt-1" href="">Kategori</a>
                     @if (Auth::check())
-                        <a class="mt-1" href="">Peminjaman</a>
+                        <a class="mt-1" href="{{ route('peminjaman.index') }}">Peminjaman</a>
                     @endif
                 </div>
             </li>
