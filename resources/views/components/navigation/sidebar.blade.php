@@ -20,7 +20,9 @@
             <x-sidebar-link href="{{ route('data-buku.index') }}" :active="request()->routeIs('data-buku.index') ||
                 request()->routeIs('data-buku.create') ||
                 request()->routeIs('data-buku.show')">Data Buku</x-sidebar-link>
-            <x-sidebar-link href="{{ route('kelola-pinjam.index') }}" :active="request()->routeIs('kelola-pinjam.index')">Kelola Pinjam</x-sidebar-link>
+            <x-sidebar-link href="{{ route('kelola-pinjam.index') }}" :active="request()->routeIs('kelola-pinjam.index') ||
+                request()->routeIs('kelola-pinjam.show') ||
+                request()->routeIs('kelola-pinjam.pengajuan-pinjaman')">Data Peminjaman</x-sidebar-link>
         </li>
     </ul>
 </div>

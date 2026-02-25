@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeManagementController;
+use App\Http\Controllers\KelolaKembaliController;
 use App\Http\Controllers\KelolaPinjamController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
@@ -61,6 +62,14 @@ Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->nam
 
 // Pinjam
 Route::get('/peminjaman/', [PinjamController::class, 'index'])->name('peminjaman.index');
+Route::post('/peminjaman/tambah', [PinjamController::class, 'store'])->name('peminjaman.store')->middleware('auth');
 
 // Kelola Pinjam
 Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');
+Route::get('/kelola-pinjam/detail/{id}', [KelolaPinjamController::class, 'show'])->name('kelola-pinjam.show');
+Route::get('/kelola-pinjam/pengajuan-pinjaman/', [KelolaPinjamController::class, 'pengajuanPeminjaman'])->name('kelola-pinjam.pengajuan-pinjaman');
+Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/setuju', [KelolaPinjamController::class, 'setujuPinjam'])->name('kelola-pinjam.setuju-pinjam');
+Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/tolak', [KelolaPinjamController::class, 'tolakPinjam'])->name('kelola-pinjam.tolak-pinjam');
+
+// Kelola Kembali
+Route::get('/kelola-kembali/', [KelolaKembaliController::class, 'index'])->name('kelola-kembali.index');
