@@ -62,6 +62,7 @@ Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->nam
 
 // Pinjam
 Route::get('/peminjaman/', [PinjamController::class, 'index'])->name('peminjaman.index');
+Route::get('/peminjaman/detail', [PinjamController::class, 'show'])->name('peminjaman.show');
 Route::post('/peminjaman/tambah', [PinjamController::class, 'store'])->name('peminjaman.store')->middleware('auth');
 Route::get('/peminjaman/riwayat-peminjaman', [PinjamController::class, 'history'])->name('peminjaman.riwayat-peminjaman')->middleware('auth');
 
@@ -74,5 +75,7 @@ Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/tolak', [KelolaPinjamContro
 
 // Kelola Kembali
 Route::get('/kelola-kembali/', [KelolaKembaliController::class, 'index'])->name('kelola-kembali.index');
-Route::get('/kelola-kembali/detail/', [KelolaKembaliController::class, 'show'])->name('kelola-kembali.show');
+Route::get('/kelola-kembali/detail/{id}', [KelolaKembaliController::class, 'show'])->name('kelola-kembali.show');
 Route::get('/kelola-kembali/pengajuan-kembali/', [KelolaKembaliController::class, 'pengajuanPengembalian'])->name('kelola-kembali.pengajuan-kembali');
+Route::patch('/kelola-kembali/pengajuan-kembali/{id}/setuju', [KelolaKembaliController::class, 'setujuKembali'])->name('kelola-kembali.setuju-kembali');
+Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliController::class, 'tolakKembali'])->name('kelola-kembali.tolak-kembali');

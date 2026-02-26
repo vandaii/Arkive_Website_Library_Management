@@ -8,12 +8,12 @@
                 </div>
                 <p>{{ $pengajuan->user->nama_lengkap }}</p>
                 <div class="flex gap-x-3">
-                    <form action="#" method="POST">
+                    <form action="{{ route('kelola-kembali.setuju-kembali', $pengajuan->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <button type="submit" class="cursor-pointer">Approve</button>
                     </form>
-                    <form action="#" method="POST">
+                    <form action="{{ route('kelola-kembali.tolak-kembali', $pengajuan->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <button type="submit" class="cursor-pointer">Reject</button>

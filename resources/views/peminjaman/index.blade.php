@@ -7,7 +7,7 @@
             </div>
             <div class="flex gap-5 flex-wrap w-full justify-center">
                 @forelse ($peminjamans as $peminjaman)
-                    <a href="#">
+                    <a href="{{ route('peminjaman.show') }}">
                         <div class="flex gap-x-3 rounded-lg p-2 shadow-md/30 bg-white">
                             <img class="border h-40 object-cover rounded-lg mx-auto border-none"
                                 src="{{ asset('storage/' . $peminjaman->buku->cover_buku) }}" alt="cover">

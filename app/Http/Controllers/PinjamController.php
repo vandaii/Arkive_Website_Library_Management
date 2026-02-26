@@ -44,6 +44,11 @@ class PinjamController extends Controller
         return redirect()->route('peminjaman.index')->with('success');
     }
 
+    public function show()
+    {
+        return view('peminjaman.show');
+    }
+
     public function history(Request $request)
     {
         $user = $request->user();
