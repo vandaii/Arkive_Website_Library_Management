@@ -14,27 +14,35 @@
                 <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg"
                     href="{{ route('kelola-pinjam.pengajuan-pinjaman') }}">Pengajuan
                     Pinjaman</a>
-                <p class="absolute text-white text-sm bg-red-500 rounded-full w-6 h-6 text-center -right-2 -top-5">
-                    {{ $counts }}</p>
+
+                @if ($counts < 1)
+                    <p
+                        class="absolute hidden text-white text-sm bg-red-500 rounded-full w-6 h-6 text-center -right-2 -top-5">
+                        {{ $counts }}</p>
+                @else
+                    <p class="absolute text-white text-sm bg-red-500 rounded-full w-6 h-6 text-center -right-2 -top-5">
+                        {{ $counts }}</p>
+                @endif
+
             </div>
         </div>
 
         <table class="table-fixed w-full">
             <thead>
                 <tr class="border-b-2 border-gray-500/40 text-left">
-                    <th class="w-2/12 py-3">Judul</th>
-                    <th class="w-2/12 py-3">Nama Peminjam</th>
-                    <th class="w-2/12 py-3">Tanggal Pinjam</th>
-                    <th class="w-2/12 py-3">Estimasi Tanggal Kembali</th>
-                    <th class="w-2/12 py-3">Jumlah Buku</th>
-                    <th class="w-2/12 py-3">Status</th>
+                    <th class="w-2/12 py-1.5">Judul</th>
+                    <th class="w-2/12 py-1.5">Nama Peminjam</th>
+                    <th class="w-2/12 py-1.5">Tanggal Pinjam</th>
+                    <th class="w-2/12 py-1.5">Estimasi Tanggal Kembali</th>
+                    <th class="w-2/12 py-1.5">Jumlah Buku</th>
+                    <th class="w-2/12 py-1.5">Status</th>
                     <th class="w-1/12">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($peminjamans as $peminjaman)
                     <tr class="border-b-2 border-gray-500/40">
-                        <td class=" line-clamp-2">{{ $peminjaman->buku->judul }}</td>
+                        <td class="py-1.5 line-clamp-2 overflow-hidden">{{ $peminjaman->buku->judul }}</td>
                         <td>{{ $peminjaman->user->nama_lengkap }}</td>
                         <td>{{ $peminjaman->tanggal_peminjaman }}</td>
                         <td>{{ $peminjaman->tanggal_pengembalian }}</td>

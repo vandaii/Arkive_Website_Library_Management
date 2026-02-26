@@ -23,6 +23,11 @@
             <x-sidebar-link href="{{ route('kelola-pinjam.index') }}" :active="request()->routeIs('kelola-pinjam.index') ||
                 request()->routeIs('kelola-pinjam.show') ||
                 request()->routeIs('kelola-pinjam.pengajuan-pinjaman')">Data Peminjaman</x-sidebar-link>
+
+            <x-sidebar-link href="{{ route('kelola-kembali.index') }}" :active="request()->routeIs('kelola-kembali.index') ||
+                request()->routeIs('kelola-kembali.show') ||
+                request()->routeIs('kelola-kembali.pengajuan-kembali')">Data
+                Kembali</x-sidebar-link>
         </li>
     </ul>
 </div>

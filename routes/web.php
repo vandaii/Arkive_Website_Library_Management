@@ -73,3 +73,5 @@ Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/tolak', [KelolaPinjamContro
 
 // Kelola Kembali
 Route::get('/kelola-kembali/', [KelolaKembaliController::class, 'index'])->name('kelola-kembali.index');
+Route::get('/kelola-kembali/detail/', [KelolaKembaliController::class, 'show'])->name('kelola-kembali.show');
+Route::get('/kelola-kembali/pengajuan-kembali/', [KelolaKembaliController::class, 'pengajuanPengembalian'])->name('kelola-kembali.pengajuan-kembali');

@@ -9,7 +9,7 @@ class KelolaPinjamController extends Controller
 {
     public function index()
     {
-        $peminjamans = Peminjaman::with('buku')->paginate(10);
+        $peminjamans = Peminjaman::with('buku')->where('status_peminjaman', '!=', 'Pending')->paginate(10);
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending')->get()->count();
         return view('admin.kelola-pinjam.index', compact('peminjamans', 'counts'), ['title' => 'Data Peminjaman']);
     }
