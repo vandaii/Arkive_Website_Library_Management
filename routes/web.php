@@ -63,6 +63,7 @@ Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->nam
 // Pinjam
 Route::get('/peminjaman/', [PinjamController::class, 'index'])->name('peminjaman.index');
 Route::post('/peminjaman/tambah', [PinjamController::class, 'store'])->name('peminjaman.store')->middleware('auth');
+Route::get('/peminjaman/riwayat-peminjaman', [PinjamController::class, 'history'])->name('peminjaman.riwayat-peminjaman')->middleware('auth');
 
 // Kelola Pinjam
 Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');

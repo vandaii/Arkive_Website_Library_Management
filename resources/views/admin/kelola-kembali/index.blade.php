@@ -13,7 +13,7 @@
             <div class="relative">
                 <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg"
                     href="{{ route('kelola-kembali.pengajuan-kembali') }}">Pengajuan
-                    Pinjaman</a>
+                    Pengembalian</a>
                 @if ($counts < 1)
                     <p
                         class="absolute hidden text-white text-sm bg-red-500 rounded-full w-6 h-6 text-center -right-2 -top-5">

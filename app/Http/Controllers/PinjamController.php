@@ -6,14 +6,13 @@ use App\Models\Buku;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
-use function Symfony\Component\Clock\now;
-
 class PinjamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->paginate(6);
-        $returns = Peminjaman::with('buku')->where('status_peminjaman', '==', 'Dikembalikan')->paginate(6);
+        $user = $request->user();
+        $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(6);
+        $returns = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->where('user_id', $user->id)->get();
         return view('peminjaman.index', compact('peminjamans', 'returns'));
     }
 
@@ -43,5 +42,12 @@ class PinjamController extends Controller
         ]);
 
         return redirect()->route('peminjaman.index')->with('success');
+    }
+
+    public function history(Request $request)
+    {
+        $user = $request->user();
+        $historys = Peminjaman::with('buku', 'user')->where('user_id', $user->id)->orderBy('id', 'DESC')->get();
+        return view('peminjaman.riwayat-peminjaman', compact('historys'));
     }
 }

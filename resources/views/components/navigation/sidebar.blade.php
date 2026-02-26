@@ -13,7 +13,8 @@
                 Petugas</x-sidebar-link>
             <x-sidebar-link href="{{ route('user-management.index') }}" :active="request()->routeIs('user-management.index') ||
                 request()->routeIs('user-management.create') ||
-                request()->routeIs('user-management.show')">Kelola User</x-sidebar-link>
+                request()->routeIs('user-management.show')">Kelola
+                Peminjam</x-sidebar-link>
             <x-sidebar-link href="{{ route('kategori.index') }}" :active="request()->routeIs('kategori.index') ||
                 request()->routeIs('kategori.create') ||
                 request()->routeIs('kategori.show')">Kategori</x-sidebar-link>

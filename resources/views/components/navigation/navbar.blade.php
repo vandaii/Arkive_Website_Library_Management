@@ -1,4 +1,7 @@
-@if (Route::is('index') || Route::is('book.show') || Route::is('peminjaman.index'))
+@if (Route::is('index') ||
+        Route::is('book.show') ||
+        Route::is('peminjaman.index') ||
+        Route::is('peminjaman.riwayat-peminjaman'))
     <nav>
         <ul class="flex justify-between space-x-15 items-center">
             <li>
