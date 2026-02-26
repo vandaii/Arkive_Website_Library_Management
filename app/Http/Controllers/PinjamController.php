@@ -11,8 +11,8 @@ class PinjamController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(6);
-        $returns = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->where('user_id', $user->id)->get();
+        $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->Where('status_peminjaman', '!=', 'Terlambat')->where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(6);
+        $returns = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->where('user_id', $user->id)->get();
         return view('peminjaman.index', compact('peminjamans', 'returns'));
     }
 
@@ -44,9 +44,10 @@ class PinjamController extends Controller
         return redirect()->route('peminjaman.index')->with('success');
     }
 
-    public function show()
+    public function show($id)
     {
-        return view('peminjaman.show');
+        $detail = Peminjaman::with('buku', 'user')->find($id);
+        return view('peminjaman.show', compact('detail'));
     }
 
     public function history(Request $request)
@@ -54,5 +55,14 @@ class PinjamController extends Controller
         $user = $request->user();
         $historys = Peminjaman::with('buku', 'user')->where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         return view('peminjaman.riwayat-peminjaman', compact('historys'));
+    }
+
+    public function kembalikanBuku($id)
+    {
+        $peminjaman = Peminjaman::with('buku', 'user')->find($id);
+        $peminjaman->update([
+            'status_peminjaman' => 'Pending Dikembalikan'
+        ]);
+        return redirect()->route('peminjaman.index')->with('success');
     }
 }
