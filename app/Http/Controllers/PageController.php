@@ -8,7 +8,7 @@ class PageController extends Controller
 {
     public function index()
     {
-        $books = Buku::select('id',  'cover_buku', 'judul', 'penulis')->get();
+        $books = Buku::with('kategoriBukuRelasi', 'ulasan')->get();
         return view('index', compact('books'));
     }
 
