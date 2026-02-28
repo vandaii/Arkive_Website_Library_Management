@@ -10,6 +10,7 @@ use App\Http\Controllers\KelolaKembaliController;
 use App\Http\Controllers\KelolaPinjamController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
+use App\Http\Controllers\UlasanController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
@@ -80,3 +81,8 @@ Route::get('/kelola-kembali/detail/{id}', [KelolaKembaliController::class, 'show
 Route::get('/kelola-kembali/pengajuan-kembali/', [KelolaKembaliController::class, 'pengajuanPengembalian'])->name('kelola-kembali.pengajuan-kembali');
 Route::patch('/kelola-kembali/pengajuan-kembali/{id}/setuju', [KelolaKembaliController::class, 'setujuKembali'])->name('kelola-kembali.setuju-kembali');
 Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliController::class, 'tolakKembali'])->name('kelola-kembali.tolak-kembali');
+
+// Ulasan (Reviews)
+Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth');
+Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth');
+Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth');

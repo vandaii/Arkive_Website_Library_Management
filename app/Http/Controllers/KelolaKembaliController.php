@@ -11,7 +11,7 @@ class KelolaKembaliController extends Controller
 {
     public function index()
     {
-        $pengembalians = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->orWhere('status_peminjaman', 'Ditolak')->paginate(5);
+        $pengembalians = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->orWhere('status_peminjaman', 'Ditolak')->orderBy('id', 'DESC')->paginate(5);
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending Dikembalikan')->get()->count();
         return view('admin.kelola-kembali.index', compact('pengembalians', 'counts'), ['title' => 'Data Kembali']);
     }
@@ -34,11 +34,13 @@ class KelolaKembaliController extends Controller
         $deadline = Carbon::parse($pengajuan->tanggal_pengembalian);
         if ($deadline->isPast()) {
             $pengajuan->update([
-                'status_peminjaman' => 'Terlambat'
+                'status_peminjaman' => 'Terlambat',
+                'tanggal_pengembalian' => date('Y-m-d')
             ]);
         } else {
             $pengajuan->update([
-                'status_peminjaman' => 'Dikembalikan'
+                'status_peminjaman' => 'Dikembalikan',
+                'tanggal_pengembalian' => date('Y-m-d')
             ]);
         }
 
