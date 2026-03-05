@@ -6,10 +6,19 @@
     <nav>
         <ul class="flex justify-between space-x-15 items-center">
             <li>
-                <div>
-                    <a href="{{ route('index') }}">
-                        <h1 class="text-xl font-medium">Perpustakaan Saya</h1>
-                    </a>
+                <div class="flex space-x-10 text-lg w-6xl">
+                    <div class="w-70">
+                        <a href="{{ route('index') }}">
+                            <h1 class="mt-1">Perpustakaan Saya</h1>
+                        </a>
+                    </div>
+                    <form action="" class="relative w-full">
+                        <x-search-input></x-search-input>
+                    </form>
+                    <a class="mt-1" href="">Kategori</a>
+                    @if (Auth::check())
+                        <a class="mt-1" href="{{ route('peminjaman.index') }}">Peminjaman</a>
+                    @endif
                 </div>
             </li>
             <li>
@@ -19,8 +28,9 @@
                             @csrf
                             <button type="submit">Logout</button>
                         </form>
-                        <a class="flex gap-x-1" href="">
-                            <i class="size-6" data-lucide="user"></i>
+                        <a href="">
+                            <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
+                            <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>
                         </a>
                         <a hidden class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                             href="{{ route('auth.register') }}">Register</a>
@@ -28,9 +38,10 @@
                             class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                             href="{{ route('login') }}">Login</a>
                     @else
-                        <a class="text-black font-medium text-sm" href="{{ route('login') }}">Login</a>
-                        <a class="py-2 px-4 bg-(--third-color) text-sm font-medium text-(--primary-color) rounded-md"
+                        <a class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                             href="{{ route('auth.register') }}">Register</a>
+                        <a class="py-1 px-6 text-white bg-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
+                            href="{{ route('login') }}">Login</a>
                     @endif
                 </div>
             </li>
