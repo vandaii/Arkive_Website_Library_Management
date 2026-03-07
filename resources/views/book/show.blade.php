@@ -92,36 +92,32 @@
 
             {{-- Review form (placed below overall rating) --}}
             <div class="mt-4 p-4 bg-white border border-gray-200 rounded-sm max-w-2xl">
-                @auth
-                    <form action="{{ route('ulasan.store') }}" method="POST" id="create_review_form">
-                        @csrf
-                        <input type="hidden" name="buku_id" value="{{ $book->id }}">
-                        <input type="hidden" name="rating" id="rating_input" value="5">
-                        <div class="flex items-center gap-x-3">
-                            <label class="font-medium">Beri Rating</label>
-                            <div id="star_container" class="flex items-center">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <svg data-value="{{ $i }}"
-                                        class="create-star cursor-pointer w-6 h-6 text-yellow-400" viewBox="0 0 20 20"
-                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
-                                    </svg>
-                                @endfor
-                            </div>
+
+                <form action="{{ route('ulasan.store') }}" method="POST" id="create_review_form">
+                    @csrf
+                    <input type="hidden" name="buku_id" value="{{ $book->id }}">
+                    <input type="hidden" name="rating" id="rating_input" value="5">
+                    <div class="flex items-center gap-x-3">
+                        <label class="font-medium">Beri Rating</label>
+                        <div id="star_container" class="flex items-center">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg data-value="{{ $i }}"
+                                    class="create-star cursor-pointer w-6 h-6 text-yellow-400" viewBox="0 0 20 20"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
+                                </svg>
+                            @endfor
                         </div>
-                        <div class="mt-3">
-                            <textarea name="ulasan" id="ulasan" rows="3" class="w-full mt-2 p-2 border rounded"
-                                placeholder="Tulis ulasan Anda..." required></textarea>
-                        </div>
-                        <div class="mt-3 flex gap-x-2">
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Kirim Ulasan</button>
-                        </div>
-                    </form>
-                @else
-                    <div class="text-sm">Silakan <a href="{{ route('auth.login') }}" class="text-indigo-600">login</a>
-                        untuk menulis ulasan.</div>
-                @endauth
+                    </div>
+                    <div class="mt-3">
+                        <textarea name="ulasan" id="ulasan" rows="3" class="w-full mt-2 p-2 border rounded"
+                            placeholder="Tulis ulasan Anda..." required></textarea>
+                    </div>
+                    <div class="mt-3 flex gap-x-2">
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Kirim Ulasan</button>
+                    </div>
+                </form>
             </div>
 
             {{-- Review list (compact cards) --}}
@@ -159,7 +155,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-2 flex items-center gap-x-2">
+                        <div class="mt-2 flex items-center gap-x-2" id="jj_{{ $u->id }}">
                             <div class="flex items-center">
                                 @for ($i = 1; $i <= 5; $i++)
                                     @if ($i <= $u->rating)
@@ -191,7 +187,7 @@
                                         value="{{ $u->rating }}">
                                     <div class="flex items-center gap-x-3">
                                         <label class="font-medium">Rating</label>
-                                        <div class="edit-star-container" data-id="{{ $u->id }}">
+                                        <div class="edit-star-container flex" data-id="{{ $u->id }}">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <svg data-value="{{ $i }}"
                                                     class="edit-star cursor-pointer w-5 h-5 {{ $i <= $u->rating ? 'text-yellow-400' : 'text-gray-300' }}"
@@ -267,9 +263,11 @@
                 const id = this.dataset.id;
                 const editFormWrap = document.getElementById('edit_form_' + id);
                 const reviewText = document.getElementById('review_text_' + id);
+                const starTop = document.getElementById('jj_' + id);
                 if (!editFormWrap || !reviewText) return;
                 // hide existing review text and show form
                 reviewText.classList.add('hidden');
+                starTop.classList.add('hidden');
                 editFormWrap.classList.remove('hidden');
                 // close dropdown
                 const dropdown = document.querySelector('.actions-dropdown[data-id="' + id + '"]');
