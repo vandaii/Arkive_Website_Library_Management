@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,16 @@ class KelolaPinjamController extends Controller
     public function setujuPinjam($id)
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
+
+        // Validate book stock
+        if ($pengajuan->buku->stok < $pengajuan->stok) {
+            return redirect()->route('kelola-pinjam.pengajuan-pinjaman')
+                ->with('error', 'Stok buku tidak mencukupi');
+        }
+
         $pengajuan->update([
-            'status_peminjaman' => 'Dipinjam'
+            'status_peminjaman' => 'Dipinjam',
+            'approved_by' => auth()->user->id
         ]);
 
         return redirect()->route('kelola-pinjam.index')->with('success');
@@ -39,8 +48,16 @@ class KelolaPinjamController extends Controller
     public function tolakPinjam($id)
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
+
+        // Restore book stock since request is rejected
+        $book = $pengajuan->buku;
+        $book->update([
+            'stok' => $book->stok + $pengajuan->stok
+        ]);
+
         $pengajuan->update([
-            'status_peminjaman' => 'Ditolak'
+            'status_peminjaman' => 'Ditolak',
+            'approved_by' => auth()->user->id
         ]);
 
         return redirect()->route('kelola-pinjam.index')->with('success');

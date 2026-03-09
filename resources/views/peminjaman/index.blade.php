@@ -5,59 +5,46 @@
                 <h1 class="text-2xl font-bold">Dipinjam</h1>
                 <a class="text-gray-500" href="{{ route('peminjaman.riwayat-peminjaman') }}">Riwayat Pinjaman</a>
             </div>
-            <div class="flex gap-5 flex-wrap w-full justify-center">
+            <div class="flex gap-5 flex-col w-full justify-center">
                 @forelse ($peminjamans as $peminjaman)
                     <a href="{{ route('peminjaman.show', $peminjaman->id) }}">
-                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md/30 bg-white">
-                            <img class="border h-40 object-cover rounded-lg mx-auto border-none"
+                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md bg-white w-full relative">
+                            <img class="border max-h-30 object-cover rounded-lg border-none"
                                 src="{{ asset('storage/' . $peminjaman->buku->cover_buku) }}" alt="cover">
-                            <div class="relative">
-                                <h1
-                                    class="font-medium text-lg w-65 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                            <div>
+                                <h1 class="font-medium text-lg mt-2 line-clamp-1 overflow-hidden text-ellipsis">
                                     {{ $peminjaman->buku->judul }}
                                 </h1>
                                 <h2 class="text-base">{{ $peminjaman->buku->penulis }}</h2>
                                 <h2 class="text-base">Jumlah Buku: {{ $peminjaman->stok }}</h2>
-                                <h2 class="text-base w-60">Estimasi Tanggal Pengembalian:
+                                <h2 class="text-base">Estimasi Tanggal Pengembalian:
                                     {{ $peminjaman->tanggal_pengembalian }}</h2>
-                                <h2
-                                    class="text-sm py-1 px-1.5 rounded-sm bg-amber-400 absolute right-0 bottom-0 text-white">
-                                    {{ $peminjaman->status_peminjaman }}
-                                </h2>
                             </div>
+                            <h2 class="text-sm py-1 px-1.5 rounded-sm absolute right-3 top-3 text-white font-semibold"
+                                style="background-color: 
+                                @switch($peminjaman->status_peminjaman)
+                                    @case('Pending')
+                                        #f1c21b
+                                    @break
+                                    @case('Dipinjam')
+                                        #0043ce
+                                    @break
+                                    @case('Pending Dikembalikan')
+                                        #ff832b
+                                    @break
+                                    @case('Dikembalikan')
+                                        #24a148
+                                    @break
+                                    @default
+                                        #666666
+                                @endswitch
+                                ">
+                                {{ $peminjaman->status_peminjaman }}
+                            </h2>
                         </div>
                     </a>
                 @empty
                     <p>Tidak Ada Yang Dipinjam</p>
-                @endforelse
-            </div>
-        </div>
-        <div class="flex flex-col gap-y-8">
-            <h1 class="text-2xl font-bold">Dikembalikan</h1>
-            <div class="flex gap-5 flex-wrap w-full justify-center">
-                @forelse ($returns as $return)
-                    <a href="#">
-                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md/30 bg-white">
-                            <img class="border h-40 object-cover rounded-lg mx-auto border-none"
-                                src="{{ asset('storage/' . $return->buku->cover_buku) }}" alt="cover">
-                            <div class="relative">
-                                <h1
-                                    class="font-medium text-lg w-65 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {{ $return->buku->judul }}
-                                </h1>
-                                <h2 class="text-base">{{ $return->buku->penulis }}</h2>
-                                <h2 class="text-base">Jumlah Buku: {{ $return->stok }}</h2>
-                                <h2 class="text-base w-60">Tanggal Pengembalian: {{ $return->tanggal_pengembalian }}
-                                </h2>
-                                <h2
-                                    class="text-sm py-1 px-1.5 rounded-sm bg-amber-400 absolute right-0 bottom-0 text-white">
-                                    {{ $return->status_peminjaman }}
-                                </h2>
-                            </div>
-                        </div>
-                    </a>
-                @empty
-                    <p class="capitalize">Tidak ada data buku kembali</p>
                 @endforelse
             </div>
         </div>

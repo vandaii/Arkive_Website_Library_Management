@@ -4,26 +4,42 @@
             <div class="flex justify-between">
                 <h1 class="text-2xl font-bold">Riwayat Peminjaman</h1>
             </div>
-            <div class="flex gap-5 flex-wrap w-full justify-center">
+            <div class="flex gap-5 flex-col w-full justify-center">
                 @forelse ($historys as $history)
-                    <a href="#">
-                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md/30 bg-white">
-                            <img class="border h-40 object-cover rounded-lg mx-auto border-none"
+                    <a href="{{ route('peminjaman.show', $history->id) }}">
+                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md bg-white w-full relative" id="card">
+                            <img class="border max-h-30 object-cover rounded-lg border-none"
                                 src="{{ asset('storage/' . $history->buku->cover_buku) }}" alt="cover">
                             <div class="relative">
-                                <h1
-                                    class="font-medium text-lg w-65 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                                <h1 class="font-medium text-lg mt-2 line-clamp-1 overflow-hidden text-ellipsis">
                                     {{ $history->buku->judul }}
                                 </h1>
                                 <h2 class="text-base">{{ $history->buku->penulis }}</h2>
                                 <h2 class="text-base">Jumlah Buku: {{ $history->stok }}</h2>
-                                <h2 class="text-base w-60">Estimasi Tanggal Pengembalian:
+                                <h2 class="text-base">Estimasi Tanggal Pengembalian:
                                     {{ $history->tanggal_pengembalian }}</h2>
-                                <h2
-                                    class="text-sm py-1 px-1.5 rounded-sm bg-amber-400 absolute right-0 bottom-0 text-white">
-                                    {{ $history->status_peminjaman }}
-                                </h2>
                             </div>
+                            <h2 class="text-sm py-1 px-1.5 rounded-sm absolute right-3 top-3 text-white font-semibold"
+                                style="background-color: 
+                                @switch($history->status_peminjaman)
+                                    @case('Pending')
+                                        #f1c21b
+                                    @break
+                                    @case('Dipinjam')
+                                        #0043ce
+                                    @break
+                                    @case('Pending Dikembalikan')
+                                        #ff832b
+                                    @break
+                                    @case('Dikembalikan')
+                                        #24a148
+                                    @break
+                                    @default
+                                        #666666
+                                @endswitch
+                                ">
+                                {{ $history->status_peminjaman }}
+                            </h2>
                         </div>
                     </a>
                 @empty
@@ -31,5 +47,4 @@
                 @endforelse
             </div>
         </div>
-    </div>
 </x-layouts.user-dashboard>

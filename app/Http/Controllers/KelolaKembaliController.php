@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,17 +33,35 @@ class KelolaKembaliController extends Controller
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
         $deadline = Carbon::parse($pengajuan->tanggal_pengembalian);
-        if ($deadline->isPast()) {
+        $tanggalKembali = date('Y-m-d');
+        $returnDate = Carbon::parse($tanggalKembali);
+
+        // Calculate denda if late
+        $denda = 0;
+        if ($returnDate->greaterThan($deadline)) {
+            $daysLate = $returnDate->diffInDays($deadline);
+            $denda = $daysLate * 10000; // Rp 10,000 per day
+
             $pengajuan->update([
                 'status_peminjaman' => 'Terlambat',
-                'tanggal_pengembalian' => date('Y-m-d')
+                'tanggal_pengembalian_aktual' => $tanggalKembali,
+                'denda' => $denda,
+                'approved_by' => auth()->user->id
             ]);
         } else {
             $pengajuan->update([
                 'status_peminjaman' => 'Dikembalikan',
-                'tanggal_pengembalian' => date('Y-m-d')
+                'tanggal_pengembalian_aktual' => $tanggalKembali,
+                'denda' => 0,
+                'approved_by' => auth()->user->id
             ]);
         }
+
+        // Restore book stock
+        $book = Buku::find($pengajuan->buku_id);
+        $book->update([
+            'stok' => $book->stok + $pengajuan->stok
+        ]);
 
         return redirect()->route('kelola-kembali.index')->with('success');
     }

@@ -12,8 +12,7 @@ class PinjamController extends Controller
     {
         $user = $request->user();
         $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->Where('status_peminjaman', '!=', 'Terlambat')->where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(6);
-        $returns = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->where('user_id', $user->id)->get();
-        return view('peminjaman.index', compact('peminjamans', 'returns'));
+        return view('peminjaman.index', compact('peminjamans'));
     }
 
     public function store(Request $request)
@@ -21,8 +20,32 @@ class PinjamController extends Controller
         $user = $request->user();
         $validated = $request->validate([
             'buku_id' => 'required|exists:bukus,id',
-            'stok' => 'required|integer|max:10',
-            'tanggal_pengembalian' => 'required|date',
+            'stok' => 'required|integer|min:1|max:10',
+            'tanggal_pengembalian' => 'required|date|after:today',
+        ]);
+
+        // Check book availability
+        $book = Buku::find($validated['buku_id']);
+        if ($book->stok <= 0) {
+            return redirect()->back()->with('error', 'Buku tidak tersedia');
+        }
+
+        if ($book->stok < $validated['stok']) {
+            return redirect()->back()->with('error', 'Stok buku tidak mencukupi untuk jumlah yang diminta');
+        }
+
+        // Check if user has too many pending loans
+        $pendingCount = Peminjaman::where('user_id', $user->id)
+            ->whereIn('status_peminjaman', ['Pending', 'Dipinjam', 'Pending Dikembalikan'])
+            ->count();
+
+        if ($pendingCount >= 5) {
+            return redirect()->back()->with('error', 'Anda sudah memiliki terlalu banyak peminjaman yang aktif');
+        }
+
+        // Deduct stock immediately when request is created
+        $book->update([
+            'stok' => $book->stok - $validated['stok']
         ]);
 
         $peminjaman = Peminjaman::create([
@@ -34,14 +57,7 @@ class PinjamController extends Controller
             'status_peminjaman' => 'Pending'
         ]);
 
-        $book = Buku::with('peminjaman')->find($peminjaman->buku_id);
-        $stock = $book->stok;
-        $newStock = $stock - $peminjaman->stok;
-        $book->update([
-            'stok' => $newStock
-        ]);
-
-        return redirect()->route('peminjaman.index')->with('success');
+        return redirect()->route('peminjaman.index')->with('success', 'Pengajuan peminjaman berhasil dibuat');
     }
 
     public function show($id)

@@ -10,6 +10,7 @@ use App\Http\Controllers\KelolaKembaliController;
 use App\Http\Controllers\KelolaPinjamController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UlasanController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
@@ -86,3 +87,11 @@ Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliContr
 Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth');
 Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth');
 Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth');
+
+// Reports (Laporan)
+Route::prefix('/reports')->middleware('auth')->group(function () {
+    Route::get('/dashboard', [ReportController::class, 'dashboardReport'])->name('reports.dashboard');
+    Route::get('/buku', [ReportController::class, 'bukuReport'])->name('reports.buku');
+    Route::get('/peminjaman', [ReportController::class, 'peminjamanReport'])->name('reports.peminjaman');
+    Route::get('/pengembalian', [ReportController::class, 'pengembalianReport'])->name('reports.pengembalian');
+});

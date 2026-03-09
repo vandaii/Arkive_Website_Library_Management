@@ -39,7 +39,24 @@
                     </form>
                 @endif
             </div>
-            <h3 class="font-medium bg-green-500 text-white py-1 px-2 rounded-lg absolute right-0 top-0">
+            <h3 class="font-medium text-white py-1 px-2 rounded-lg absolute right-0 top-0"
+                style="background-color: 
+                                @switch($detail->status_peminjaman)
+                                    @case('Pending')
+                                        #f1c21b
+                                    @break
+                                    @case('Dipinjam')
+                                        #0043ce
+                                    @break
+                                    @case('Pending Dikembalikan')
+                                        #ff832b
+                                    @break
+                                    @case('Dikembalikan')
+                                        #24a148
+                                    @break
+                                    @default
+                                        #666666
+                                @endswitch">
                 {{ $detail->status_peminjaman }}
             </h3>
 
