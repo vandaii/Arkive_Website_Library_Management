@@ -29,12 +29,13 @@ class KelolaKembaliController extends Controller
         return view('admin.kelola-kembali.pengajuan-kembali', compact('pengajuans'));
     }
 
-    public function setujuKembali($id)
+    public function setujuKembali(Request $request, $id)
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
         $deadline = Carbon::parse($pengajuan->tanggal_pengembalian);
         $tanggalKembali = date('Y-m-d');
         $returnDate = Carbon::parse($tanggalKembali);
+        $user = $request->user();
 
         // Calculate denda if late
         $denda = 0;
@@ -46,14 +47,14 @@ class KelolaKembaliController extends Controller
                 'status_peminjaman' => 'Terlambat',
                 'tanggal_pengembalian_aktual' => $tanggalKembali,
                 'denda' => $denda,
-                'approved_by' => auth()->user->id
+                'approved_by' => $user->id
             ]);
         } else {
             $pengajuan->update([
                 'status_peminjaman' => 'Dikembalikan',
                 'tanggal_pengembalian_aktual' => $tanggalKembali,
                 'denda' => 0,
-                'approved_by' => auth()->user->id
+                'approved_by' => $user->id
             ]);
         }
 
@@ -66,9 +67,10 @@ class KelolaKembaliController extends Controller
         return redirect()->route('kelola-kembali.index')->with('success');
     }
 
-    public function tolakKembali($id)
+    public function tolakKembali(Request $request, $id)
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
+        $user = $request->user();
         $pengajuan->update([
             'status_peminjaman' => 'Ditolak'
         ]);
