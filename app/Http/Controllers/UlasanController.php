@@ -18,10 +18,11 @@ class UlasanController extends Controller
         ]);
 
         $data['user_id'] = Auth::id();
+        $bukuId = $data['buku_id'];
 
         Ulasan::create($data);
 
-        return redirect()->back()->with('success', 'Ulasan berhasil ditambahkan');
+        return redirect()->route('book.show', $bukuId)->with('success', 'Ulasan berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)

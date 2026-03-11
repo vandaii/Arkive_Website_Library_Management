@@ -222,7 +222,7 @@
             Dicetak pada: {{ now('Asia/Jakarta')->format('d/m/Y H:i') }}
         </div>
 
-        <button class="print-button" onclick="window.print()">📄 Cetak Laporan</button>
+        <a class="print-button" style="text-decoration: none;" href="{{ route('reports.cetak.pengembalian', ['start_date' => $startDate, 'end_date' => $endDate]) }}" target="_blank">📄 Cetak Laporan</a>
         <a class="print-button" style="text-decoration: none;" href="{{ route('admin.index') }}">Kembali</a>
 
         <div class="header">

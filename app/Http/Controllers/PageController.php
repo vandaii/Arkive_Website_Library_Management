@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Peminjaman;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Buku::with('kategoriBukuRelasi', 'ulasan')->get();
+        $query = Buku::with('kategoriBukuRelasi', 'ulasan');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%')
+                    ->orWhere('penulis', 'like', '%' . $search . '%')
+                    ->orWhere('penerbit', 'like', '%' . $search . '%');
+            });
+        }
+
+        $books = $query->get();
         return view('index', compact('books'));
     }
 
@@ -18,6 +32,15 @@ class PageController extends Controller
             ->with(['kategoriBukuRelasi' => function ($q) {
                 $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
             }])->find($id);
-        return view('book.show', compact('book'));
+
+        $canReview = false;
+        if (Auth::check()) {
+            $canReview = Peminjaman::where('user_id', Auth::id())
+                ->where('buku_id', $id)
+                ->whereIn('status_peminjaman', ['Dikembalikan', 'Terlambat'])
+                ->exists();
+        }
+
+        return view('book.show', compact('book', 'canReview'));
     }
 }

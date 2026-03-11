@@ -68,6 +68,8 @@ Route::post('/peminjaman/tambah', [PinjamController::class, 'store'])->name('pem
 Route::get('/peminjaman/detail/{id}', [PinjamController::class, 'show'])->name('peminjaman.show');
 Route::patch('/peminjaman/detail/{id}/pengembalian', [PinjamController::class, 'kembalikanBuku'])->name('peminjaman.kembalikanBuku');
 Route::get('/peminjaman/riwayat-peminjaman', [PinjamController::class, 'history'])->name('peminjaman.riwayat-peminjaman')->middleware('auth');
+Route::get('/peminjaman/bukti-peminjaman/{id}', [PinjamController::class, 'buktiPeminjaman'])->name('peminjaman.bukti-peminjaman')->middleware('auth');
+Route::get('/peminjaman/bukti-pengembalian/{id}', [PinjamController::class, 'buktiPengembalian'])->name('peminjaman.bukti-pengembalian')->middleware('auth');
 
 // Kelola Pinjam
 Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');
@@ -94,4 +96,11 @@ Route::prefix('/reports')->middleware('auth')->group(function () {
     Route::get('/buku', [ReportController::class, 'bukuReport'])->name('reports.buku');
     Route::get('/peminjaman', [ReportController::class, 'peminjamanReport'])->name('reports.peminjaman');
     Route::get('/pengembalian', [ReportController::class, 'pengembalianReport'])->name('reports.pengembalian');
+    Route::get('/user', [ReportController::class, 'userReport'])->name('reports.user');
+
+    // PDF Generation Routes
+    Route::get('/cetak/buku', [ReportController::class, 'cetakBuku'])->name('reports.cetak.buku');
+    Route::get('/cetak/peminjaman', [ReportController::class, 'cetakPeminjaman'])->name('reports.cetak.peminjaman');
+    Route::get('/cetak/pengembalian', [ReportController::class, 'cetakPengembalian'])->name('reports.cetak.pengembalian');
+    Route::get('/cetak/user', [ReportController::class, 'cetakUser'])->name('reports.cetak.user');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Peminjaman;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class PinjamController extends Controller
@@ -20,38 +21,30 @@ class PinjamController extends Controller
         $user = $request->user();
         $validated = $request->validate([
             'buku_id' => 'required|exists:bukus,id',
-            'stok' => 'required|integer|min:1|max:10',
-            'tanggal_pengembalian' => 'required|date|after:today',
+            // 'stok' => 'required|integer|min:1|max:10',
+            'tanggal_pengembalian' => 'required|date',
         ]);
 
         // Check book availability
         $book = Buku::find($validated['buku_id']);
         if ($book->stok <= 0) {
+            echo ('er buku gaada');
             return redirect()->back()->with('error', 'Buku tidak tersedia');
         }
 
-        if ($book->stok < $validated['stok']) {
-            return redirect()->back()->with('error', 'Stok buku tidak mencukupi untuk jumlah yang diminta');
-        }
+        // if ($book->stok < $validated['stok']) {
+        //     echo ('er stok kurang gaada');
+        //     return redirect()->back()->with('error', 'Stok buku tidak mencukupi untuk jumlah yang diminta');
+        // }
 
-        // Check if user has too many pending loans
-        $pendingCount = Peminjaman::where('user_id', $user->id)
-            ->whereIn('status_peminjaman', ['Pending', 'Dipinjam', 'Pending Dikembalikan'])
-            ->count();
-
-        if ($pendingCount >= 5) {
-            return redirect()->back()->with('error', 'Anda sudah memiliki terlalu banyak peminjaman yang aktif');
-        }
-
-        // Deduct stock immediately when request is created
         $book->update([
-            'stok' => $book->stok - $validated['stok']
+            'stok' => $book->stok - 1
         ]);
 
         $peminjaman = Peminjaman::create([
             'user_id' => $user->id,
             'buku_id' => $validated['buku_id'],
-            'stok' => $validated['stok'],
+            'stok' => 1,
             'tanggal_peminjaman' => date('Y-m-d'),
             'tanggal_pengembalian' => $validated['tanggal_pengembalian'],
             'status_peminjaman' => 'Pending'
@@ -80,5 +73,19 @@ class PinjamController extends Controller
             'status_peminjaman' => 'Pending Dikembalikan'
         ]);
         return redirect()->route('peminjaman.index')->with('success');
+    }
+
+    public function buktiPeminjaman($id)
+    {
+        $peminjaman = Peminjaman::with('buku', 'user', 'approver')->findOrFail($id);
+        $pdf = Pdf::loadView('peminjaman.bukti-peminjaman-pdf', compact('peminjaman'));
+        return $pdf->stream('bukti-peminjaman-' . $peminjaman->id . '.pdf');
+    }
+
+    public function buktiPengembalian($id)
+    {
+        $peminjaman = Peminjaman::with('buku', 'user', 'approver')->findOrFail($id);
+        $pdf = Pdf::loadView('peminjaman.bukti-pengembalian-pdf', compact('peminjaman'));
+        return $pdf->stream('bukti-pengembalian-' . $peminjaman->id . '.pdf');
     }
 }

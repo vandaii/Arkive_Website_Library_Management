@@ -9,9 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class EmployeeManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = DB::table('users')->where('isActive', '!=', false)->where('role', '!=', 'peminjam')->get();
+        $query = User::where('isActive', '!=', false)->where('role', '!=', 'peminjam');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', '%' . $search . '%')
+                  ->orWhere('username', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        $users = $query->get();
         return view('admin.employee-management.index', compact('users'), ['title' => 'Kelola User']);
     }
 

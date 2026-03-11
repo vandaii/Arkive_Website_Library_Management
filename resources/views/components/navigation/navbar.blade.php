@@ -12,7 +12,7 @@
                             <h1 class="mt-1">Perpustakaan Saya</h1>
                         </a>
                     </div>
-                    <form action="" class="relative w-full">
+                    <form action="{{ route('index') }}" method="GET" class="relative w-full">
                         <x-search-input></x-search-input>
                     </form>
                     <a class="mt-1" href="">Kategori</a>

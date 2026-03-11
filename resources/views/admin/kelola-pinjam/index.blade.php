@@ -7,10 +7,12 @@
         </div>
 
         <div class="flex justify-between items-center mb-5">
-            <form class="relative w-1/2" action="">
+            <form class="relative w-1/2" action="{{ route('kelola-pinjam.index') }}" method="GET">
                 <x-search-input></x-search-input>
             </form>
             <div class="relative">
+                <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="{{ route('reports.peminjaman') }}">Lihat
+                    Laporan</a>
                 <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg"
                     href="{{ route('kelola-pinjam.pengajuan-pinjaman') }}">Pengajuan
                     Pinjaman</a>

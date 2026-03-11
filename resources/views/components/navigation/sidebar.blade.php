@@ -30,7 +30,7 @@
                 request()->routeIs('kelola-kembali.pengajuan-kembali')">Data
                 Kembali</x-sidebar-link>
 
-            <div>
+            {{-- <div>
                 <button onclick="toggleReportMenu()" class="w-full flex items-center pl-3 justify-between rounded-lg">
                     <span class="text-gray-500">Laporan</span>
                     <span id="reportMenuIcon"><i data-lucide="chevron-down" class="size-4"></i></span>
@@ -38,12 +38,13 @@
                 <div id="reportMenu" class="hidden pl-4">
                     <x-sidebar-link href="{{ route('reports.dashboard') }}" :active="request()->routeIs('reports.dashboard')">Dashboard</x-sidebar-link>
                     <x-sidebar-link href="{{ route('reports.buku') }}" :active="request()->routeIs('reports.buku')">Data Buku</x-sidebar-link>
+                    <x-sidebar-link href="{{ route('reports.user') }}" :active="request()->routeIs('reports.user')">Data Peminjam</x-sidebar-link>
                     <x-sidebar-link href="{{ route('reports.peminjaman') }}" :active="request()->routeIs('reports.peminjaman')">Data
                         Peminjaman</x-sidebar-link>
                     <x-sidebar-link href="{{ route('reports.pengembalian') }}" :active="request()->routeIs('reports.pengembalian')">Data
                         Pengembalian</x-sidebar-link>
                 </div>
-            </div>
+            </div> --}}
         </li>
     </ul>
 </div>

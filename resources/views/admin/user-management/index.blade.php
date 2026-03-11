@@ -7,9 +7,11 @@
         </div>
 
         <div class="flex justify-between items-center mb-5">
-            <form class="relative w-1/2" action="">
+            <form class="relative w-1/2" action="{{ route('user-management.index') }}" method="GET">
                 <x-search-input></x-search-input>
             </form>
+            <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="{{ route('reports.user') }}">Lihat
+                Laporan</a>
             {{-- <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg" href="{{ route('user-management.create') }}">Tambah
                 User</a> --}}
         </div>

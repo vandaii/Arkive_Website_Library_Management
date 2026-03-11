@@ -9,9 +9,23 @@ use Illuminate\Queue\RedisQueue;
 
 class KelolaPinjamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjamans = Peminjaman::with('buku')->where('status_peminjaman', '!=', 'Pending')->orderBy('id', 'DESC')->paginate(10);
+        $query = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Pending');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('buku', function ($bq) use ($search) {
+                    $bq->where('judul', 'like', '%' . $search . '%');
+                })->orWhereHas('user', function ($uq) use ($search) {
+                    $uq->where('nama_lengkap', 'like', '%' . $search . '%')
+                       ->orWhere('username', 'like', '%' . $search . '%');
+                });
+            });
+        }
+
+        $peminjamans = $query->orderBy('id', 'DESC')->paginate(10);
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending')->get()->count();
         return view('admin.kelola-pinjam.index', compact('peminjamans', 'counts'), ['title' => 'Data Peminjaman']);
     }

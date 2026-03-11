@@ -10,9 +10,28 @@ use Illuminate\Http\Request;
 
 class KelolaKembaliController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pengembalians = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->orWhere('status_peminjaman', 'Ditolak')->orderBy('id', 'DESC')->paginate(5);
+        $query = Peminjaman::with('buku', 'user')
+            ->where(function ($q) {
+                $q->where('status_peminjaman', 'Dikembalikan')
+                  ->orWhere('status_peminjaman', 'Terlambat')
+                  ->orWhere('status_peminjaman', 'Ditolak');
+            });
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('buku', function ($bq) use ($search) {
+                    $bq->where('judul', 'like', '%' . $search . '%');
+                })->orWhereHas('user', function ($uq) use ($search) {
+                    $uq->where('nama_lengkap', 'like', '%' . $search . '%')
+                       ->orWhere('username', 'like', '%' . $search . '%');
+                });
+            });
+        }
+
+        $pengembalians = $query->orderBy('id', 'DESC')->paginate(5);
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending Dikembalikan')->get()->count();
         return view('admin.kelola-kembali.index', compact('pengembalians', 'counts'), ['title' => 'Data Kembali']);
     }

@@ -10,9 +10,20 @@ use Illuminate\Support\Facades\File;
 
 class BukuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')->get();
+        $query = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%')
+                  ->orWhere('penulis', 'like', '%' . $search . '%')
+                  ->orWhere('penerbit', 'like', '%' . $search . '%');
+            });
+        }
+
+        $books = $query->get();
         return view('admin.data-buku.index', compact('books'), ['title' => 'Data Buku']);
     }
 
