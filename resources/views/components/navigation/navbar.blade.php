@@ -6,8 +6,9 @@
     <nav class="container mx-auto px-4 py-3 bg-white">
         <ul class="flex items-center justify-between">
             <li class="text-xl font-medium">
-                <a href="{{ route('index') }}">
-                    <h1>Arkive</h1>
+                <a class="flex items-center gap-x-2" href="{{ route('index') }}">
+                    <img class="h-10" src="{{ asset('img/logo-arkive.png') }}" alt="logo arkive">
+                    <h1 class="text-(--logo-color)">Arkive</h1>
                 </a>
             </li>
             <li>

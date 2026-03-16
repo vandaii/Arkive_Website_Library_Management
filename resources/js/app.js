@@ -8,6 +8,8 @@ import {
     Lock,
     ArrowRight,
     MoveLeft,
+    Instagram,
+    Facebook,
 } from "lucide";
 
 createIcons({
@@ -18,5 +20,7 @@ createIcons({
         Lock,
         ArrowRight,
         MoveLeft,
+        Instagram,
+        Facebook,
     },
 });

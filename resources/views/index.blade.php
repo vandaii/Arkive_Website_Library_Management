@@ -15,7 +15,7 @@
     </header>
 
     <main class="px-5">
-        <section class="grid grid-cols-2 px-5 mb-20 h-screen">
+        <section class="grid grid-cols-2 px-5 mb-30 h-screen">
             <div class="flex flex-col justify-center py-20 pr-16 z-10">
                 <h1 class="mb-6 tracking-tight text-7xl font-medium capitalize">Di sinilah setiap <span
                         class="text-(--second-color)">cerita</span> menemukan
@@ -30,6 +30,21 @@
                 </div>
             </div>
             <div class="h-full bg-[url(/public/img/bg-landing-perpus.jpg)] bg-cover rounded-l-md">
+            </div>
+        </section>
+        <section class="grid grid-cols-2 h-screen mt-44 gap-x-5 px-5">
+            <div class="grid grid-cols-5 grid-rows-4 gap-1 h-full">
+                <div class="col-span-2 row-span-2 bg-[url(/public/img/book1.jpg)] bg-cover rounded-md"></div>
+                <div class="col-span-3 row-span-2 bg-[url(/public/img/book3.jpg)] bg-cover rounded-md"></div>
+                <div class="col-span-3 row-span-2 bg-[url(/public/img/book4.jpg)] bg-cover rounded-md"></div>
+                <div class="col-span-2 row-span-2 bg-[url(/public/img/book2.jpg)] bg-cover rounded-md"></div>
+            </div>
+            <div class="h-full flex flex-col max-w-10/12 justify-center ml-10">
+                <h1 class="text-6xl font-medium">Temukan Buku yang <span class="text-(--second-color)">Mengubah
+                        Cara</span> Kamu Melihat Dunia.</h1>
+                <p class="font-medium text-base/relaxed mt-10">Dari fiksi klasik hingga sains populer — koleksi Arkive
+                    dikurasi dengan cermat untuk setiap jenis
+                    pembaca. Pinjam kapan saja, kembalikan sesukamu.</p>
             </div>
         </section>
         <section>
@@ -65,6 +80,26 @@
             </div>
         </section>
     </main>
+    <footer>
+        <div class="bg-(--primary-color) flex justify-between items-center py-5 px-5">
+            <div class="flex items-center gap-x-2">
+                <img class="max-h-15" src="{{ asset('img/logo-arkive.png') }}" alt="logo arkive">
+                <p class="text-2xl font-medium text-(--logo-color)">Arkive</p>
+            </div>
+            <p class="text-(--third-color) text-sm">© 2023 Arkive. All Rights Reserved.</p>
+            <div class="flex gap-2 text-(--third-color)">
+                <a class="hover:text-(--second-color) transition-all duration-300" href="">
+                    <i class="stroke-2" data-lucide="instagram"></i>
+                </a>
+                <a class="hover:text-(--second-color) transition-all duration-300" href="">
+                    <i data-lucide="facebook"></i>
+                </a>
+                <a class="hover:text-(--second-color) transition-all duration-300" href="">
+                    <i data-lucide="mail"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
