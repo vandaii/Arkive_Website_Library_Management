@@ -10,6 +10,7 @@ import {
     MoveLeft,
     Instagram,
     Facebook,
+    Search
 } from "lucide";
 
 createIcons({
@@ -22,5 +23,6 @@ createIcons({
         MoveLeft,
         Instagram,
         Facebook,
+        Search
     },
 });

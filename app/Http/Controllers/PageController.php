@@ -20,4 +20,9 @@ class PageController extends Controller
             }])->find($id);
         return view('book.show', compact('book'));
     }
+
+    public function userDashboard()
+    {
+        return view('user.index');
+    }
 }

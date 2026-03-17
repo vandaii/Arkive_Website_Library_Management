@@ -34,7 +34,7 @@ class AuthenticationController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('index')->with('success', 'Selamat datang di Arkivr');
+        return redirect()->route('user.index')->with('success', 'Selamat datang di Arkivr');
     }
 
     public function loginPage()
@@ -52,7 +52,7 @@ class AuthenticationController extends Controller
         if (Auth::attempt($credentials)) {
             if (Auth::user()->isActive == true) {
                 $request->session()->regenerate();
-                return redirect()->intended(route('index'))->with('success', 'Login berhasil');
+                return redirect()->intended(route('user.index'))->with('success', 'Login berhasil');
             }
 
             return back();
