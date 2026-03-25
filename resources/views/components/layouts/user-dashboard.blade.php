@@ -9,18 +9,22 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-(--primary-color)">
+<body class="bg-gray-100">
     <header class="sticky top-0 z-50">
         <x-navigation.navbar></x-navigation.navbar>
     </header>
 
-    <aside class="fixed top-10 left-0">
+    <aside class="fixed top-13 left-0">
         <x-navigation.sidebar></x-navigation.sidebar>
     </aside>
 
-    <main class="px-30 mt-5">
+    <main class="px-5 py-5 ml-55">
         {{ $slot }}
     </main>
+
+    <footer class="sticky z-50">
+        <x-navigation.footer></x-navigation.footer>
+    </footer>
 </body>
 
 </html>

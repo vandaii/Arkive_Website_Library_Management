@@ -1,6 +1,6 @@
 <nav class="container mx-auto px-4 py-3 bg-white">
     <ul class="flex items-center justify-between">
-        <li class="mr-40">
+        <li class="mr-36">
             <a class="flex items-center gap-x-2 text-xl font-medium" href="{{ route('index') }}">
                 <img class="h-10" src="{{ asset('img/logo-arkive.png') }}" alt="logo arkive">
                 <h1 class="text-(--logo-color)">Arkive</h1>
@@ -16,7 +16,7 @@
                     <x-search-input></x-search-input>
                 </form>
             </li>
-        @else
+        @elseif (!Route::is('index'))
             <li class="w-full">
                 <h1 class="capitalize font-medium">{{ __('dashboard ' . Auth::user()->role) }}</h1>
             </li>

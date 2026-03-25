@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-(--primary-color)">
+<body class="bg-gray-100">
     <header class="sticky top-0 z-50">
         <x-navigation.navbar></x-navigation.navbar>
     </header>
@@ -48,7 +48,7 @@
             </div>
         </section>
         <section class="mt-30 px-5">
-            <div class="flex justify-between gap-6 mb-10">
+            <div class="flex justify-between items-center gap-6 mb-10">
                 <h1 class="text-3xl/tight font-medium">Buku Unggulan</h1>
                 <a class="flex items-center gap-x-1 border-2 px-4 py-2 rounded-full font-medium" href="">Lihat
                     Semua Buku <i class="size-4" data-lucide="arrow-right"></i></a>
@@ -87,24 +87,7 @@
         </section>
     </main>
     <footer>
-        <div class="bg-(--primary-color) flex justify-between items-center py-5 px-5">
-            <div class="flex items-center gap-x-2">
-                <img class="max-h-15" src="{{ asset('img/logo-arkive.png') }}" alt="logo arkive">
-                <p class="text-2xl font-medium text-(--logo-color)">Arkive</p>
-            </div>
-            <p class="text-(--third-color) text-sm">© 2023 Arkive. All Rights Reserved.</p>
-            <div class="flex gap-2 text-(--third-color)">
-                <a class="hover:text-(--second-color) transition-all duration-300" href="">
-                    <i class="stroke-2" data-lucide="instagram"></i>
-                </a>
-                <a class="hover:text-(--second-color) transition-all duration-300" href="">
-                    <i data-lucide="facebook"></i>
-                </a>
-                <a class="hover:text-(--second-color) transition-all duration-300" href="">
-                    <i data-lucide="mail"></i>
-                </a>
-            </div>
-        </div>
+        <x-navigation.footer></x-navigation.footer>
     </footer>
 </body>
 
