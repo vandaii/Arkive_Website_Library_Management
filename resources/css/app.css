@@ -18,4 +18,18 @@
     --third-color: #4a70a9;
     --fourth-color: #000000;
     --logo-color: #3b5d8d;
+    --backStar-color: #ccc;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0.5rem;
+}
+
+.back-star {
+    color: var(--backStar-color);
+}
+
+.front-star {
+    color: var(--third-color);
 }

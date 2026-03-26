@@ -1,7 +1,7 @@
 <div class="bg-white min-h-screen w-56">
     <ul>
         <li class="px-5 space-y-3 flex flex-col py-10">
-            @if (Route::is('user.index') || Route::is('peminjaman.index'))
+            @if (Route::is('user.index') || Route::is('peminjaman.index') || Route::is('book.show'))
                 <x-sidebar-link class="group flex items-center gap-x-4" href="{{ route('user.index') }}"
                     :active="request()->routeIs('user.index')"><x-span-icon :active="request()->routeIs('user.index')"><i class="size-5"
                             data-lucide="house"></i></x-span-icon>Beranda</x-sidebar-link>

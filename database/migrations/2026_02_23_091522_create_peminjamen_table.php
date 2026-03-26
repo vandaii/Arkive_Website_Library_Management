@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('buku_id');
             $table->integer('stok');
             $table->date('tanggal_peminjaman');
-            $table->date('tanggal_pengembalian');
+            $table->date('estimasi_tanggal_pengembalian');
+            $table->date('tanggal_pengembalian')->nullable();
             $table->string('status_peminjaman');
             $table->timestamps();
 

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('penulis');
             $table->string('penerbit');
             $table->integer('tahun_terbit');
+            $table->string('isbn_number');
+            $table->integer('jumlah_halaman');
+            $table->text('deskripsi')->nullable();
             $table->integer('stok');
             $table->timestamps();
         });

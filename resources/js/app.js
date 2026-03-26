@@ -13,7 +13,10 @@ import {
     Search,
     House,
     BookUp,
+    BookOpen,
     ListFilter,
+    Bookmark,
+    MessageSquare,
 } from "lucide";
 
 createIcons({
@@ -29,6 +32,9 @@ createIcons({
         Search,
         House,
         BookUp,
+        BookOpen,
         ListFilter,
+        Bookmark,
+        MessageSquare,
     },
 });
