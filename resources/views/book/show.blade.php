@@ -1,88 +1,167 @@
 <x-layouts.user-dashboard>
-    <div class="flex flex-col gap-y-15">
+    <div class="container mx-auto px-6 py-8 max-w-6xl">
         {{-- Detail Buku --}}
-        <div class="flex mt-10 gap-10">
-            <div>
-                <img class="rounded-md h-96 max-w-max" src="{{ asset('storage/' . $book->cover_buku) }}" alt="">
-            </div>
-            <div class="py-3 px-5 h-fit">
-                <div class="flex justify-between">
-                    <div>
-                        <div>
-                            <h1 class="text-2xl font-bold w-96">{{ $book->judul }}</h1>
-                            <h2 class="text-xl">{{ $book->penulis }}</h2>
-                        </div>
-                        <div>
-                            <h3 class="text-md"><span class="text-gray-600">Penerbit: </span>{{ $book->penerbit }}</h3>
-                            <h3 class="text-md"><span class="text-gray-600">Tahun Terbit:
-                                </span>{{ $book->tahun_terbit }}
-                            </h3>
-                            <h3 class="text-md"><span class="text-gray-600">Kategori:
-                                </span>{{ $book->kategoriBukuRelasi->implode('kategori.nama_kategori', ', ') }}</h3>
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="lg:col-span-1">
+                <div class="flex flex-col gap-4 rounded-2xl overflow-hidden bg-white">
+                    <img class="w-full aspect-3/4 object-cover" src="{{ asset('storage/' . $book->cover_buku) }}"
+                        alt="">
+                    <div class="p-4">
+                        @foreach ($book->kategoriBukuRelasi as $category)
+                            <div class="inline-block px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
+                                {{ $category->kategori->nama_kategori }}
+                            </div>
+                        @endforeach
+                        <div class="space-y-2 text-sm font-medium">
+                            <div class="flex justify-between">
+                                <p class="text-black/60">Jumlah Halaman:</p>
+                                <p class="text-black">12</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <p class="text-black/60">Penerbit:</p>
+                                <p class="text-black">{{ $book->penerbit }}</p>
+                            </div>
+                            <div class="flex justify-between border-b border-black/10 pb-1.5">
+                                <p class="text-black/60">Tahun Terbit:</p>
+                                <p class="text-black">{{ $book->tahun_terbit }}</p>
+                            </div>
+                            <div class="flex justify-between border-b border-black/10 pb-1.5">
+                                <p class="text-black/60">ISBN:</p>
+                                <p class="text-black">12</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <p class="text-black/60">Tersedia:</p>
+                                @if ($book->stok < 1)
+                                    <p class="text-black">Tidak Tersedia</p>
+                                @else
+                                    <p class="text-(--third-color)">Tersedia</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    <form action="" method="">
-                        <button type="submit"
-                            class="flex items-center cursor-pointer text-indigo-500 hover:text-indigo-600"><svg
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-4 mx-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>Tambah Favorit</button>
+                </div>
+            </div>
+            <div class="lg:col-span-2">
+                <div class="flex flex-col gap-6 rounded-2xl p-6 mb-6 bg-white">
+                    <div class="flex justify-between">
+                        <h1 class="text-black mb-2 text-2xl font-medium">{{ $book->judul }}</h1>
+                        <form class="mt-2" action="" method="post">
+                            <button><i data-lucide="bookmark"></i></button>
+                        </form>
+                    </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="size-4 opacity-60" data-lucide="user"></i>
+                        <p class="text-base text-black/60">{{ $book->penulis }}</p>
+                    </div>
+                    <div class="flex items-center gap-4 mb-6 pb-6 border-b border-black/10"></div>
+                    <div class="mb-6">
+                        <h3 class="text-black mb-4">Deskripsi</h3>
+                        <p class="text-black/80 text-base text-justify">Pride and Prejudice is a romantic novel of
+                            manners
+                            written by Jane Austen in 1813. The novel follows the character development of Elizabeth
+                            Bennet, the dynamic protagonist who learns about the repercussions of hasty judgments and
+                            comes to appreciate the difference between superficial goodness and actual goodness.</p>
+                    </div>
+                    <button onclick="showFormLoan()" id="loan-button"
+                        class="h-10 w-full flex items-center justify-center gap-x-2 bg-(--third-color) hover:bg-(--second-color) text-(--primary-color) font-medium rounded-md transition-colors duration-200"><i
+                            class="size-5" data-lucide="book-open"></i>Ajukan
+                        Peminjaman</button>
+                </div>
+                <div class="hidden flex-col gap-6 rounded-2xl p-6 mb-6 bg-white" id="form-loan">
+                    <h2 class="text-black mb-4 text-xl font-medium">Formulir Pengajuan Peminjaman</h2>
+                    <form class="space-y-4" action="">
+
+                        {{-- Nama Lengkap --}}
+                        <div>
+                            <label class="flex items-center text-sm font-medium mb-1.5" for="nama_lengkap">Nama
+                                Lengkap</label>
+                            <input
+                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                type="text" name="nama_lengkap" id="nama_lengkap" placeholder="Masukkan Nama Lengkap"
+                                value="{{ Auth::user()->nama_lengkap }}" disabled>
+                        </div>
+
+                        {{-- Email --}}
+                        <div>
+                            <label class="flex items-center text-sm font-medium mb-1.5" for="email">Email</label>
+                            <input
+                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                type="text" name="email" id="email" placeholder="email.anda@example.com"
+                                value="{{ Auth::user()->email }}" disabled>
+                        </div>
+
+                        {{-- Phone Number --}}
+                        <div>
+                            <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">Email</label>
+                            <input
+                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                type="text" name="phone_number" id="phone_number" placeholder="081211221122"
+                                value="{{ Auth::user()->phone_number }}" required>
+                        </div>
+
+                        {{-- Tanggal Pengembalian --}}
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="flex items-center text-sm font-medium mb-1.5"
+                                    for="tanggal_peminjaman">Tanggal Peminjaman</label>
+                                <input
+                                    class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                    type="date" name="tanggal_peminjaman" id="estimasi_tanggal_pengembalian"
+                                    required>
+                            </div>
+                            <div>
+                                <label class="flex items-center text-sm font-medium mb-1.5"
+                                    for="estimasi_tanggal_pengembalian">Tanggal Pengembalian</label>
+                                <input
+                                    class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                    type="date" name="estimasi_tanggal_pengembalian"
+                                    id="estimasi_tanggal_pengembalian" required>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button onclick="hideFormLoan()"
+                                class="flex items-center justify-center w-full h-9 px-4 py-2 outline-1 outline-(--third-color) text-(--third-color) font-medium rounded-md hover:outline-(--second-color) hover:text-(--second-color) transition-all duration-200"
+                                type="button">Batal</button>
+                            <button
+                                class="flex items-center justify-center w-full h-9 px-4 py-2 bg-(--third-color) text-(--primary-color) font-medium rounded-md hover:bg-(--second-color) transition-all duration-200"
+                                type="submit">Pinjam</button>
+                        </div>
                     </form>
                 </div>
             </div>
-            <div class="border border-black/30 rounded-md py-3 px-5 h-fit max-w-max">
-                <form action="{{ route('peminjaman.store') }}" method="POST">
-                    @csrf
-                    <div class="flex gap-x-2">
-                        <input
-                            class="w-25 outline-1 outline-black/30 focus:outline-1 focus:outline-black/70 p-1 rounded-sm"
-                            min="0" max="10" type="number" name="stok" id="stok" placeholder="0">
-                        <p>Stok:
-                            {{ $book->stok < 1 ? 'Stok Buku Habis' : $book->stok }}
-                        </p>
-                    </div>
-                    <div class="flex items-center py-2 mt-3">
-                        <label for="">Tanggal Pengembalian</label>
-                        <input class="ml-2 py-1 px-4 border-l border-indigo-500 outline-none" type="date"
-                            name="tanggal_pengembalian" id="tanggal_pengembalian">
-                    </div>
-
-                    <input hidden class="ml-2 py-1 px-4 border-l border-indigo-500 outline-none" type="text"
-                        name="buku_id" id="buku_id" value="{{ $book->id }}">
-
-                    <button class="mt-5 px-4 py-3 w-full bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
-                        type="submit">Pinjam
-                        Buku</button>
-                </form>
-            </div>
-        </div>
+        </section>
 
         {{-- Ulasan --}}
-        <div class="mt-8">
-            <h2 class="text-xl font-semibold">Ulasan</h2>
+        <section class="flex flex-col gap-6 rounded-xl p-8 bg-white">
+            <h2 class="flex items-center text-xl font-medium gap-x-4"><i class="size-5 stroke-(--third-color)"
+                    data-lucide="message-square"></i>Ulasan
+                Pembaca</h2>
 
             {{-- Overall rating --}}
-            <div class="flex items-center gap-x-3 mt-3">
-                @php $avg = $book->averageRating(); @endphp
-                <div class="flex items-center">
-                    @for ($i = 1; $i <= 5; $i++)
-                        @if ($i <= round($avg))
-                            <svg class="w-6 h-6 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
-                            </svg>
-                        @else
-                            <svg class="w-6 h-6 text-gray-300" viewBox="0 0 20 20" fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
-                            </svg>
-                        @endif
-                    @endfor
+            <div class="flex gap-6 p-5 rounded-2xl mb-8">
+                @php
+                    $avg = $book->averageRating();
+                    $starRating = ($avg / 5) * 100;
+                @endphp
+                <div>
+                    <div class="flex flex-col">
+                        <h1 class="text-5xl font-medium mb-1">{{ $avg }}</h1>
+                        <div class="w-20">
+                            <div class="overflow-hidden" style="width: {{ $starRating }}%">
+                                <div class="w-34.25 flex">
+                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">100</div>
+                    </div>
                 </div>
-                <div class="text-sm text-gray-600">{{ $avg }} dari 5</div>
+                <div></div>
             </div>
 
             {{-- Flash messages --}}
@@ -92,36 +171,33 @@
 
             {{-- Review form (placed below overall rating) --}}
             <div class="mt-4 p-4 bg-white border border-gray-200 rounded-sm max-w-2xl">
-                @auth
-                    <form action="{{ route('ulasan.store') }}" method="POST" id="create_review_form">
-                        @csrf
-                        <input type="hidden" name="buku_id" value="{{ $book->id }}">
-                        <input type="hidden" name="rating" id="rating_input" value="5">
-                        <div class="flex items-center gap-x-3">
-                            <label class="font-medium">Beri Rating</label>
-                            <div id="star_container" class="flex items-center">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <svg data-value="{{ $i }}"
-                                        class="create-star cursor-pointer w-6 h-6 text-yellow-400" viewBox="0 0 20 20"
-                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
-                                    </svg>
-                                @endfor
-                            </div>
+
+                <form action="{{ route('ulasan.store') }}" method="POST" id="create_review_form">
+                    @csrf
+                    <input type="hidden" name="buku_id" value="{{ $book->id }}">
+                    <input type="hidden" name="rating" id="rating_input" value="5">
+                    <div class="flex items-center gap-x-3">
+                        <label class="font-medium">Beri Rating</label>
+                        <div id="star_container" class="flex items-center">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg data-value="{{ $i }}"
+                                    class="create-star cursor-pointer w-6 h-6 text-yellow-400" viewBox="0 0 20 20"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.167c.969 0 1.371 1.24.588 1.81l-3.37 2.449a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.538 1.118L10 14.347l-3.37 2.449c-.783.57-1.838-.196-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.644 9.393c-.783-.57-.38-1.81.588-1.81h4.167a1 1 0 00.95-.69L9.049 2.927z" />
+                                </svg>
+                            @endfor
                         </div>
-                        <div class="mt-3">
-                            <textarea name="ulasan" id="ulasan" rows="3" class="w-full mt-2 p-2 border rounded"
-                                placeholder="Tulis ulasan Anda..." required></textarea>
-                        </div>
-                        <div class="mt-3 flex gap-x-2">
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Kirim Ulasan</button>
-                        </div>
-                    </form>
-                @else
-                    <div class="text-sm">Silakan <a href="{{ route('auth.login') }}" class="text-indigo-600">login</a>
-                        untuk menulis ulasan.</div>
-                @endauth
+                    </div>
+                    <div class="mt-3">
+                        <textarea name="ulasan" id="ulasan" rows="3" class="w-full mt-2 p-2 border rounded"
+                            placeholder="Tulis ulasan Anda..." required></textarea>
+                    </div>
+                    <div class="mt-3 flex gap-x-2">
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Kirim
+                            Ulasan</button>
+                    </div>
+                </form>
             </div>
 
             {{-- Review list (compact cards) --}}
@@ -159,7 +235,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-2 flex items-center gap-x-2">
+                        <div class="mt-2 flex items-center gap-x-2" id="jj_{{ $u->id }}">
                             <div class="flex items-center">
                                 @for ($i = 1; $i <= 5; $i++)
                                     @if ($i <= $u->rating)
@@ -191,7 +267,7 @@
                                         value="{{ $u->rating }}">
                                     <div class="flex items-center gap-x-3">
                                         <label class="font-medium">Rating</label>
-                                        <div class="edit-star-container" data-id="{{ $u->id }}">
+                                        <div class="edit-star-container flex" data-id="{{ $u->id }}">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <svg data-value="{{ $i }}"
                                                     class="edit-star cursor-pointer w-5 h-5 {{ $i <= $u->rating ? 'text-yellow-400' : 'text-gray-300' }}"
@@ -218,7 +294,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        </section>
     </div>
 </x-layouts.user-dashboard>
 
@@ -267,9 +343,11 @@
                 const id = this.dataset.id;
                 const editFormWrap = document.getElementById('edit_form_' + id);
                 const reviewText = document.getElementById('review_text_' + id);
+                const starTop = document.getElementById('jj_' + id);
                 if (!editFormWrap || !reviewText) return;
                 // hide existing review text and show form
                 reviewText.classList.add('hidden');
+                starTop.classList.add('hidden');
                 editFormWrap.classList.remove('hidden');
                 // close dropdown
                 const dropdown = document.querySelector('.actions-dropdown[data-id="' + id + '"]');
@@ -313,4 +391,18 @@
             }));
         });
     })();
+
+    function showFormLoan() {
+        const formLoan = document.getElementById("form-loan");
+        const loanButton = document.getElementById("loan-button");
+        formLoan.classList.replace("hidden", "flex");
+        loanButton.classList.replace("flex", "hidden");
+    }
+
+    function hideFormLoan() {
+        const formLoan = document.getElementById("form-loan");
+        const loanButton = document.getElementById("loan-button");
+        formLoan.classList.replace("flex", "hidden");
+        loanButton.classList.replace("hidden", "flex");
+    }
 </script>

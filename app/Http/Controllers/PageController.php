@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Kategori;
 
 class PageController extends Controller
 {
@@ -19,5 +20,12 @@ class PageController extends Controller
                 $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
             }])->find($id);
         return view('book.show', compact('book'));
+    }
+
+    public function userDashboard()
+    {
+        $books = Buku::with('kategoriBukuRelasi', 'ulasan')->get();
+        $categories = Kategori::with('kategoriBukuRelasi')->get();
+        return view('user.index', compact('books', 'categories'));
     }
 }

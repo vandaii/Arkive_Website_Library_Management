@@ -21,6 +21,7 @@ Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('auth
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
+Route::get('/dashboard/', [PageController::class, 'userDashboard'])->name('user.index');
 Route::get('/show/{id}', [PageController::class, 'show'])->name('book.show');
 
 Route::get('/admin', function () {
