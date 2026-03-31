@@ -10,6 +10,7 @@ use App\Http\Controllers\KelolaKembaliController;
 use App\Http\Controllers\KelolaPinjamController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UlasanController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
@@ -23,6 +24,11 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 Route::get('/dashboard/', [PageController::class, 'userDashboard'])->name('user.index');
 Route::get('/show/{id}', [PageController::class, 'show'])->name('book.show');
+
+// Profil Page
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::put('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update');
+Route::patch('/profil/{id}', [ProfilController::class, 'changePassword'])->name('profil.changePassword');
 
 Route::get('/admin', function () {
     return view('admin.index', ['title' => 'Dashboard Admin']);

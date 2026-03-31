@@ -24,14 +24,30 @@
         <li>
             <div class="flex items-center gap-1.5">
                 @if (Auth::check())
-                    <form action="{{ route('logout') }}" method="post">
-                        @csrf
-                        <button type="submit">Logout</button>
-                    </form>
-                    <a href="">
-                        <p class="text-lg/tight">{{ Auth::user()->username ?? 'User' }}</p>
-                        <p class="text-sm/tight hover:underline">{{ Auth::user()->email ?? 'user@example.com' }}</p>
-                    </a>
+                    <div class="group relative flex items-center gap-x-1">
+                        <a class="flex items-center gap-2" href="{{ route('profil.index') }}">
+                            @if (empty(Auth::user()->photo_profile))
+                                <img class="aspect-square w-10 rounded-full object-cover"
+                                    src="{{ asset('img/user.png') }}" alt="photo_profile">
+                            @else
+                                <img class="aspect-square w-10 rounded-full object-cover"
+                                    src="{{ asset('storage/' . Auth::user()->photo_profile) }}" alt="photo_profile">
+                            @endif
+                        </a>
+                        <i class="size-5 group-hover:rotate-180 transition-all duration-300"
+                            data-lucide="chevron-down"></i>
+                        <div
+                            class="absolute opacity-0 -left-15 invisible top-10 mt-3 w-30 flex flex-col gap-y-3 shadow-lg p-4 border border-gray-300 rounded-lg bg-white group-hover:opacity-100 group-hover:visible transition-all ease-out duration-300">
+                            <a class="text-black/80 hover:text-black" href="{{ route('profil.index') }}">Profil</a>
+                            <form action="{{ route('logout') }}" method="post">
+                                @csrf
+                                <button
+                                    class="text-red-600/80 hover:text-red-600 flex items-center gap-x-2 cursor-pointer"
+                                    type="submit"><i data-lucide="log-out"
+                                        class="text-red-600/80 hover:text-red-600  rotate-180 size-4"></i>Logout</button>
+                            </form>
+                        </div>
+                    </div>
                     <a hidden class="py-1 px-4 text-indigo-500 outline-2 outline-indigo-500 rounded-lg text-center"
                         href="{{ route('auth.register') }}">Register</a>
                     <a hidden
