@@ -10,7 +10,6 @@ class Peminjaman extends Model
         'id',
         'user_id',
         'buku_id',
-        'stok',
         'tanggal_peminjaman',
         'estimasi_tanggal_pengembalian',
         'tanggal_pengembalian',

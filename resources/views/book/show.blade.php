@@ -1,7 +1,9 @@
 <x-layouts.user-dashboard>
-    <div class="w-full mx-auto px-6 py-8">
+    <div class="container mx-auto px-6 py-8 max-w-6xl">
+        <a class="flex items-center gap-2 text-black/60 text-sm font-medium" href="{{ route('user.index') }}"><i
+                class="size-4 rotate-180" data-lucide="arrow-right"></i> Back</a>
         {{-- Detail Buku --}}
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 mt-4">
             <div class="lg:col-span-1">
                 <div class="flex flex-col gap-4 rounded-2xl overflow-hidden bg-white">
                     <img class="w-full aspect-3/4 object-cover" src="{{ asset('storage/' . $book->cover_buku) }}"
@@ -127,24 +129,19 @@
                 </div>
                 <div class="hidden flex-col gap-6 rounded-2xl p-6 mb-6 bg-white" id="form-loan">
                     <h2 class="text-black mb-4 text-xl font-medium">Formulir Pengajuan Peminjaman</h2>
-                    <form class="space-y-4" action="">
+                    <form class="space-y-4" action="{{ route('peminjaman.store') }}" method="POST">
+                        @csrf
+                        @method('POST')
 
                         {{-- ID Buku (Hidden) --}}
-                        <div hidden>
-                            <label class="flex items-center text-sm font-medium mb-1.5" for="buku_id">Nama
-                                Lengkap</label>
-                            <input
-                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                type="text" name="buku_id" id="buku_id" placeholder="Masukkan Nama Lengkap"
-                                value="{{ $book->buku_id }}" disabled>
-                        </div>
+                        <input type="hidden" name="buku_id" id="buku_id" value="{{ $book->id }}">
 
                         {{-- Nama Lengkap --}}
                         <div>
                             <label class="flex items-center text-sm font-medium mb-1.5" for="nama_lengkap">Nama
                                 Lengkap</label>
                             <input
-                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('nama_kategori') 
+                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('nama_lengkap') 
                                     input-error 
                                 @enderror"
                                 type="text" name="nama_lengkap" id="nama_lengkap" placeholder="Masukkan Nama Lengkap"
@@ -160,9 +157,16 @@
                         <div>
                             <label class="flex items-center text-sm font-medium mb-1.5" for="email">Email</label>
                             <input
-                                class="flex h-9 w-full min-w-0 outline-1 bg-black/10 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                class="flex h-9 w-full min-w-0 outline-1 bg-black/10 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('email') 
+                                    input-error 
+                                @enderror"
                                 type="text" name="email" id="email" placeholder="email.anda@example.com"
                                 value="{{ Auth::user()->email }}" disabled>
+                            @error('email')
+                                <div class="">
+                                    <span>{{ $message }}</span>
+                                </div>
+                            @enderror
                         </div>
 
                         {{-- Phone Number --}}
@@ -170,7 +174,9 @@
                             <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">No.
                                 Handphone</label>
                             <input
-                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('phone_number') 
+                                    input-error 
+                                @enderror"
                                 type="text" name="phone_number" id="phone_number" placeholder="081211221122"
                                 value="{{ Auth::user()->phone_number }}" required>
                             @error('phone_number')
@@ -187,8 +193,8 @@
                                     for="tanggal_peminjaman">Tanggal Peminjaman</label>
                                 <input
                                     class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                    type="date" name="tanggal_peminjaman" id="estimasi_tanggal_pengembalian"
-                                    required>
+                                    type="date" name="tanggal_peminjaman" id="tanggal_peminjaman"
+                                    value="{{ old('tanggal_peminjaman') }}" required>
                                 @error('tanggal_peminjaman')
                                     <div class="">
                                         <span>{{ $message }}</span>
@@ -202,7 +208,8 @@
                                 <input
                                     class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
                                     type="date" name="estimasi_tanggal_pengembalian"
-                                    id="estimasi_tanggal_pengembalian" required>
+                                    id="estimasi_tanggal_pengembalian"
+                                    value="{{ old('estimasi_tanggal_pengembalian') }}" required>
                                 @error('estimasi_tanggal_pengembalian')
                                     <div class="">
                                         <span>{{ $message }}</span>
@@ -216,8 +223,7 @@
                                 class="flex items-center justify-center w-full h-9 px-4 py-2 outline-1 outline-(--third-color) text-(--third-color) font-medium rounded-md hover:outline-(--second-color) hover:text-(--second-color) transition-all duration-200"
                                 type="button">Batal</button>
                             <button
-                                class="flex items-center justify-center w-full h-9 px-4 py-2 bg-(--third-color) text-(--primary-color) font-medium rounded-md hover:bg-(--second-color) transition-all duration-200"
-                                type="submit">Pinjam</button>
+                                class="flex items-center justify-center w-full h-9 px-4 py-2 bg-(--third-color) text-(--primary-color) font-medium rounded-md hover:bg-(--second-color) transition-all duration-200">Pinjam</button>
                         </div>
                     </form>
                 </div>

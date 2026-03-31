@@ -16,7 +16,7 @@ class PageController extends Controller
 
     public function show($id)
     {
-        $book = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')
+        $book = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'isbn_number', 'deskripsi', 'stok')
             ->with(['kategoriBukuRelasi' => function ($q) {
                 $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
             }])->find($id);
