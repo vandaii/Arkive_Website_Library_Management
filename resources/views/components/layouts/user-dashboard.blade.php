@@ -21,10 +21,6 @@
     <main class="px-5 py-5 ml-55">
         {{ $slot }}
     </main>
-
-    <footer class="sticky z-50">
-        <x-navigation.footer></x-navigation.footer>
-    </footer>
 </body>
 
 </html>

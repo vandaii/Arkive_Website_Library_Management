@@ -1,4 +1,4 @@
-<nav class="container mx-auto px-4 py-3 bg-white">
+<nav class="w-full mx-auto px-4 py-3 bg-white">
     <ul class="flex items-center justify-between">
         <li class="mr-36">
             <a class="flex items-center gap-x-2 text-xl font-medium" href="{{ route('index') }}">
@@ -7,7 +7,7 @@
             </a>
         </li>
         @if (Route::is('book.show') ||
-                Route::is('peminjaman.index') ||
+                Route::is('peminjaman.index') || 
                 Route::is('peminjaman.riwayat-peminjaman') ||
                 Route::is('peminjaman.show') ||
                 Route::is('user.index'))

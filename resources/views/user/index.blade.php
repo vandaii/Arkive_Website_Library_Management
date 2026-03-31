@@ -1,5 +1,5 @@
 <x-layouts.user-dashboard>
-    <section class="min-h-screen bg-white px-5 py-5 rounded-lg">
+    <section class="bg-white px-5 py-5 rounded-lg pb-15">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-medium">Jelajahi Buku</h1>
             <h2 class="font-medium flex items-center gap-x-2">Kategori<i class="size-4" data-lucide="list-filter"></i></h2>

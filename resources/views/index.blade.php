@@ -86,9 +86,6 @@
             </div>
         </section>
     </main>
-    <footer>
-        <x-navigation.footer></x-navigation.footer>
-    </footer>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <x-layouts.user-dashboard>
-    <div class="container mx-auto px-6 py-8 max-w-6xl">
+    <div class="w-full mx-auto px-6 py-8">
         {{-- Detail Buku --}}
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             <div class="lg:col-span-1">
