@@ -20,7 +20,7 @@
                                     input-error 
                                 @enderror" />
                     </div>
-                    @error('name')
+                    @error('nama_kategori')
                         <div class="">
                             <span>{{ $message }}</span>
                         </div>

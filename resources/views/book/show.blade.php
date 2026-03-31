@@ -27,7 +27,7 @@
                             </div>
                             <div class="flex justify-between border-b border-black/10 pb-1.5">
                                 <p class="text-black/60">ISBN:</p>
-                                <p class="text-black">12</p>
+                                <p class="text-black">{{ $book->isbn_number }}</p>
                             </div>
                             <div class="flex justify-between">
                                 <p class="text-black/60">Tersedia:</p>
@@ -53,14 +53,72 @@
                         <i class="size-4 opacity-60" data-lucide="user"></i>
                         <p class="text-base text-black/60">{{ $book->penulis }}</p>
                     </div>
-                    <div class="flex items-center gap-4 mb-6 pb-6 border-b border-black/10"></div>
+                    @php
+                        $avg = $book->averageRating();
+                        $starRating = ($avg / 5) * 100;
+                        $countTotalRating = $countRating->count();
+
+                        $count5Star = $countRating->where('rating', '==', 5)->count();
+                        if ($count5Star > 0) {
+                            $avg5Star = ($count5Star * 100) / $countTotalRating;
+                        } else {
+                            $avg5Star = 0;
+                        }
+
+                        $count4Star = $countRating->where('rating', '==', 4)->count();
+                        if ($count4Star > 0) {
+                            $avg4Star = ($count4Star * 100) / $countTotalRating;
+                        } else {
+                            $avg4Star = 0;
+                        }
+
+                        $count3Star = $countRating->where('rating', '==', 3)->count();
+                        if ($count3Star > 0) {
+                            $avg3Star = ($count3Star * 100) / $countTotalRating;
+                        } else {
+                            $avg3Star = 0;
+                        }
+
+                        $count2Star = $countRating->where('rating', '==', 2)->count();
+                        if ($count2Star > 0) {
+                            $avg2Star = ($count2Star * 100) / $countTotalRating;
+                        } else {
+                            $avg2Star = 0;
+                        }
+
+                        $count1Star = $countRating->where('rating', '==', 1)->count();
+                        if ($count1Star > 0) {
+                            $avg1Star = ($count1Star * 100) / $countTotalRating;
+                        } else {
+                            $avg1Star = 0;
+                        }
+                    @endphp
+                    <div class="flex items-center gap-4 pb-6 border-b border-black/10">
+                        <div class="flex relative justify-center">
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <div class="w-20 absolute top-0">
+                                <div class="overflow-hidden" style="width: {{ $starRating }}%">
+                                    <div class="w-34.25 flex">
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 class="font-medium">{{ $avg }}</h1>
+                        <p class="text-black/60">({{ $countTotalRating }} Reviews)</p>
+                    </div>
                     <div class="mb-6">
                         <h3 class="text-black mb-4">Deskripsi</h3>
                         <p class="text-black/80 text-base text-justify">Pride and Prejudice is a romantic novel of
-                            manners
-                            written by Jane Austen in 1813. The novel follows the character development of Elizabeth
-                            Bennet, the dynamic protagonist who learns about the repercussions of hasty judgments and
-                            comes to appreciate the difference between superficial goodness and actual goodness.</p>
+                            {{ $book->deskripsi }}</p>
                     </div>
                     <button onclick="showFormLoan()" id="loan-button"
                         class="h-10 w-full flex items-center justify-center gap-x-2 bg-(--third-color) hover:bg-(--second-color) text-(--primary-color) font-medium rounded-md transition-colors duration-200"><i
@@ -71,36 +129,59 @@
                     <h2 class="text-black mb-4 text-xl font-medium">Formulir Pengajuan Peminjaman</h2>
                     <form class="space-y-4" action="">
 
+                        {{-- ID Buku (Hidden) --}}
+                        <div hidden>
+                            <label class="flex items-center text-sm font-medium mb-1.5" for="buku_id">Nama
+                                Lengkap</label>
+                            <input
+                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                type="text" name="buku_id" id="buku_id" placeholder="Masukkan Nama Lengkap"
+                                value="{{ $book->buku_id }}" disabled>
+                        </div>
+
                         {{-- Nama Lengkap --}}
                         <div>
                             <label class="flex items-center text-sm font-medium mb-1.5" for="nama_lengkap">Nama
                                 Lengkap</label>
                             <input
-                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('nama_kategori') 
+                                    input-error 
+                                @enderror"
                                 type="text" name="nama_lengkap" id="nama_lengkap" placeholder="Masukkan Nama Lengkap"
                                 value="{{ Auth::user()->nama_lengkap }}" disabled>
+                            @error('nama_lengkap')
+                                <div class="">
+                                    <span>{{ $message }}</span>
+                                </div>
+                            @enderror
                         </div>
 
                         {{-- Email --}}
                         <div>
                             <label class="flex items-center text-sm font-medium mb-1.5" for="email">Email</label>
                             <input
-                                class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                class="flex h-9 w-full min-w-0 outline-1 bg-black/10 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
                                 type="text" name="email" id="email" placeholder="email.anda@example.com"
                                 value="{{ Auth::user()->email }}" disabled>
                         </div>
 
                         {{-- Phone Number --}}
                         <div>
-                            <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">Email</label>
+                            <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">No.
+                                Handphone</label>
                             <input
                                 class="flex h-9 w-full min-w-0 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
                                 type="text" name="phone_number" id="phone_number" placeholder="081211221122"
                                 value="{{ Auth::user()->phone_number }}" required>
+                            @error('phone_number')
+                                <div class="">
+                                    <span>{{ $message }}</span>
+                                </div>
+                            @enderror
                         </div>
 
-                        {{-- Tanggal Pengembalian --}}
                         <div class="grid grid-cols-2 gap-2">
+                            {{-- Tanggal Peminjaman --}}
                             <div>
                                 <label class="flex items-center text-sm font-medium mb-1.5"
                                     for="tanggal_peminjaman">Tanggal Peminjaman</label>
@@ -108,7 +189,13 @@
                                     class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
                                     type="date" name="tanggal_peminjaman" id="estimasi_tanggal_pengembalian"
                                     required>
+                                @error('tanggal_peminjaman')
+                                    <div class="">
+                                        <span>{{ $message }}</span>
+                                    </div>
+                                @enderror
                             </div>
+                            {{-- Tanggal Pengembalian --}}
                             <div>
                                 <label class="flex items-center text-sm font-medium mb-1.5"
                                     for="estimasi_tanggal_pengembalian">Tanggal Pengembalian</label>
@@ -116,6 +203,11 @@
                                     class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
                                     type="date" name="estimasi_tanggal_pengembalian"
                                     id="estimasi_tanggal_pengembalian" required>
+                                @error('estimasi_tanggal_pengembalian')
+                                    <div class="">
+                                        <span>{{ $message }}</span>
+                                    </div>
+                                @enderror
                             </div>
                         </div>
 
@@ -140,28 +232,89 @@
 
             {{-- Overall rating --}}
             <div class="flex gap-6 p-5 rounded-2xl mb-8">
-                @php
-                    $avg = $book->averageRating();
-                    $starRating = ($avg / 5) * 100;
-                @endphp
                 <div>
                     <div class="flex flex-col">
                         <h1 class="text-5xl font-medium mb-1">{{ $avg }}</h1>
-                        <div class="w-20">
-                            <div class="overflow-hidden" style="width: {{ $starRating }}%">
-                                <div class="w-34.25 flex">
-                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
-                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
-                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
-                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
-                                    <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                        <div class="flex relative justify-center">
+
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
+                            <div class="w-20 absolute top-0">
+                                <div class="overflow-hidden" style="width: {{ $starRating }}%">
+                                    <div class="w-34.25 flex">
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                        <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-sm text-gray-600">100</div>
+                        <div class="text-sm text-black/60 text-center mt-3">{{ $countTotalRating }} ulasan</div>
                     </div>
                 </div>
-                <div></div>
+                <div class="flex flex-col w-full">
+                    {{-- 5 Star --}}
+                    <div class="flex items-center w-full gap-8">
+                        <p class="flex items-center text-sm text-black/50 font-medium">5<i
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                style="width: {{ $avg5Star }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- 4 Star --}}
+                    <div class="flex items-center w-full gap-8">
+                        <p class="flex items-center text-sm text-black/50 font-medium">4<i
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                style="width: {{ $avg4Star }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- 3 Star --}}
+                    <div class="flex items-center w-full gap-8">
+                        <p class="flex items-center text-sm text-black/50 font-medium">3<i
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                style="width: {{ $avg3Star }}%">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{-- 2 Star --}}
+                    <div class="flex items-center w-full gap-8">
+                        <p class="flex items-center text-sm text-black/50 font-medium">2<i
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                style="width: {{ $avg2Star }}%">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{-- 1 Star --}}
+                    <div class="flex items-center w-full gap-8">
+                        <p class="flex items-center text-sm text-black/50 font-medium">1<i
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                style="width: {{ $avg1Star }}%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {{-- Flash messages --}}

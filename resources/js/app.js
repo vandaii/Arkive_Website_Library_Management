@@ -17,6 +17,8 @@ import {
     ListFilter,
     Bookmark,
     MessageSquare,
+    LogOut,
+    ChevronDown,
 } from "lucide";
 
 createIcons({
@@ -36,5 +38,7 @@ createIcons({
         ListFilter,
         Bookmark,
         MessageSquare,
+        LogOut,
+        ChevronDown,
     },
 });
