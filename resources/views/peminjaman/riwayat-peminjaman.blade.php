@@ -1,13 +1,36 @@
 <x-layouts.user-dashboard>
     <div class="container mx-auto px-6 py-8">
         <div class="flex flex-col gap-y-8">
-            <div class="flex justify-between">
-                <h1 class="text-4xl font-medium">Riwayat Peminjaman</h1>
+            <div class="p-5 rounded-2xl bg-white">
+                <div class="flex justify-between space-y-12">
+                    <h1 class="text-4xl font-medium">Riwayat Peminjaman</h1>
+                    <div
+                        class="group flex items-center gap-1 text-gray-500 border rounded-full h-fit font-medium text-sm px-3 py-2 hover:text-black transition-all duration-200">
+                        <i class="size-4 rotate-180 group-hover:text-black" data-lucide="arrow-right"></i>
+                        <a class="" href="{{ route('peminjaman.index') }}">Pinjaman</a>
+                    </div>
+                </div>
+                <div>
+                    <form class="flex justify-between" action="">
+                        <div class="w-full">
+                            <x-search-input></x-search-input>
+                        </div>
+                        <select class="border border-black/50 rounded-md px-2 text-sm focus:border-black/50"
+                            name="status_peminjaman" id="status_peminjaman">
+                            <option value="All" selected>All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Dipinjam">Dipinjam</option>
+                            <option value="Pending Dikembalikan">Pending Dikembalikan</option>
+                            <option value="Dikembalikan">Dikembalikan</option>
+                            <option value="Terlambat">Terlambat</option>
+                        </select>
+                    </form>
+                </div>
             </div>
             <div class="flex gap-5 flex-col w-full">
                 @forelse ($historys as $history)
                     <a class="group flex items-center gap-5 p-5 rounded-2xl transition-all hover:shadow-md bg-white"
-                        href="#">
+                        href="{{ route('peminjaman.detailRiwayat', $history->id) }}">
                         <div class="w-18 h-24 rounded-xl overflow-hidden shrink-0">
                             <img class="border h-40 object-cover rounded-lg mx-auto border-none"
                                 src="{{ asset('storage/' . $history->buku->cover_buku) }}" alt="cover">

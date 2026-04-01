@@ -1,12 +1,20 @@
 <div class="bg-white min-h-screen w-56">
     <ul>
         <li class="px-5 space-y-3 flex flex-col py-10">
-            @if (Route::is('user.index') || Route::is('peminjaman.index') || Route::is('book.show'))
+            @if (Route::is('user.index') ||
+                    Route::is('peminjaman.index') ||
+                    Route::is('book.show') ||
+                    Route::is('peminjaman.show') ||
+                    Route::is('peminjaman.riwayat-peminjaman'))
                 <x-sidebar-link class="group flex items-center gap-x-4" href="{{ route('user.index') }}"
                     :active="request()->routeIs('user.index')"><x-span-icon :active="request()->routeIs('user.index')"><i class="size-5"
                             data-lucide="house"></i></x-span-icon>Beranda</x-sidebar-link>
                 <x-sidebar-link class="group flex items-center gap-x-4" href="{{ route('peminjaman.index') }}"
-                    :active="request()->routeIs('peminjaman.index')"><x-span-icon :active="request()->routeIs('peminjaman.index')"><i class="size-5"
+                    :active="request()->routeIs('peminjaman.index') ||
+                        request()->routeIs('peminjaman.show') ||
+                        request()->routeIs('peminjaman.riwayat-peminjaman')"><x-span-icon :active="request()->routeIs('peminjaman.index') ||
+                        request()->routeIs('peminjaman.show') ||
+                        request()->routeIs('peminjaman.riwayat-peminjaman')"><i class="size-5"
                             data-lucide="book-up"></i></x-span-icon>Pinjaman</x-sidebar-link>
             @else
                 <x-sidebar-link href="{{ route('admin.index') }}" :active="request()->routeIs('admin.index')">Dashboard</x-sidebar-link>

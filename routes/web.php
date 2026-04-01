@@ -74,6 +74,7 @@ Route::post('/peminjaman/tambah', [PinjamController::class, 'store'])->name('pem
 Route::get('/peminjaman/detail/{id}', [PinjamController::class, 'show'])->name('peminjaman.show');
 Route::patch('/peminjaman/detail/{id}/pengembalian', [PinjamController::class, 'kembalikanBuku'])->name('peminjaman.kembalikanBuku');
 Route::get('/peminjaman/riwayat-peminjaman', [PinjamController::class, 'history'])->name('peminjaman.riwayat-peminjaman')->middleware('auth');
+Route::get('/peminjaman/riwayat-peminjaman/detail/{id}', [PinjamController::class, 'detailRiwayat'])->name('peminjaman.detailRiwayat');
 
 // Kelola Pinjam
 Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');

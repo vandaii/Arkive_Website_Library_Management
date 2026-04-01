@@ -1,7 +1,8 @@
 <x-layouts.user-dashboard>
     <div class="container mx-auto px-6 py-8">
-        <a class="flex items-center gap-2 text-black/60 text-sm font-medium" href="{{ route('peminjaman.index') }}"><i
-                class="size-4 rotate-180" data-lucide="arrow-right"></i> Kembali</a>
+        <a class="flex items-center gap-2 text-black/60 text-sm font-medium"
+            href="{{ route('peminjaman.riwayat-peminjaman') }}"><i class="size-4 rotate-180" data-lucide="arrow-right"></i>
+            Kembali</a>
         <div class="rounded-2xl overflow-hidden mb-5 bg-white mt-4">
             <div class="h-1 bg-(--third-color)"></div>
             <div class="p-8">
@@ -10,7 +11,7 @@
                         <i class="size-5 text-white" data-lucide="file-text"></i>
                     </div>
                     <div>
-                        <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        <p class="text-black font-bold mb-0.5">Detail Pinjam</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-8 mb-8">

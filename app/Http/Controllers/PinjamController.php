@@ -56,10 +56,20 @@ class PinjamController extends Controller
         return view('peminjaman.riwayat-peminjaman', compact('historys'));
     }
 
-    public function kembalikanBuku($id)
+    public function detailRiwayat($id)
     {
+        $detail = Peminjaman::with('buku', 'user')->find($id);
+        return view('peminjaman.riwayat-detail', compact('detail'));
+    }
+
+    public function kembalikanBuku(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'notes' => 'string|nullable'
+        ]);
         $peminjaman = Peminjaman::with('buku', 'user')->find($id);
         $peminjaman->update([
+            'notes' => $validated['notes'],
             'status_peminjaman' => 'Pending Dikembalikan'
         ]);
         return redirect()->route('peminjaman.index')->with('success');
