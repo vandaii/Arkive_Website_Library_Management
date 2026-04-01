@@ -19,6 +19,9 @@ import {
     MessageSquare,
     LogOut,
     ChevronDown,
+    History,
+    FileText,
+    RotateCcw,
 } from "lucide";
 
 createIcons({
@@ -40,5 +43,8 @@ createIcons({
         MessageSquare,
         LogOut,
         ChevronDown,
+        History,
+        FileText,
+        RotateCcw,
     },
 });

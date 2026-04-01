@@ -13,6 +13,7 @@ class Peminjaman extends Model
         'tanggal_peminjaman',
         'estimasi_tanggal_pengembalian',
         'tanggal_pengembalian',
+        'notes',
         'status_peminjaman'
     ];
 

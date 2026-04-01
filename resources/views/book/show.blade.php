@@ -1,7 +1,7 @@
 <x-layouts.user-dashboard>
     <div class="container mx-auto px-6 py-8 max-w-6xl">
         <a class="flex items-center gap-2 text-black/60 text-sm font-medium" href="{{ route('user.index') }}"><i
-                class="size-4 rotate-180" data-lucide="arrow-right"></i> Back</a>
+                class="size-4 rotate-180" data-lucide="arrow-right"></i> Kembali</a>
         {{-- Detail Buku --}}
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 mt-4">
             <div class="lg:col-span-1">
