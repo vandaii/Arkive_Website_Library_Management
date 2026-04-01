@@ -21,22 +21,21 @@ class PinjamController extends Controller
         $user = $request->user();
         $validated = $request->validate([
             'buku_id' => 'required|exists:bukus,id',
-            'stok' => 'required|integer|max:10',
-            'tanggal_pengembalian' => 'required|date',
+            'estimasi_tanggal_pengembalian' => 'required|date|after:tanggal_peminjaman',
+            'tanggal_peminjaman' => 'required|date',
         ]);
 
         $peminjaman = Peminjaman::create([
             'user_id' => $user->id,
             'buku_id' => $validated['buku_id'],
-            'stok' => $validated['stok'],
-            'tanggal_peminjaman' => date('Y-m-d'),
-            'tanggal_pengembalian' => $validated['tanggal_pengembalian'],
+            'tanggal_peminjaman' => $validated['tanggal_peminjaman'],
+            'estimasi_tanggal_pengembalian' => $validated['estimasi_tanggal_pengembalian'],
             'status_peminjaman' => 'Pending'
         ]);
 
         $book = Buku::with('peminjaman')->find($peminjaman->buku_id);
         $stock = $book->stok;
-        $newStock = $stock - $peminjaman->stok;
+        $newStock = $stock - 1;
         $book->update([
             'stok' => $newStock
         ]);

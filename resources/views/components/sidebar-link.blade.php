@@ -1,7 +1,8 @@
 @props(['active'])
 
 @php
-    $classes = $active ?? false ? 'p-3 bg-indigo-500 rounded-lg text-white' : 'p-3 text-black/50 hover:text-black';
+    $classes =
+        $active ?? false ? 'py-2 font-medium' : 'py-2 text-black/50 hover:text-black  transition-all duration-200';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>
