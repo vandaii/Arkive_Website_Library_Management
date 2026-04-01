@@ -1,28 +1,40 @@
 <x-layouts.user-dashboard>
-    <div class="flex flex-col gap-y-10">
+    <div class="container mx-auto px-6 py-8">
         <div class="flex flex-col gap-y-8">
             <div class="flex justify-between">
-                <h1 class="text-2xl font-bold">Riwayat Peminjaman</h1>
+                <h1 class="text-4xl font-medium">Riwayat Peminjaman</h1>
             </div>
-            <div class="flex gap-5 flex-wrap w-full justify-center">
+            <div class="flex gap-5 flex-col w-full">
                 @forelse ($historys as $history)
-                    <a href="#">
-                        <div class="flex gap-x-3 rounded-lg p-2 shadow-md/30 bg-white">
+                    <a class="group flex items-center gap-5 p-5 rounded-2xl transition-all hover:shadow-md bg-white"
+                        href="#">
+                        <div class="w-18 h-24 rounded-xl overflow-hidden shrink-0">
                             <img class="border h-40 object-cover rounded-lg mx-auto border-none"
                                 src="{{ asset('storage/' . $history->buku->cover_buku) }}" alt="cover">
-                            <div class="relative">
-                                <h1
-                                    class="font-medium text-lg w-65 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {{ $history->buku->judul }}
-                                </h1>
-                                <h2 class="text-base">{{ $history->buku->penulis }}</h2>
-                                <h2 class="text-base">Jumlah Buku: {{ $history->stok }}</h2>
-                                <h2 class="text-base w-60">Estimasi Tanggal Pengembalian:
-                                    {{ $history->tanggal_pengembalian }}</h2>
-                                <h2
-                                    class="text-sm py-1 px-1.5 rounded-sm bg-amber-400 absolute right-0 bottom-0 text-white">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-3 mb-2">
+                                <div>
+                                    <h1 class="text-black font-bold mb-1">
+                                        {{ $history->buku->judul }}
+                                    </h1>
+                                    <h2 class="text-black/50 text-sm">{{ $history->buku->penulis }}</h2>
+                                </div>
+                                <h2 class="px-3 py-1 rounded-full shrink-0 text-xs font-semibold">
                                     {{ $history->status_peminjaman }}
                                 </h2>
+                            </div>
+                            <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+                                <h2 class="text-black/50 text-xs">Tanggal Peminjaman: <span
+                                        class="text-black font-medium text-sm">{{ $history->stok }}</span></h2>
+                                @if ($history->status == 'Dikembalikan')
+                                    <h2 class="text-base w-60">Tanggal Pengembalian:
+                                        {{ $history->tanggal_pengembalian }}</h2>
+                                @else
+                                    <h2 class="text-black/50 text-xs">Estimasi Tanggal Pengembalian: <span
+                                            class="text-black font-medium text-sm">{{ $history->estimasi_tanggal_pengembalian }}</span>
+                                    </h2>
+                                @endif
                             </div>
                         </div>
                     </a>
