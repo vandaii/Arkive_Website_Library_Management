@@ -22,6 +22,7 @@ import {
     History,
     FileText,
     RotateCcw,
+    BookmarkCheck,
 } from "lucide";
 
 createIcons({
@@ -46,5 +47,6 @@ createIcons({
         History,
         FileText,
         RotateCcw,
+        BookmarkCheck,
     },
 });

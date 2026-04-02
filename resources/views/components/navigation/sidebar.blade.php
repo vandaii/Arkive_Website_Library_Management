@@ -5,7 +5,8 @@
                     Route::is('peminjaman.index') ||
                     Route::is('book.show') ||
                     Route::is('peminjaman.show') ||
-                    Route::is('peminjaman.riwayat-peminjaman'))
+                    Route::is('peminjaman.riwayat-peminjaman') ||
+                    Route::is('koleksi.index'))
                 <x-sidebar-link class="group flex items-center gap-x-4" href="{{ route('user.index') }}"
                     :active="request()->routeIs('user.index')"><x-span-icon :active="request()->routeIs('user.index')"><i class="size-5"
                             data-lucide="house"></i></x-span-icon>Beranda</x-sidebar-link>
@@ -16,6 +17,9 @@
                         request()->routeIs('peminjaman.show') ||
                         request()->routeIs('peminjaman.riwayat-peminjaman')"><i class="size-5"
                             data-lucide="book-up"></i></x-span-icon>Pinjaman</x-sidebar-link>
+                <x-sidebar-link class="group flex items-center gap-x-4" href="{{ route('koleksi.index') }}"
+                    :active="request()->routeIs('koleksi.index')"><x-span-icon :active="request()->routeIs('koleksi.index')"><i class="size-5"
+                            data-lucide="bookmark"></i></x-span-icon>Koleksi</x-sidebar-link>
             @else
                 <x-sidebar-link href="{{ route('admin.index') }}" :active="request()->routeIs('admin.index')">Dashboard</x-sidebar-link>
                 <x-sidebar-link href="{{ route('employee-management.index') }}" :active="request()->routeIs('employee-management.index') ||

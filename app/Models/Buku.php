@@ -33,6 +33,11 @@ class Buku extends Model
         return $this->hasMany(Ulasan::class, 'buku_id', 'id');
     }
 
+    public function koleksi()
+    {
+        return $this->hasMany(Koleksi::class, 'buku_id', 'id');
+    }
+
     /**
      * Get average rating for the book (float, two decimals)
      */

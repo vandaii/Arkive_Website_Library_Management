@@ -59,6 +59,12 @@
                             <img class="w-26 h-34 object-cover rounded-xl shrink-0"
                                 src="{{ asset('storage/' . $detail->buku->cover_buku) }}" alt="cover">
                             <div class="flex flex-col">
+                                @foreach ($detail->buku->kategoriBukuRelasi as $category)
+                                    <div
+                                        class="inline-block px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
+                                        {{ $category->kategori->nama_kategori }}
+                                    </div>
+                                @endforeach
                                 <p class="text-black text-lg font-bold mb-1.5">{{ $detail->buku->judul }}</p>
                                 <p class="text-black/55 text-base mb-1.5">{{ $detail->buku->penulis }}</p>
                                 <p class="text-black/40 text-sm mb-1.5">{{ $detail->buku->penerbit }}</p>

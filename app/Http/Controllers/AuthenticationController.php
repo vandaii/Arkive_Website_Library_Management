@@ -58,7 +58,7 @@ class AuthenticationController extends Controller
             return back();
         }
 
-        return back()->withErrors(['email' => 'dahgdahda'])->onlyInput('email');
+        return back()->withErrors(['email' => 'Email atau Password Salah'])->onlyInput('email');
     }
 
     public function logout(Request $request)

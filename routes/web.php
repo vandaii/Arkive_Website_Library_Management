@@ -8,6 +8,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeManagementController;
 use App\Http\Controllers\KelolaKembaliController;
 use App\Http\Controllers\KelolaPinjamController;
+use App\Http\Controllers\KoleksiController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
 use App\Http\Controllers\ProfilController;
@@ -94,3 +95,8 @@ Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliContr
 Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth');
 Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth');
 Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth');
+
+// Koleksi
+Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi.index');
+Route::post('/koleksi/', [KoleksiController::class, 'store'])->name('koleksi.store');
+Route::delete('/koleksi/', [KoleksiController::class, 'destroy'])->name('koleksi.destroy');

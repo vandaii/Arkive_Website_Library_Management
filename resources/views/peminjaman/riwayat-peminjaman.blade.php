@@ -29,7 +29,7 @@
             </div>
             <div class="flex gap-5 flex-col w-full">
                 @forelse ($historys as $history)
-                    <a class="group flex items-center gap-5 p-5 rounded-2xl transition-all hover:shadow-md bg-white"
+                    <a class="group flex items-center gap-5 p-5 rounded-2xl transition-all hover:shadow-lg bg-white"
                         href="{{ route('peminjaman.detailRiwayat', $history->id) }}">
                         <div class="w-18 h-24 rounded-xl overflow-hidden shrink-0">
                             <img class="border h-40 object-cover rounded-lg mx-auto border-none"

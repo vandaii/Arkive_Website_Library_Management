@@ -47,9 +47,23 @@
                 <div class="flex flex-col gap-6 rounded-2xl p-6 mb-6 bg-white">
                     <div class="flex justify-between">
                         <h1 class="text-black mb-2 text-2xl font-medium">{{ $book->judul }}</h1>
-                        <form class="mt-2" action="" method="post">
-                            <button><i data-lucide="bookmark"></i></button>
-                        </form>
+                        @if ($koleksi->isEmpty())
+                            <form class="mt-2" action="{{ route('koleksi.store') }}" method="post">
+                                @csrf
+                                @method('POST')
+                                <input class="hidden" type="text" name="buku_id" id="buku_id"
+                                    value="{{ $book->id }}">
+                                <button class="cursor-pointer"><i data-lucide="bookmark"></i></button>
+                            </form>
+                        @else
+                            <form class="mt-2" action="{{ route('koleksi.destroy') }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input class="hidden" type="text" name="buku_id" id="buku_id"
+                                    value="{{ $book->id }}">
+                                <button class="cursor-pointer"><i data-lucide="bookmark-check"></i></button>
+                            </form>
+                        @endif
                     </div>
                     <div class="flex items-center gap-2 mb-4">
                         <i class="size-4 opacity-60" data-lucide="user"></i>
@@ -144,8 +158,9 @@
                                 class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30 @error('nama_lengkap') 
                                     input-error 
                                 @enderror"
-                                type="text" name="nama_lengkap" id="nama_lengkap" placeholder="Masukkan Nama Lengkap"
-                                value="{{ Auth::user()->nama_lengkap }}" disabled>
+                                type="text" name="nama_lengkap" id="nama_lengkap"
+                                placeholder="Masukkan Nama Lengkap" value="{{ Auth::user()->nama_lengkap }}"
+                                disabled>
                             @error('nama_lengkap')
                                 <div class="">
                                     <span>{{ $message }}</span>
