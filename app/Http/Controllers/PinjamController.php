@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Notifikasi;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,13 @@ class PinjamController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $peminjamans = Peminjaman::with('buku', 'user')->where('status_peminjaman', '!=', 'Dikembalikan')->Where('status_peminjaman', '!=', 'Terlambat')->where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(6);
-        $returns = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Dikembalikan')->orWhere('status_peminjaman', 'Terlambat')->where('user_id', $user->id)->get();
-        return view('peminjaman.index', compact('peminjamans', 'returns'));
+        $peminjamans = Peminjaman::with('buku', 'user')
+            ->where('status_peminjaman', '!=', 'Dikembalikan')
+            ->where('status_peminjaman', '!=', 'Terlambat')
+            ->where('user_id', $user->id)
+            ->orderBy('id', 'DESC')
+            ->paginate(6);
+        return view('peminjaman.index', compact('peminjamans'));
     }
 
     public function store(Request $request)
@@ -40,7 +45,15 @@ class PinjamController extends Controller
             'stok' => $newStock
         ]);
 
-        return redirect()->route('peminjaman.index')->with('success');
+        // Notifikasi ke admin/petugas
+        Notifikasi::kirimKeAdminPetugas(
+            'Pengajuan Peminjaman Baru',
+            "User {$user->nama_lengkap} mengajukan peminjaman buku \"{$book->judul}\"",
+            'info',
+            route('kelola-pinjam.pengajuan-pinjaman')
+        );
+
+        return redirect()->route('peminjaman.index')->with('success', 'Pengajuan peminjaman berhasil dikirim!');
     }
 
     public function show($id)
@@ -52,7 +65,22 @@ class PinjamController extends Controller
     public function history(Request $request)
     {
         $user = $request->user();
-        $historys = Peminjaman::with('buku', 'user')->where('user_id', $user->id)->orderBy('id', 'DESC')->get();
+        $query = Peminjaman::with('buku.ulasan', 'user')->where('user_id', $user->id);
+
+        // Search by judul buku
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('buku', function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('status_peminjaman') && $request->status_peminjaman !== 'All') {
+            $query->where('status_peminjaman', $request->status_peminjaman);
+        }
+
+        $historys = $query->orderBy('id', 'DESC')->paginate(10)->withQueryString();
         return view('peminjaman.riwayat-peminjaman', compact('historys'));
     }
 
@@ -72,6 +100,16 @@ class PinjamController extends Controller
             'notes' => $validated['notes'],
             'status_peminjaman' => 'Pending Dikembalikan'
         ]);
-        return redirect()->route('peminjaman.index')->with('success');
+
+        // Notifikasi ke admin/petugas
+        $user = $request->user();
+        Notifikasi::kirimKeAdminPetugas(
+            'Pengajuan Pengembalian Buku',
+            "User {$user->nama_lengkap} mengajukan pengembalian buku \"{$peminjaman->buku->judul}\"",
+            'info',
+            route('kelola-kembali.pengajuan-kembali')
+        );
+
+        return redirect()->route('peminjaman.index')->with('success', 'Pengajuan pengembalian berhasil dikirim!');
     }
 }

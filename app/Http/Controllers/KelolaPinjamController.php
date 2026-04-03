@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notifikasi;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,16 @@ class KelolaPinjamController extends Controller
             'status_peminjaman' => 'Dipinjam'
         ]);
 
-        return redirect()->route('kelola-pinjam.index')->with('success');
+        // Notifikasi ke user
+        Notifikasi::kirim(
+            $pengajuan->user_id,
+            'Peminjaman Disetujui',
+            "Peminjaman buku \"{$pengajuan->buku->judul}\" telah disetujui. Selamat membaca!",
+            'success',
+            route('peminjaman.show', $pengajuan->id)
+        );
+
+        return redirect()->route('kelola-pinjam.index')->with('success', 'Peminjaman berhasil disetujui');
     }
 
     public function tolakPinjam($id)
@@ -43,6 +53,15 @@ class KelolaPinjamController extends Controller
             'status_peminjaman' => 'Ditolak'
         ]);
 
-        return redirect()->route('kelola-pinjam.index')->with('success');
+        // Notifikasi ke user
+        Notifikasi::kirim(
+            $pengajuan->user_id,
+            'Peminjaman Ditolak',
+            "Peminjaman buku \"{$pengajuan->buku->judul}\" ditolak oleh admin.",
+            'error',
+            route('peminjaman.riwayat-peminjaman')
+        );
+
+        return redirect()->route('kelola-pinjam.index')->with('success', 'Peminjaman berhasil ditolak');
     }
 }

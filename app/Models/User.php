@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Koleksi::class, 'user_id', 'id');
     }
+
+    public function notifikasi()
+    {
+        return $this->hasMany(Notifikasi::class, 'user_id', 'id');
+    }
 }

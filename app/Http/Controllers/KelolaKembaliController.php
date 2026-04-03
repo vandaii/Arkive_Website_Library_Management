@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notifikasi;
 use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,20 +32,39 @@ class KelolaKembaliController extends Controller
     public function setujuKembali($id)
     {
         $pengajuan = Peminjaman::with('user', 'buku')->find($id);
-        $deadline = Carbon::parse($pengajuan->tanggal_pengembalian);
+        $deadline = Carbon::parse($pengajuan->estimasi_tanggal_pengembalian);
+
         if ($deadline->isPast()) {
             $pengajuan->update([
                 'status_peminjaman' => 'Terlambat',
                 'tanggal_pengembalian' => date('Y-m-d')
             ]);
+
+            // Notifikasi ke user - terlambat tapi bisa tulis ulasan
+            Notifikasi::kirim(
+                $pengajuan->user_id,
+                'Pengembalian Disetujui (Terlambat)',
+                "Pengembalian buku \"{$pengajuan->buku->judul}\" disetujui (tercatat terlambat). Anda dapat menulis ulasan!",
+                'warning',
+                route('peminjaman.riwayat-peminjaman')
+            );
         } else {
             $pengajuan->update([
                 'status_peminjaman' => 'Dikembalikan',
                 'tanggal_pengembalian' => date('Y-m-d')
             ]);
+
+            // Notifikasi ke user - berhasil dikembalikan, bisa tulis ulasan
+            Notifikasi::kirim(
+                $pengajuan->user_id,
+                'Pengembalian Disetujui',
+                "Pengembalian buku \"{$pengajuan->buku->judul}\" disetujui. Anda dapat menulis ulasan di halaman riwayat!",
+                'success',
+                route('peminjaman.riwayat-peminjaman')
+            );
         }
 
-        return redirect()->route('kelola-kembali.index')->with('success');
+        return redirect()->route('kelola-kembali.index')->with('success', 'Pengembalian berhasil disetujui');
     }
 
     public function tolakKembali($id)
@@ -54,6 +74,15 @@ class KelolaKembaliController extends Controller
             'status_peminjaman' => 'Ditolak'
         ]);
 
-        return redirect()->route('kelola-kembali.index')->with('success');
+        // Notifikasi ke user
+        Notifikasi::kirim(
+            $pengajuan->user_id,
+            'Pengembalian Ditolak',
+            "Pengembalian buku \"{$pengajuan->buku->judul}\" ditolak oleh admin.",
+            'error',
+            route('peminjaman.riwayat-peminjaman')
+        );
+
+        return redirect()->route('kelola-kembali.index')->with('success', 'Pengembalian berhasil ditolak');
     }
 }

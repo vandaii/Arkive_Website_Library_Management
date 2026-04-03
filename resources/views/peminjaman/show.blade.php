@@ -10,7 +10,11 @@
                         <i class="size-5 text-white" data-lucide="file-text"></i>
                     </div>
                     <div>
-                        <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        @if (in_array($detail->status_peminjaman, ['Pending Dikembalikan', 'Dikembalikan', 'Terlambat']))
+                            <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
+                        @else
+                            <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        @endif
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-8 mb-8">
@@ -74,12 +78,14 @@
                     </div>
                 </a>
                 <div class="mt-12 flex gap-4">
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Cetak
-                        Bukti</button>
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Unduh
-                        PDF</button>
+                    <a href="{{ route('bukti.cetak', $detail->id) }}" target="_blank"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full border border-black/20 font-medium hover:border-black hover:bg-gray-50 transition-all duration-200">
+                        <i class="size-4" data-lucide="printer"></i>Cetak Bukti
+                    </a>
+                    <a href="{{ route('bukti.download', $detail->id) }}"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full bg-(--third-color) text-white font-medium hover:bg-(--second-color) transition-all duration-200">
+                        <i class="size-4" data-lucide="download"></i>Unduh PDF
+                    </a>
                 </div>
             </div>
         </div>

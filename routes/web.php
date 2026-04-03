@@ -13,6 +13,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PinjamController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UlasanController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\BuktiController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
@@ -25,6 +27,9 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 Route::get('/dashboard/', [PageController::class, 'userDashboard'])->name('user.index');
 Route::get('/show/{id}', [PageController::class, 'show'])->name('book.show');
+
+// Search
+Route::get('/search-buku', [PageController::class, 'search'])->name('search.buku');
 
 // Profil Page
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
@@ -100,3 +105,14 @@ Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasa
 Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi.index');
 Route::post('/koleksi/', [KoleksiController::class, 'store'])->name('koleksi.store');
 Route::delete('/koleksi/', [KoleksiController::class, 'destroy'])->name('koleksi.destroy');
+
+// Notifikasi
+Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index')->middleware('auth');
+Route::patch('/notifikasi/{id}/read', [NotifikasiController::class, 'markAsRead'])->name('notifikasi.read')->middleware('auth');
+Route::patch('/notifikasi/read-all', [NotifikasiController::class, 'markAllRead'])->name('notifikasi.read-all')->middleware('auth');
+Route::delete('/notifikasi/{id}', [NotifikasiController::class, 'destroy'])->name('notifikasi.destroy')->middleware('auth');
+Route::delete('/notifikasi', [NotifikasiController::class, 'destroyAll'])->name('notifikasi.destroy-all')->middleware('auth');
+
+// Bukti PDF
+Route::get('/bukti/{id}/cetak', [BuktiController::class, 'cetak'])->name('bukti.cetak')->middleware('auth');
+Route::get('/bukti/{id}/download', [BuktiController::class, 'download'])->name('bukti.download')->middleware('auth');

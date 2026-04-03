@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Kategori;
 use App\Models\KategoriBukuRelasi;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -53,7 +54,14 @@ class BukuController extends Controller
             ]);
         }
 
-        return redirect()->route('data-buku.index')->with('success');
+        // Notifikasi ke admin/petugas
+        Notifikasi::kirimKeAdminPetugas(
+            'Koleksi Buku Baru',
+            "Buku baru \"{$book->judul}\" telah ditambahkan ke koleksi perpustakaan.",
+            'success'
+        );
+
+        return redirect()->route('data-buku.index')->with('success', 'Buku berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -111,12 +119,13 @@ class BukuController extends Controller
             ]);
         }
 
-        return redirect()->route('data-buku.index')->with('success');
+        return redirect()->route('data-buku.index')->with('success', 'Buku berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $book = Buku::with('kategoriBukuRelasi.kategori')->find($id);
+        $judul = $book->judul;
 
         $oldCoverPath = '/storage/' . $book->cover_buku;
         if (File::exists(public_path($oldCoverPath))) {
@@ -126,6 +135,13 @@ class BukuController extends Controller
         KategoriBukuRelasi::with('buku')->where('buku_id', $book->id)->delete();
         $book->delete();
 
-        return redirect()->route('data-buku.index')->with('success');
+        // Notifikasi ke admin/petugas
+        Notifikasi::kirimKeAdminPetugas(
+            'Buku Dihapus',
+            "Buku \"{$judul}\" telah dihapus dari koleksi perpustakaan.",
+            'warning'
+        );
+
+        return redirect()->route('data-buku.index')->with('success', 'Buku berhasil dihapus!');
     }
 }

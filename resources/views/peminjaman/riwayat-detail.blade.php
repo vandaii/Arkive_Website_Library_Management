@@ -11,7 +11,11 @@
                         <i class="size-5 text-white" data-lucide="file-text"></i>
                     </div>
                     <div>
-                        <p class="text-black font-bold mb-0.5">Detail Pinjam</p>
+                        @if (in_array($detail->status_peminjaman, ['Pending Dikembalikan', 'Dikembalikan', 'Terlambat']))
+                            <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
+                        @else
+                            <p class="text-black font-bold mb-0.5">Detail Pinjam</p>
+                        @endif
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-8 mb-8">
@@ -27,9 +31,28 @@
                                 <p class="text-black font-semibold text-sm">{{ $detail->estimasi_tanggal_pengembalian }}
                                 </p>
                             </div>
+                            @if ($detail->tanggal_pengembalian)
+                                <div>
+                                    <p class="text-black/45 text-xs mb-0.5">Tanggal Pengembalian</p>
+                                    <p class="text-black font-semibold text-sm">{{ $detail->tanggal_pengembalian }}</p>
+                                </div>
+                            @endif
                             <div>
                                 <p class="text-black/45 text-xs mb-0.5">Status</p>
-                                <p class="text-black font-semibold text-sm">{{ $detail->status_peminjaman }}</p>
+                                @php
+                                    $statusColor = match($detail->status_peminjaman) {
+                                        'Pending' => 'bg-yellow-100 text-yellow-700',
+                                        'Dipinjam' => 'bg-blue-100 text-blue-700',
+                                        'Pending Dikembalikan' => 'bg-purple-100 text-purple-700',
+                                        'Dikembalikan' => 'bg-green-100 text-green-700',
+                                        'Terlambat' => 'bg-red-100 text-red-700',
+                                        'Ditolak' => 'bg-gray-100 text-gray-700',
+                                        default => 'bg-gray-100 text-gray-700',
+                                    };
+                                @endphp
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $statusColor }}">
+                                    {{ $detail->status_peminjaman }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -69,12 +92,14 @@
                     </div>
                 </a>
                 <div class="mt-12 flex gap-4">
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Cetak
-                        Bukti</button>
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Unduh
-                        PDF</button>
+                    <a href="{{ route('bukti.cetak', $detail->id) }}" target="_blank"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full border border-black/20 font-medium hover:border-black hover:bg-gray-50 transition-all duration-200">
+                        <i class="size-4" data-lucide="printer"></i>Cetak Bukti
+                    </a>
+                    <a href="{{ route('bukti.download', $detail->id) }}"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full bg-(--third-color) text-white font-medium hover:bg-(--second-color) transition-all duration-200">
+                        <i class="size-4" data-lucide="download"></i>Unduh PDF
+                    </a>
                 </div>
             </div>
         </div>
@@ -87,7 +112,7 @@
                     </p>
                 </div>
                 <button type="button" onclick="showFormReturn()"
-                    class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2"><i
+                    class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2 cursor-pointer"><i
                         class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
                     Buku</button>
             </div>
@@ -107,13 +132,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <button type="button" onclick="hideFormReturn()"
-                        class="w-full rounded-full outline-1 outline-(--third-color) py-1 text-(--third-color) hover:outline-(--second-color) hover:text-(--second-color) font-medium">Batal</button>
+                        class="w-full rounded-full outline-1 outline-(--third-color) py-1 text-(--third-color) hover:outline-(--second-color) hover:text-(--second-color) font-medium cursor-pointer">Batal</button>
                     <button
-                        class="w-full rounded-full bg-(--third-color) py-1 font-medium text-white hover:bg-(--second-color)">Kembalikan</button>
+                        class="w-full rounded-full bg-(--third-color) py-1 font-medium text-white hover:bg-(--second-color) cursor-pointer">Kembalikan</button>
                 </div>
             </form>
         </div>
-
 
     </div>
     <script>

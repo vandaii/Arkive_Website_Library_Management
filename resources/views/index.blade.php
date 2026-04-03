@@ -25,7 +25,8 @@
                     setiap genre. Pinjam, temukan, dan kembalikan — semuanya dari satu platform yang sangat sederhana.
                 </p>
                 <div class="flex justify-center items-center bg-(--third-color) w-fit px-5 py-3 rounded-full z-10">
-                    <a href="" class="text-(--primary-color) font-medium flex items-center gap-x-3">Eksplor Buku
+                    <a href="{{ route('user.index') }}"
+                        class="text-(--primary-color) font-medium flex items-center gap-x-3">Eksplor Buku
                         <i data-lucide="arrow-right" class="size-4"></i></a>
                 </div>
             </div>
@@ -50,7 +51,8 @@
         <section class="mt-30 px-5">
             <div class="flex justify-between items-center gap-6 mb-10">
                 <h1 class="text-3xl/tight font-medium">Buku Unggulan</h1>
-                <a class="flex items-center gap-x-1 border-2 px-4 py-2 rounded-full font-medium" href="">Lihat
+                <a class="flex items-center gap-x-1 border-2 px-4 py-2 rounded-full font-medium"
+                    href="{{ route('user.index') }}">Lihat
                     Semua Buku <i class="size-4" data-lucide="arrow-right"></i></a>
             </div>
             <div class="flex gap-6 overflow-x-auto pb-4 snap-mandatory mb-30">
