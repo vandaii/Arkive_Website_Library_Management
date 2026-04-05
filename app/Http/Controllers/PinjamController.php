@@ -53,7 +53,7 @@ class PinjamController extends Controller
             route('kelola-pinjam.pengajuan-pinjaman')
         );
 
-        return redirect()->route('peminjaman.index')->with('success', 'Pengajuan peminjaman berhasil dikirim!');
+        return redirect()->route('peminjaman.show', $peminjaman->id)->with('success', 'Pengajuan peminjaman berhasil dikirim!');
     }
 
     public function show($id)
@@ -110,6 +110,6 @@ class PinjamController extends Controller
             route('kelola-kembali.pengajuan-kembali')
         );
 
-        return redirect()->route('peminjaman.index')->with('success', 'Pengajuan pengembalian berhasil dikirim!');
+        return redirect()->back()->with('success', 'Pengajuan pengembalian berhasil dikirim!');
     }
 }

@@ -1,56 +1,65 @@
 <x-layouts.admin-dashboard>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <div class="ml-45 bg-white px-10 py-8 rounded-lg">
+    <div class="bg-white px-10 py-8 rounded-lg">
 
         <div class="mb-10">
-            <h1 class="capitalize text-xl">{{ __($title) }}</h1>
+            <h1 class="capitalize text-2xl font-medium">{{ __($title) }}</h1>
         </div>
 
         <div class="flex justify-between items-center mb-5">
-            <form class="relative w-1/2" action="">
-                <x-search-input></x-search-input>
+            <form class="w-2/4" action="{{ route('employee-management.index') }}" method="GET">
+                <div class="flex w-full items-center gap-2">
+                    <div class="flex-1 w-full">
+                        <x-search-input class="w-full"></x-search-input>
+                    </div>
+                    <div class="relative">
+                        <select
+                            class="appearance-none border border-black/50 rounded-full px-4 pr-8 py-3 text-sm focus:border-(--third-color) focus:outline-none cursor-pointer transition-all duration-200"
+                            name="role" id="role" onchange="this.form.submit()">
+                            <option value="All" {{ request('role') == 'All' || !request('role') ? 'selected' : '' }}>
+                                Semua Status</option>
+                            <option value="Admin" {{ request('role') == 'Admin' ? 'selected' : '' }}>
+                                Admin</option>
+                            <option value="Petugas" {{ request('role') == 'Petugas' ? 'selected' : '' }}>
+                                Petugas</option>
+                        </select>
+                        <i class="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-black/40 pointer-events-none"
+                            data-lucide="chevron-down"></i>
+                    </div>
+                </div>
             </form>
-            <a class="px-5 py-3 bg-indigo-500 text-white rounded-lg"
-                href="{{ route('employee-management.create') }}">Tambah
-                User</a>
+            <a class="flex items-center gap-1.5 px-4 py-3 bg-(--third-color) text-white rounded-lg hover:bg-(--second-color)"
+                href="{{ route('employee-management.create') }}"><i class="size-5" data-lucide="user-plus"></i>Tambah
+                Petugas</a>
         </div>
 
-        <table class="table-auto w-full text-left">
+        <table class="table-fixed w-full text-left">
             <thead>
-                <tr class="border-b-2 border-gray-500/40">
-                    <th class="py-3">Nama Lengkap</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Posisi</th>
-                    <th>Aksi</th>
+                <tr class="border-b border-gray-500/40 bg-black/10">
+                    <th class="py-3 px-2 w-4/10">Nama Lengkap</th>
+                    <th class="py-3 w-2/10">Username</th>
+                    <th class="py-3 w-2/10">Email</th>
+                    <th class="py-3 w-1/10">Posisi</th>
+                    <th class="py-3 w-1/10">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($users as $user)
-                    <tr class="border-b-2 border-gray-500/40">
-                        <td>{{ $user->nama_lengkap }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td class="capitalize">{{ $user->role }}</td>
-                        <td class="flex py-3 gap-x-2">
-                            <a href="{{ route('employee-management.show', $user->id) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                </svg>
+                    <tr class="border-b border-gray-500/40 odd:bg-white even:bg-black/10">
+                        <td class="py-3 px-2">{{ $user->nama_lengkap }}</td>
+                        <td class="py-3">{{ $user->username }}</td>
+                        <td class="py-3">{{ $user->email }}</td>
+                        <td class="capitalize py-3">{{ $user->role }}</td>
+                        <td class="flex py-3 gap-2">
+                            <a class="mt-1.5" href="{{ route('employee-management.edit', $user->id) }}">
+                                <i class="size-5" data-lucide="user-pen"></i>
                             </a>
                             <form onsubmit="return confirm('Yakin?')"
                                 action="{{ route('employee-management.deactivate', $user->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-5 stroke-red-600">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                    </svg>
-
+                                <button class="mt-1.5 cursor-pointer" type="submit">
+                                    <i class="size-5 stroke-red-600" data-lucide="trash-2"></i>
                                 </button>
                             </form>
                         </td>
@@ -63,6 +72,101 @@
             </tbody>
         </table>
 
+        {{-- Pagination --}}
+        @if ($users->hasPages())
+            <div class="flex justify-center">
+                {{ $users->links('components.pagination') }}
+            </div>
+        @endif
+    </div>
+
+    {{-- Detail Modal --}}
+    <div id="detailModal" class="fixed inset-0 z-100">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick=""></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl py-4 z-10 animate-modal-in">
+                <div class="flex justify-between items-center border-b border-black/20 pb-4 px-4">
+                    <h1 class="text-xl font-medium">Detail Pengguna</h1>
+                    <button class="p-1.5 rounded-full border border-black/20 cursor-pointer hover:border-black/50">
+                        <i class="size-5" data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="flex items-center px-4 mt-4 gap-4">
+                    <div>
+                        <img class="aspect-square w-15 object-cover rounded-full"
+                            src="{{ asset('img/cover/cover-bumi.jpg') }}" alt="">
+                    </div>
+                    <div>
+                        <h2 class="font-medium">Administrator</h2>
+                        <h3 class="text-black/60 text-sm">admin@example.com</h3>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="border border-black/20 rounded-lg p-2">
+                        <h2 class="font-medium border-b border-black/15 pb-1">Informasi Pengguna</h2>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="user"></i>
+                                    <p class="text-black/60 text-sm">Nama Lengkap:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="user"></i>
+                                    <p class="text-black/60 text-sm">Username:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="mail"></i>
+                                    <p class="text-black/60 text-sm">Email:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="phone"></i>
+                                    <p class="text-black/60 text-sm">No. Handphone:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="briefcase"></i>
+                                    <p class="text-black/60 text-sm">Posisi:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="size-4 stroke-black/60" data-lucide="map"></i>
+                                    <p class="text-black/60 text-sm">Alamat:</p>
+                                </div>
+                                <p class="text-black">Administrator</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 space-y-2">
+                    <h2 class="font-medium mb-4">Pinjaman Terakhir</h2>
+                    <div class="relative flex items-center px-4 py-2 border border-black/15 gap-x-6">
+                        <i class="size-4 stroke-black/50" data-lucide="book-up"></i>
+                        <p class="absolute right-2 top-1 text-xs text-black/50">Pending</p>
+                        <div>
+                            <p class="text-sm">Laskar Pelangi</p>
+                            <div class="flex gap-x-2">
+                                <p class="text-xs text-black/50">Tanggal Peminjaman: 21-21-2022</p>
+                                <p class="text-xs text-black/50">Tanggal Pengembalian: 21-21-2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </x-layouts.admin-dashboard>

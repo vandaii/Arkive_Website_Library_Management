@@ -4,6 +4,8 @@ import {
     createIcons,
     // Navigation & Layout
     User,
+    UserPlus,
+    UserPen,
     ArrowRight,
     MoveLeft,
     Search,
@@ -30,6 +32,9 @@ import {
     BellOff,
     Mail,
     Info,
+    Briefcase,
+    Phone,
+    Map,
 
     // Actions
     Lock,
@@ -55,6 +60,8 @@ createIcons({
     icons: {
         // Navigation & Layout
         User,
+        UserPlus,
+        UserPen,
         ArrowRight,
         MoveLeft,
         Search,
@@ -81,6 +88,9 @@ createIcons({
         BellOff,
         Mail,
         Info,
+        Briefcase,
+        Phone,
+        Map,
 
         // Actions
         Lock,

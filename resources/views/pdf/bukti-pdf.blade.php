@@ -36,15 +36,8 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #3b5d8d;
+            color: #4a70a9;
             letter-spacing: 1px;
-        }
-        .logo-img {
-            height: 35px;
-            width: auto;
-            vertical-align: middle;
-            margin-top: -5px;
-            margin-right: 10px;
         }
         .subtitle {
             font-size: 11px;
@@ -153,10 +146,7 @@
         {{-- Header --}}
         <div class="header clearfix">
             <div class="header-left">
-                <div class="logo">
-                    <img class="logo-img" src="{{ public_path('img/logo-arkive.png') }}">
-                    <span style="display: inline-block; vertical-align: middle;">Arkive</span>
-                </div>
+                <div class="logo">Arkive</div>
                 <div class="subtitle">Sistem Manajemen Perpustakaan</div>
             </div>
             <div class="header-right">

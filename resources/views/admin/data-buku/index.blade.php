@@ -1,6 +1,6 @@
 <x-layouts.admin-dashboard>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <div class="ml-45 bg-white px-10 py-8 rounded-lg">
+    <div class="bg-white px-10 py-8 rounded-lg">
 
         <div class="mb-10">
             <h1 class="capitalize text-xl">{{ __($title) }}</h1>

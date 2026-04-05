@@ -18,7 +18,7 @@
         <x-navigation.sidebar></x-navigation.sidebar>
     </aside>
 
-    <main class="px-30 mt-5 w-full">
+    <main class="px-5 py-5 ml-55">
         {{ $slot }}
     </main>
 

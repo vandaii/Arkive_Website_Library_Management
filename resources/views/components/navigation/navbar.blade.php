@@ -18,7 +18,7 @@
             ]))
             <li class="w-full">
                 <form action="{{ route('search.buku') }}" method="get">
-                    <x-search-input></x-search-input>
+                    <x-search-input class="w-10/12"></x-search-input>
                 </form>
             </li>
         @elseif (!Route::is(['index', 'profil.index', 'notifikasi.index']))
@@ -60,7 +60,8 @@
                                     <form action="{{ route('notifikasi.read', $notif->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
-                                        <button class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors {{ !$notif->is_read ? 'bg-(--third-color)/5' : '' }}">
+                                        <button
+                                            class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors {{ !$notif->is_read ? 'bg-(--third-color)/5' : '' }}">
                                             <div
                                                 class="flex items-center justify-center w-8 h-8 rounded-full shrink-0 mt-0.5
                                                 {{ !$notif->is_read ? 'bg-(--third-color)/10' : 'bg-gray-100' }}">
@@ -68,15 +69,15 @@
                                                     @case('success')
                                                         <i class="size-4 text-green-500" data-lucide="check-circle"></i>
                                                     @break
-    
+
                                                     @case('warning')
                                                         <i class="size-4 text-yellow-500" data-lucide="alert-triangle"></i>
                                                     @break
-    
+
                                                     @case('error')
                                                         <i class="size-4 text-red-500" data-lucide="alert-circle"></i>
                                                     @break
-    
+
                                                     @default
                                                         <i class="size-4 text-(--third-color)" data-lucide="bell"></i>
                                                 @endswitch
@@ -92,58 +93,57 @@
                                                     {{ $notif->created_at->diffForHumans() }}</p>
                                             </div>
                                             @if (!$notif->is_read)
-                                                <div class="w-2 h-2 rounded-full bg-(--third-color) shrink-0 mt-2"></div>
+                                                <div class="w-2 h-2 rounded-full bg-(--third-color) shrink-0 mt-2">
+                                                </div>
                                             @endif
                                         </button>
                                     </form>
-                                @empty
-                                    <div class="px-4 py-8 text-center">
-                                        <i class="size-8 text-black/10 mx-auto mb-2" data-lucide="bell-off"></i>
-                                        <p class="text-xs text-black/30">Belum ada notifikasi</p>
-                                    </div>
-                                @endforelse
+                                    @empty
+                                        <div class="px-4 py-8 text-center">
+                                            <i class="size-8 text-black/10 mx-auto mb-2" data-lucide="bell-off"></i>
+                                            <p class="text-xs text-black/30">Belum ada notifikasi</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route('notifikasi.index') }}"
+                                    class="block text-center text-xs font-medium text-(--third-color) hover:text-(--second-color) py-3 border-t border-black/5 transition-colors">
+                                    Lihat Semua Notifikasi
+                                </a>
                             </div>
-                            <a href="{{ route('notifikasi.index') }}"
-                                class="block text-center text-xs font-medium text-(--third-color) hover:text-(--second-color) py-3 border-t border-black/5 transition-colors">
-                                Lihat Semua Notifikasi
-                            </a>
                         </div>
-                    </div>
 
-                    {{-- User Profile --}}
-                    <div class="group relative flex items-center gap-x-1">
-                        <a class="flex items-center gap-2" href="{{ route('profil.index') }}">
-                            @if (empty(Auth::user()->photo_profile))
-                                <img class="aspect-square w-10 rounded-full object-cover"
-                                    src="{{ asset('img/user.png') }}" alt="photo_profile">
-                            @else
-                                <img class="aspect-square w-10 rounded-full object-cover"
-                                    src="{{ asset('storage/' . Auth::user()->photo_profile) }}"
-                                    alt="photo_profile">
-                            @endif
-                        </a>
-                        <i class="size-5 group-hover:rotate-180 transition-all duration-300"
-                            data-lucide="chevron-down"></i>
-                        <div
-                            class="absolute opacity-0 -left-20 invisible top-10 mt-3 w-30 flex flex-col gap-y-3 shadow-2xl p-4 rounded-lg bg-white group-hover:opacity-100 group-hover:visible transition-all ease-out duration-300">
-                            <a class="text-black/80 hover:text-black"
-                                href="{{ route('profil.index') }}">Profil</a>
-                            <form action="{{ route('logout') }}" method="post">
-                                @csrf
-                                <button
-                                    class="text-red-600/80 hover:text-red-600 flex items-center gap-x-2 cursor-pointer"
-                                    type="submit"><i data-lucide="log-out"
-                                        class="text-red-600/80 hover:text-red-600  rotate-180 size-4"></i>Logout</button>
-                            </form>
+                        {{-- User Profile --}}
+                        <div class="group relative flex items-center gap-x-1">
+                            <a class="flex items-center gap-2" href="{{ route('profil.index') }}">
+                                @if (empty(Auth::user()->photo_profile))
+                                    <img class="aspect-square w-10 rounded-full object-cover"
+                                        src="{{ asset('img/user.png') }}" alt="photo_profile">
+                                @else
+                                    <img class="aspect-square w-10 rounded-full object-cover"
+                                        src="{{ asset('storage/' . Auth::user()->photo_profile) }}" alt="photo_profile">
+                                @endif
+                            </a>
+                            <i class="size-5 group-hover:rotate-180 transition-all duration-300"
+                                data-lucide="chevron-down"></i>
+                            <div
+                                class="absolute opacity-0 -left-20 invisible top-10 mt-3 w-30 flex flex-col gap-y-3 shadow-2xl p-4 rounded-lg bg-white group-hover:opacity-100 group-hover:visible transition-all ease-out duration-300">
+                                <a class="text-black/80 hover:text-black" href="{{ route('profil.index') }}">Profil</a>
+                                <form action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <button
+                                        class="text-red-600/80 hover:text-red-600 flex items-center gap-x-2 cursor-pointer"
+                                        type="submit"><i data-lucide="log-out"
+                                            class="text-red-600/80 hover:text-red-600  rotate-180 size-4"></i>Logout</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                @else
-                    <a class="whitespace-nowrap text-base font-medium transition-all outline-none px-4 py-2"
-                        href="{{ route('auth.register') }}">Register</a>
-                    <a class="whitespace-nowrap text-base font-medium transition-all bg-(--third-color) text-(--primary-color) hover:bg-(--third-color)/90 px-5 py-2 rounded-full"
-                        href="{{ route('login') }}">Login</a>
-                @endif
-            </div>
-        </li>
-    </ul>
-</nav>
+                    @else
+                        <a class="whitespace-nowrap text-base font-medium transition-all outline-none px-4 py-2"
+                            href="{{ route('auth.register') }}">Register</a>
+                        <a class="whitespace-nowrap text-base font-medium transition-all bg-(--third-color) text-(--primary-color) hover:bg-(--third-color)/90 px-5 py-2 rounded-full"
+                            href="{{ route('login') }}">Login</a>
+                    @endif
+                </div>
+            </li>
+        </ul>
+    </nav>

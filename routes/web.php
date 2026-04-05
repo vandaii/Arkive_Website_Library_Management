@@ -53,8 +53,9 @@ Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class
 Route::get('/admin/kelola-employee/', [EmployeeManagementController::class, 'index'])->name('employee-management.index');
 Route::get('/admin/kelola-employee/tambah', [EmployeeManagementController::class, 'create'])->name('employee-management.create');
 Route::post('/admin/kelola-employee/tambah/', [EmployeeManagementController::class, 'store'])->name('employee-management.store');
-Route::get('/admin/kelola-employee/{id}/', [EmployeeManagementController::class, 'show'])->name('employee-management.show');
+Route::get('/admin/kelola-employee/{id}/edit', [EmployeeManagementController::class, 'edit'])->name('employee-management.edit');
 Route::put('/admin/kelola-employee/{id}/update', [EmployeeManagementController::class, 'update'])->name('employee-management.update');
+Route::patch('/admin/kelola-employee/{id}/change-password', [EmployeeManagementController::class, 'changePassword'])->name('employee-management.change-password');
 Route::patch('/admin/kelola-employee/{id}/deactivate', [EmployeeManagementController::class, 'deactivate'])->name('employee-management.deactivate');
 Route::delete('/admin/kelola-employee/{id}/delete', [EmployeeManagementController::class, 'destroy'])->name('employee-management.destroy');
 
