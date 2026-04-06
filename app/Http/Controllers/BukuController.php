@@ -13,7 +13,7 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $books = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')->get();
+        $books = Buku::with(['kategoriBukuRelasi.kategori'])->get();
         return view('admin.data-buku.index', compact('books'), ['title' => 'Data Buku']);
     }
 
@@ -31,7 +31,10 @@ class BukuController extends Controller
             'penulis' => 'required|string',
             'penerbit' => 'required|string',
             'tahun_terbit' => 'required|integer',
+            'isbn_number' => 'required|string',
+            'jumlah_halaman' => 'required|integer',
             'stok' => 'required|integer',
+            'deskripsi' => 'string|nullable',
             'kategori' => 'required|array',
             'kategori.*' => 'required|exists:kategoris,id'
         ]);
@@ -44,7 +47,10 @@ class BukuController extends Controller
             'penulis' => $validated['penulis'],
             'penerbit' => $validated['penerbit'],
             'tahun_terbit' => $validated['tahun_terbit'],
+            'isbn_number' => $validated['isbn_number'],
+            'jumlah_halaman' => $validated['jumlah_halaman'],
             'stok' => $validated['stok'],
+            'deskripsi' => $validated['deskripsi'],
         ]);
 
         foreach ($request->kategori as $kategori) {
@@ -62,6 +68,15 @@ class BukuController extends Controller
         );
 
         return redirect()->route('data-buku.index')->with('success', 'Buku berhasil ditambahkan!');
+    }
+
+    public function detail($id)
+    {
+        $book = Buku::with(['kategoriBukuRelasi.kategori', 'ulasan'])->findOrFail($id);
+        $categories = $book->kategoriBukuRelasi->pluck('kategori.nama_kategori')->filter()->implode(', ') ?: '-';
+        $avgRating = $book->ulasan->count() > 0 ? number_format($book->ulasan->avg('rating'), 1) : '0';
+        $reviewCount = $book->ulasan->count();
+        return view('admin.data-buku._detail', compact('book', 'categories', 'avgRating', 'reviewCount'));
     }
 
     public function show($id)

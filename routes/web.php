@@ -15,6 +15,8 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\BuktiController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
@@ -36,16 +38,16 @@ Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 Route::put('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update');
 Route::patch('/profil/{id}', [ProfilController::class, 'changePassword'])->name('profil.changePassword');
 
-Route::get('/admin', function () {
-    return view('admin.index', ['title' => 'Dashboard Admin']);
-})->name('admin.index')->middleware('auth');
+Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.index')->middleware('auth');
 
 // Kelola Peminjam
 Route::get('/admin/kelola-user/', [UserManagementController::class, 'index'])->name('user-management.index');
 Route::get('/admin/kelola-user/tambah', [UserManagementController::class, 'create'])->name('user-management.create');
 Route::post('/admin/kelola-user/tambah/', [UserManagementController::class, 'store'])->name('user-management.store');
 Route::get('/admin/kelola-user/{id}/', [UserManagementController::class, 'show'])->name('user-management.show');
+Route::get('/admin/kelola-user/{id}/detail', [UserManagementController::class, 'detail'])->name('user-management.detail');
 Route::put('/admin/kelola-user/{id}/update', [UserManagementController::class, 'update'])->name('user-management.update');
+Route::patch('/admin/kelola-user/{id}/change-password', [UserManagementController::class, 'changePassword'])->name('user-management.change-password');
 Route::patch('/admin/kelola-user/{id}/deactivate', [UserManagementController::class, 'deactivate'])->name('user-management.deactivate');
 Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class, 'destroy'])->name('user-management.destroy');
 
@@ -53,6 +55,7 @@ Route::delete('/admin/kelola-user/{id}/delete', [UserManagementController::class
 Route::get('/admin/kelola-employee/', [EmployeeManagementController::class, 'index'])->name('employee-management.index');
 Route::get('/admin/kelola-employee/tambah', [EmployeeManagementController::class, 'create'])->name('employee-management.create');
 Route::post('/admin/kelola-employee/tambah/', [EmployeeManagementController::class, 'store'])->name('employee-management.store');
+Route::get('/admin/kelola-employee/{id}/detail', [EmployeeManagementController::class, 'detail'])->name('employee-management.detail');
 Route::get('/admin/kelola-employee/{id}/edit', [EmployeeManagementController::class, 'edit'])->name('employee-management.edit');
 Route::put('/admin/kelola-employee/{id}/update', [EmployeeManagementController::class, 'update'])->name('employee-management.update');
 Route::patch('/admin/kelola-employee/{id}/change-password', [EmployeeManagementController::class, 'changePassword'])->name('employee-management.change-password');
@@ -71,6 +74,7 @@ Route::delete('/data-kategori/{id}/delete', [KategoriController::class, 'destroy
 Route::get('/data-buku/', [BukuController::class, 'index'])->name('data-buku.index');
 Route::get('/data-buku/tambah', [BukuController::class, 'create'])->name('data-buku.create');
 Route::post('/data-buku/tambah', [BukuController::class, 'store'])->name('data-buku.store');
+Route::get('/data-buku/{id}/detail', [BukuController::class, 'detail'])->name('data-buku.detail');
 Route::get('/data-buku/{id}', [BukuController::class, 'show'])->name('data-buku.show');
 Route::put('/data-buku/{id}/update', [BukuController::class, 'update'])->name('data-buku.update');
 Route::delete('/data-buku/{id}/delete', [BukuController::class, 'destroy'])->name('data-buku.destroy');
@@ -85,6 +89,7 @@ Route::get('/peminjaman/riwayat-peminjaman/detail/{id}', [PinjamController::clas
 
 // Kelola Pinjam
 Route::get('/kelola-pinjam/', [KelolaPinjamController::class, 'index'])->name('kelola-pinjam.index');
+Route::get('/kelola-pinjam/{id}/detail', [KelolaPinjamController::class, 'detail'])->name('kelola-pinjam.detail');
 Route::get('/kelola-pinjam/detail/{id}', [KelolaPinjamController::class, 'show'])->name('kelola-pinjam.show');
 Route::get('/kelola-pinjam/pengajuan-pinjaman/', [KelolaPinjamController::class, 'pengajuanPeminjaman'])->name('kelola-pinjam.pengajuan-pinjaman');
 Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/setuju', [KelolaPinjamController::class, 'setujuPinjam'])->name('kelola-pinjam.setuju-pinjam');
@@ -92,12 +97,14 @@ Route::patch('/kelola-pinjam/pengajuan-pinjaman/{id}/tolak', [KelolaPinjamContro
 
 // Kelola Kembali
 Route::get('/kelola-kembali/', [KelolaKembaliController::class, 'index'])->name('kelola-kembali.index');
+Route::get('/kelola-kembali/{id}/detail', [KelolaKembaliController::class, 'detail'])->name('kelola-kembali.detail');
 Route::get('/kelola-kembali/detail/{id}', [KelolaKembaliController::class, 'show'])->name('kelola-kembali.show');
 Route::get('/kelola-kembali/pengajuan-kembali/', [KelolaKembaliController::class, 'pengajuanPengembalian'])->name('kelola-kembali.pengajuan-kembali');
 Route::patch('/kelola-kembali/pengajuan-kembali/{id}/setuju', [KelolaKembaliController::class, 'setujuKembali'])->name('kelola-kembali.setuju-kembali');
 Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliController::class, 'tolakKembali'])->name('kelola-kembali.tolak-kembali');
 
 // Ulasan (Reviews)
+Route::get('/admin/kelola-ulasan', [UlasanController::class, 'index'])->name('ulasan.index')->middleware('auth');
 Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth');
 Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth');
 Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth');
@@ -117,3 +124,10 @@ Route::delete('/notifikasi', [NotifikasiController::class, 'destroyAll'])->name(
 // Bukti PDF
 Route::get('/bukti/{id}/cetak', [BuktiController::class, 'cetak'])->name('bukti.cetak')->middleware('auth');
 Route::get('/bukti/{id}/download', [BuktiController::class, 'download'])->name('bukti.download')->middleware('auth');
+
+// Laporan PDF
+Route::get('/admin/laporan/buku', [LaporanController::class, 'laporanBuku'])->name('laporan.buku')->middleware('auth');
+Route::get('/admin/laporan/employee', [LaporanController::class, 'laporanEmployee'])->name('laporan.employee')->middleware('auth');
+Route::get('/admin/laporan/user', [LaporanController::class, 'laporanUser'])->name('laporan.user')->middleware('auth');
+Route::get('/admin/laporan/peminjaman', [LaporanController::class, 'laporanPeminjaman'])->name('laporan.peminjaman')->middleware('auth');
+Route::get('/admin/laporan/pengembalian', [LaporanController::class, 'laporanPengembalian'])->name('laporan.pengembalian')->middleware('auth');

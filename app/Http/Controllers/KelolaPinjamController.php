@@ -15,6 +15,12 @@ class KelolaPinjamController extends Controller
         return view('admin.kelola-pinjam.index', compact('peminjamans', 'counts'), ['title' => 'Data Peminjaman']);
     }
 
+    public function detail($id)
+    {
+        $peminjaman = Peminjaman::with('buku', 'user')->findOrFail($id);
+        return view('admin.kelola-pinjam._detail', compact('peminjaman'));
+    }
+
     public function show($id)
     {
         $peminjaman = Peminjaman::with('buku', 'user')->find($id);

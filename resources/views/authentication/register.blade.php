@@ -35,7 +35,7 @@
                                 @enderror" />
                     </div>
                     @error('nama_lengkap')
-                        <div class="text-red-500 text-sm">
+                        <div class="text-red-500 font-medium text-sm">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -54,7 +54,7 @@
                                 @enderror" />
                     </div>
                     @error('username')
-                        <div class="text-red-500 text-sm">
+                        <div class="text-red-500 font-medium text-sm">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -73,7 +73,26 @@
                                 @enderror" />
                     </div>
                     @error('email')
-                        <div class="text-red-500 text-sm">
+                        <div class="text-red-500 font-medium text-sm">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+
+                {{-- No. Handphone --}}
+                <div>
+                    <label for="phone_number" class="text-sm font-medium">No. Handphone</label>
+                    <div class="relative mt-1.5 text-gray-500 hover:text-black transition-all duration-100">
+                        <i data-lucide="phone" class="absolute left-3.5 top-1/2 -translate-y-1/2 size-4"></i>
+                        <input id="phone_number" placeholder="johndoe33" type="text" name="phone_number" required
+                            autocomplete="phone_number" value="{{ old('phone_number') }}"
+                            class="flex h-9 w-full min-w-0 px-3 py-1 text-base outline-1 outline-black/20 hover:outline-black transition-all duration-100 pl-10 rounded-md
+                                @error('phone_number') 
+                                    input-error    
+                                @enderror" />
+                    </div>
+                    @error('phone_number')
+                        <div class="text-red-500 font-medium text-sm">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -103,7 +122,7 @@
                         </div>
                     </div>
                     @error('password')
-                        <div class="text-red-500 text-sm">
+                        <div class="text-red-500 font-medium text-sm">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror

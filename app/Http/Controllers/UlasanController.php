@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UlasanController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Ulasan::with(['user', 'buku'])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%");
+            })->orWhereHas('buku', function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%");
+            });
+        }
+
+        $ulasans = $query->paginate(10)->withQueryString();
+        return view('admin.ulasan.index', compact('ulasans'), ['title' => 'Kelola Ulasan']);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

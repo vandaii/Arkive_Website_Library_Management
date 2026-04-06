@@ -10,11 +10,16 @@ class EmployeeManagementController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::where('isActive', '!=', false)->where('role', '!=', 'peminjam');
+        $query = User::with(['peminjaman' => function ($q) {
+            $q->with('buku')->latest()->limit(5);
+        }])->where('isActive', '!=', false)->where('role', '!=', 'peminjam');
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('nama_lengkap', 'like', "%{$search}%")->Where('username', 'like', "%{$search}%");
+            $query->where(function ($p) use ($search) {
+                $p->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
+            });
         }
 
         if ($request->filled('role') && $request->role != 'All') {
@@ -22,6 +27,14 @@ class EmployeeManagementController extends Controller
         }
         $users = $query->paginate(10)->withQueryString();
         return view('admin.employee-management.index', compact('users'), ['title' => 'Kelola Petugas']);
+    }
+
+    public function detail($id)
+    {
+        $user = User::with(['peminjaman' => function ($q) {
+            $q->with('buku')->latest()->limit(5);
+        }])->findOrFail($id);
+        return view('admin.employee-management._detail', compact('user'));
     }
 
     public function create()
@@ -99,7 +112,7 @@ class EmployeeManagementController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect()->route('employee-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success', 'Berhasil hapus pengguna!');
     }
 
     public function deactivate(Request $request, $id)
@@ -109,6 +122,6 @@ class EmployeeManagementController extends Controller
             'isActive' => false
         ]);
 
-        return redirect()->route('employee-management.index')->with('success');
+        return redirect()->route('employee-management.index')->with('success', 'Berhasil hapus pengguna!');
     }
 }

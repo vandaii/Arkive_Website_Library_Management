@@ -4,6 +4,7 @@ import {
     createIcons,
     // Navigation & Layout
     User,
+    Users,
     UserPlus,
     UserPen,
     ArrowRight,
@@ -21,9 +22,11 @@ import {
     BookUp,
     BookOpen,
     BookX,
+    BookDown,
     ListFilter,
     Bookmark,
     BookmarkCheck,
+    Book,
 
     // Communication & Notifications
     MessageSquare,
@@ -35,14 +38,21 @@ import {
     Briefcase,
     Phone,
     Map,
+    MapPin,
+    AtSign,
 
     // Actions
+    Eye,
+    Pencil,
+    Plus,
     Lock,
     History,
     FileText,
+    FileDown,
     RotateCcw,
     Printer,
     Download,
+    Inbox,
     CheckCheck,
     CheckCircle,
     AlertCircle,
@@ -50,6 +60,16 @@ import {
     MoreHorizontal,
     X,
     Trash2,
+    Check,
+    Clock,
+
+    // Data & Meta
+    Calendar,
+    CalendarCheck,
+    Hash,
+    Package,
+    Tag,
+    Building,
 
     // Social
     Instagram,
@@ -60,6 +80,7 @@ createIcons({
     icons: {
         // Navigation & Layout
         User,
+        Users,
         UserPlus,
         UserPen,
         ArrowRight,
@@ -77,9 +98,11 @@ createIcons({
         BookUp,
         BookOpen,
         BookX,
+        BookDown,
         ListFilter,
         Bookmark,
         BookmarkCheck,
+        Book,
 
         // Communication & Notifications
         MessageSquare,
@@ -91,14 +114,21 @@ createIcons({
         Briefcase,
         Phone,
         Map,
+        MapPin,
+        AtSign,
 
         // Actions
+        Eye,
+        Pencil,
+        Plus,
         Lock,
         History,
         FileText,
+        FileDown,
         RotateCcw,
         Printer,
         Download,
+        Inbox,
         CheckCheck,
         CheckCircle,
         AlertCircle,
@@ -106,6 +136,16 @@ createIcons({
         MoreHorizontal,
         X,
         Trash2,
+        Check,
+        Clock,
+
+        // Data & Meta
+        Calendar,
+        CalendarCheck,
+        Hash,
+        Package,
+        Tag,
+        Building,
 
         // Social
         Instagram,

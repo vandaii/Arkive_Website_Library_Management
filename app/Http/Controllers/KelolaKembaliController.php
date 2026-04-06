@@ -17,6 +17,12 @@ class KelolaKembaliController extends Controller
         return view('admin.kelola-kembali.index', compact('pengembalians', 'counts'), ['title' => 'Data Kembali']);
     }
 
+    public function detail($id)
+    {
+        $pengembalian = Peminjaman::with('buku', 'user')->findOrFail($id);
+        return view('admin.kelola-kembali._detail', compact('pengembalian'));
+    }
+
     public function show($id)
     {
         $pengembalian = Peminjaman::with('buku', 'user')->find($id);

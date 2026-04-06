@@ -114,92 +114,108 @@
                         <h3 class="text-black mb-4">Deskripsi</h3>
                         <p class="text-black/80 text-base text-justify">{{ $book->deskripsi }}</p>
                     </div>
-                    <button onclick="showFormLoan()" id="loan-button"
-                        class="h-10 w-full flex items-center justify-center gap-x-2 bg-(--third-color) hover:bg-(--second-color) text-(--primary-color) font-medium rounded-md transition-colors duration-200 cursor-pointer">
-                        <i class="size-5" data-lucide="book-open"></i>Ajukan Peminjaman
-                    </button>
+                    @if ($book->stok > 0)
+                        <button onclick="showFormLoan()" id="loan-button"
+                            class="h-10 w-full flex items-center justify-center gap-x-2 bg-(--third-color) hover:bg-(--second-color) text-(--primary-color) font-medium rounded-md transition-colors duration-200 cursor-pointer">
+                            <i class="size-5" data-lucide="book-open"></i>Ajukan Peminjaman
+                        </button>
+                    @endif
                 </div>
-                <div class="hidden flex-col gap-6 rounded-2xl p-6 mb-6 bg-white" id="form-loan">
-                    <h2 class="text-black mb-4 text-xl font-medium">Formulir Pengajuan Peminjaman</h2>
-                    <form class="space-y-4" action="{{ route('peminjaman.store') }}" method="POST">
-                        @csrf
-                        @method('POST')
-                        <input type="hidden" name="buku_id" value="{{ $book->id }}">
+                @if ($book->stok > 0)
+                    <div class="hidden flex-col gap-6 rounded-2xl p-6 mb-6 bg-white" id="form-loan">
+                        <h2 class="text-black mb-4 text-xl font-medium">Formulir Pengajuan Peminjaman</h2>
+                        <form class="space-y-4" action="{{ route('peminjaman.store') }}" method="POST">
+                            @csrf
+                            @method('POST')
+                            <input type="hidden" name="buku_id" value="{{ $book->id }}">
 
-                        {{-- Nama Lengkap --}}
-                        <div>
-                            <label class="flex items-center text-sm font-medium mb-1.5" for="nama_lengkap">Nama Lengkap</label>
-                            <input class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                type="text" name="nama_lengkap" id="nama_lengkap"
-                                placeholder="Masukkan Nama Lengkap" value="{{ Auth::user()->nama_lengkap }}"
-                                disabled>
-                            @error('nama_lengkap')
-                                <div class="">
-                                    <span>{{ $message }}</span>
-                                </div>
-                            @enderror
-                        </div>
-
-                        {{-- Email --}}
-                        <div>
-                            <label class="flex items-center text-sm font-medium mb-1.5" for="email">Email</label>
-                            <input class="flex h-9 w-full min-w-0 outline-1 bg-black/10 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                type="text" name="email" id="email"
-                                value="{{ Auth::user()->email }}" disabled>
-                            @error('email')
-                                <div class="">
-                                    <span>{{ $message }}</span>
-                                </div>
-                            @enderror
-                        </div>
-
-                        {{-- Phone Number --}}
-                        <div>
-                            <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">No. Handphone</label>
-                            <input class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                type="text" name="phone_number" id="phone_number"
-                                value="{{ Auth::user()->phone_number }}" required>
-                            @error('phone_number')
-                                <div class="">
-                                    <span>{{ $message }}</span>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            {{-- Tanggal Peminjaman --}}
+                            {{-- Nama Lengkap --}}
                             <div>
-                                <label class="flex items-center text-sm font-medium mb-1.5" for="tanggal_peminjaman">Tanggal Peminjaman</label>
-                                <input class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                    type="date" name="tanggal_peminjaman" id="tanggal_peminjaman"
-                                    value="{{ old('tanggal_peminjaman') }}" required>
-                                @error('tanggal_peminjaman')
+                                <label class="flex items-center text-sm font-medium mb-1.5" for="nama_lengkap">Nama
+                                    Lengkap</label>
+                                <input
+                                    class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                    type="text" name="nama_lengkap" id="nama_lengkap"
+                                    placeholder="Masukkan Nama Lengkap" value="{{ Auth::user()->nama_lengkap }}"
+                                    disabled>
+                                @error('nama_lengkap')
                                     <div class="">
                                         <span>{{ $message }}</span>
                                     </div>
                                 @enderror
                             </div>
-                            {{-- Tanggal Pengembalian --}}
+
+                            {{-- Email --}}
                             <div>
-                                <label class="flex items-center text-sm font-medium mb-1.5" for="estimasi_tanggal_pengembalian">Tanggal Pengembalian</label>
-                                <input class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
-                                    type="date" name="estimasi_tanggal_pengembalian" id="estimasi_tanggal_pengembalian"
-                                    value="{{ old('estimasi_tanggal_pengembalian') }}" required>
-                                @error('estimasi_tanggal_pengembalian')
+                                <label class="flex items-center text-sm font-medium mb-1.5"
+                                    for="email">Email</label>
+                                <input
+                                    class="flex h-9 w-full min-w-0 outline-1 bg-black/10 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                    type="text" name="email" id="email" value="{{ Auth::user()->email }}"
+                                    disabled>
+                                @error('email')
                                     <div class="">
                                         <span>{{ $message }}</span>
                                     </div>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="flex gap-3 pt-4">
-                            <button onclick="hideFormLoan()"
-                                class="flex items-center justify-center w-full h-9 px-4 py-2 outline-1 outline-(--third-color) text-(--third-color) font-medium rounded-md hover:outline-(--second-color) hover:text-(--second-color) transition-all duration-200 cursor-pointer"
-                                type="button">Batal</button>
-                            <button class="flex items-center justify-center w-full h-9 px-4 py-2 bg-(--third-color) text-(--primary-color) font-medium rounded-md hover:bg-(--second-color) transition-all duration-200 cursor-pointer">Pinjam</button>
-                        </div>
-                    </form>
-                </div>
+                            {{-- Phone Number --}}
+                            <div>
+                                <label class="flex items-center text-sm font-medium mb-1.5" for="phone_number">No.
+                                    Handphone</label>
+                                <input
+                                    class="flex h-9 w-full min-w-0 bg-black/10 outline-1 outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                    type="text" name="phone_number" id="phone_number"
+                                    value="{{ Auth::user()->phone_number }}" required>
+                                @error('phone_number')
+                                    <div class="">
+                                        <span>{{ $message }}</span>
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                {{-- Tanggal Peminjaman --}}
+                                <div>
+                                    <label class="flex items-center text-sm font-medium mb-1.5"
+                                        for="tanggal_peminjaman">Tanggal Peminjaman</label>
+                                    <input
+                                        class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                        type="date" name="tanggal_peminjaman" id="tanggal_peminjaman"
+                                        value="{{ old('tanggal_peminjaman') }}" required>
+                                    @error('tanggal_peminjaman')
+                                        <div class="">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                                {{-- Tanggal Pengembalian --}}
+                                <div>
+                                    <label class="flex items-center text-sm font-medium mb-1.5"
+                                        for="estimasi_tanggal_pengembalian">Tanggal Pengembalian</label>
+                                    <input
+                                        class="flex relative h-9 w-full min-w-0 outline-1 date-input outline-black/30 rounded-md px-2 py-1 focus:outline-2 focus:outline-black/30"
+                                        type="date" name="estimasi_tanggal_pengembalian"
+                                        id="estimasi_tanggal_pengembalian"
+                                        value="{{ old('estimasi_tanggal_pengembalian') }}" required>
+                                    @error('estimasi_tanggal_pengembalian')
+                                        <div class="">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 pt-4">
+                                <button onclick="hideFormLoan()"
+                                    class="flex items-center justify-center w-full h-9 px-4 py-2 outline-1 outline-(--third-color) text-(--third-color) font-medium rounded-md hover:outline-(--second-color) hover:text-(--second-color) transition-all duration-200 cursor-pointer"
+                                    type="button">Batal</button>
+                                <button
+                                    class="flex items-center justify-center w-full h-9 px-4 py-2 bg-(--third-color) text-(--primary-color) font-medium rounded-md hover:bg-(--second-color) transition-all duration-200 cursor-pointer">Pinjam</button>
+                            </div>
+                        </form>
+                    </div>
+                @endif
             </div>
         </section>
 
@@ -224,7 +240,7 @@
                             <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
                             <i class="stroke-1 stroke-(--third-color) size-4" data-lucide="star"></i>
                             <div class="w-20 absolute top-0">
-                            <div class="overflow-hidden" style="width: {{ $starRating }}%">
+                                <div class="overflow-hidden" style="width: {{ $starRating }}%">
                                     <div class="w-34.25 flex">
                                         <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
                                         <i class="stroke-none size-4 fill-(--third-color)" data-lucide="star"></i>
@@ -240,15 +256,15 @@
                 </div>
                 <div class="flex flex-col w-full">
                     {{-- 5 Star --}}
-                        <div class="flex items-center w-full gap-8">
+                    <div class="flex items-center w-full gap-8">
                         <p class="flex items-center text-sm text-black/50 font-medium">5<i
-                                    class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
-                            <div class="relative bg-black/15 w-full rounded-full h-1.5">
-                                <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
+                                class="stroke-0 fill-black/50 size-3" data-lucide="star"></i></p>
+                        <div class="relative bg-black/15 w-full rounded-full h-1.5">
+                            <div class="flex absolute top-0 bg-(--third-color) rounded-full h-1.5"
                                 style="width: {{ $avg5Star }}%">
                             </div>
                         </div>
-                                </div>
+                    </div>
 
                     {{-- 4 Star --}}
                     <div class="flex items-center w-full gap-8">
@@ -301,34 +317,45 @@
             {{-- Daftar Ulasan --}}
             <div class="space-y-4">
                 @forelse ($ulasans as $review)
-                    <div id="review_{{ $review->id }}" class="p-5 rounded-xl border border-black/15 bg-white hover:shadow-sm transition-shadow duration-200">
+                    <div id="review_{{ $review->id }}"
+                        class="p-5 rounded-xl border border-black/15 bg-white hover:shadow-sm transition-shadow duration-200">
 
                         {{-- Header: Avatar, Nama, Waktu, Menu --}}
                         <div class="flex items-start justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-(--third-color)/10 flex items-center justify-center shrink-0">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-(--third-color)/10 flex items-center justify-center shrink-0">
                                     @if (!empty($review->user->photo_profile))
-                                        <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('storage/' . $review->user->photo_profile) }}" alt="">
+                                        <img class="w-10 h-10 rounded-full object-cover"
+                                            src="{{ asset('storage/' . $review->user->photo_profile) }}"
+                                            alt="">
                                     @else
-                                        <span class="text-sm font-bold text-(--third-color)">{{ strtoupper(substr($review->user->username ?? 'A', 0, 1)) }}</span>
+                                        <!-- <span class="text-sm font-bold text-(--third-color)">{{ strtoupper(substr($review->user->username ?? 'A', 0, 1)) }}</span> -->
+                                        <img class="w-10 h-10 rounded-full object-cover"
+                                            src="{{ asset('img/user.png') }}" alt="">
                                     @endif
                                 </div>
                                 <div>
-                                    <div class="font-semibold text-sm">{{ $review->user->nama_lengkap ?? $review->user->username ?? 'Anonim' }}</div>
-                                    <div class="text-xs text-black/40">{{ $review->created_at->diffForHumans() }}</div>
+                                    <div class="font-semibold text-sm">
+                                        {{ $review->user->nama_lengkap ?? ($review->user->username ?? 'Anonim') }}
+                                    </div>
+                                    <div class="text-xs text-black/40">{{ $review->created_at->diffForHumans() }}
+                                    </div>
                                 </div>
                             </div>
 
                             {{-- Dropdown menu (edit/hapus) hanya untuk pemilik ulasan --}}
                             <div class="relative">
                                 @if (Auth::check() && Auth::id() === $review->user_id)
-                                    <button class="review-actions-btn p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                                    <button
+                                        class="review-actions-btn p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                         data-review-id="{{ $review->id }}">
                                         <i class="size-4 text-black/30" data-lucide="more-horizontal"></i>
                                     </button>
                                     <div class="actions-dropdown absolute right-0 mt-1 w-36 bg-white border border-black/10 rounded-xl shadow-lg hidden z-10 overflow-hidden"
                                         data-review-id="{{ $review->id }}">
-                                        <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 edit-review-btn transition-colors cursor-pointer"
+                                        <button
+                                            class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 edit-review-btn transition-colors cursor-pointer"
                                             data-review-id="{{ $review->id }}">Edit</button>
                                         <form action="{{ route('ulasan.destroy', $review->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus ulasan?')">
@@ -354,7 +381,8 @@
                         </div>
 
                         {{-- Teks ulasan --}}
-                        <div class="mt-3 text-sm text-black/70 leading-relaxed" id="review_text_{{ $review->id }}">{{ $review->ulasan }}</div>
+                        <div class="mt-3 text-sm text-black/70 leading-relaxed" id="review_text_{{ $review->id }}">
+                            {{ $review->ulasan }}</div>
 
                         {{-- Form edit ulasan (tersembunyi, muncul saat klik Edit) --}}
                         @if (Auth::check() && Auth::id() === $review->user_id)
@@ -362,12 +390,14 @@
                                 <form action="{{ route('ulasan.update', $review->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="rating" id="edit_rating_input_{{ $review->id }}" value="{{ $review->rating }}">
+                                    <input type="hidden" name="rating" id="edit_rating_input_{{ $review->id }}"
+                                        value="{{ $review->rating }}">
 
                                     {{-- Bintang interaktif untuk edit --}}
                                     <div class="flex items-center gap-2 mb-3">
                                         <label class="text-sm font-medium">Rating</label>
-                                        <div class="edit-star-container flex gap-0.5" data-review-id="{{ $review->id }}">
+                                        <div class="edit-star-container flex gap-0.5"
+                                            data-review-id="{{ $review->id }}">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <i data-lucide="star" data-value="{{ $i }}"
                                                     class="edit-star cursor-pointer w-5 h-5 stroke-0 hover:scale-110 transition-transform {{ $i <= $review->rating ? 'fill-(--third-color)' : 'fill-gray-300' }}"></i>
