@@ -7,17 +7,35 @@
         </div>
 
         <div class="flex justify-between items-center mb-5">
-            <form class="relative w-1/2" action="{{ route('data-buku.index') }}" method="GET">
-                <x-search-input></x-search-input>
-            </form>
+            <div class="w-1/2 flex items-center gap-2">
+                <form class="relative w-1/2" action="{{ route('data-buku.index') }}" method="GET">
+                    <x-search-input class="w-full"></x-search-input>
+                </form>
+                <form id="filterForm" action="{{ route('data-buku.index') }}" method="get" class="flex items-center gap-3 flex-wrap">
+                    {{-- Kategori Filter --}}
+                    <div class="relative">
+                        <select name="kategori" id="kategori"
+                            onchange="document.getElementById('filterForm').submit()"
+                            class="appearance-none pl-3 pr-8 py-2 text-sm rounded-full border border-black/15 bg-white focus:outline-none focus:border-(--third-color) cursor-pointer transition-all duration-200">
+                            <option value="all" {{ request('kategori') == 'all' || !request('kategori') ? 'selected' : '' }}>Semua Kategori</option>
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('kategori') == $category->id ? 'selected' : '' }}>
+                                {{ $category->nama_kategori }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <i class="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-black/40 pointer-events-none" data-lucide="chevron-down"></i>
+                    </div>
+                </form>
+            </div>
             <div class="flex items-center gap-2">
-                <button onclick="window.print()"
+                <!-- <button onclick="window.print()"
                     class="no-print flex items-center gap-1.5 px-4 py-2 bg-(--logo-color) text-white rounded-lg hover:bg-(--logo-color)/70 transition-all duration-200 cursor-pointer">
                     <i class="size-4" data-lucide="printer"></i>Cetak
-                </button>
+                </button> -->
                 <a class="no-print flex items-center gap-1.5 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-all duration-200"
                     href="{{ route('laporan.buku') }}" target="_blank">
-                    <i class="size-4" data-lucide="file-down"></i>Unduh PDF
+                    <i class="size-4" data-lucide="file-down"></i>Laporan
                 </a>
                 <a class="no-print flex items-center gap-1.5 px-4 py-2 bg-(--third-color) text-white rounded-lg hover:bg-(--second-color) transition-all duration-200"
                     href="{{ route('data-buku.create') }}">
@@ -32,6 +50,7 @@
                     <th class="py-3 px-2 w-1/12">Cover</th>
                     <th class="w-3/12">Judul</th>
                     <th class="w-2/12">Penulis</th>
+                    <th class="w-2/12">No. ISBN</th>
                     <th class="w-2/12">Penerbit</th>
                     <th class="w-1/12">Tahun</th>
                     <th class="w-1/12">Stok</th>
@@ -40,59 +59,67 @@
             </thead>
             <tbody>
                 @forelse ($books as $book)
-                    <tr
-                        class="border-b border-gray-500/40 odd:bg-white even:bg-black/5 hover:bg-blue-50/50 transition-colors duration-150">
-                        <td class="py-3 px-2">
-                            <img class="rounded-md h-16 w-12 object-cover"
-                                src="{{ asset('storage/' . $book->cover_buku) }}" alt="{{ $book->judul }}">
-                        </td>
-                        <td class="pr-2">
-                            <p class="font-medium line-clamp-2">{{ $book->judul }}</p>
-                            <p class="text-xs text-black/40 mt-0.5">
-                                {{ $book->kategoriBukuRelasi->pluck('kategori.nama_kategori')->filter()->implode(', ') ?: '-' }}
-                            </p>
-                        </td>
-                        <td class="pr-2 text-sm">{{ $book->penulis }}</td>
-                        <td class="pr-2 text-sm">{{ $book->penerbit }}</td>
-                        <td class="pr-2 text-sm">{{ $book->tahun_terbit }}</td>
-                        <td class="pr-2">
-                            <span class="badge {{ $book->stok > 0 ? 'badge-dikembalikan' : 'badge-terlambat' }}">
-                                {{ $book->stok }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="flex items-center justify-center gap-2">
-                                <button
-                                    onclick="openAjaxModal('{{ route('data-buku.detail', $book->id) }}', 'Detail Buku')"
-                                    class="rounded-lg cursor-pointer transition-colors" title="Detail">
-                                    <i class="size-4" data-lucide="eye"></i>
+                <tr
+                    class="border-b border-gray-500/40 odd:bg-white even:bg-black/5 transition-colors duration-150">
+                    <td class="py-3 px-2">
+                        <img class="rounded-md h-16 w-12 object-cover"
+                            src="{{ asset('storage/' . $book->cover_buku) }}" alt="{{ $book->judul }}">
+                    </td>
+                    <td class="pr-2">
+                        <p class="font-medium line-clamp-2">{{ $book->judul }}</p>
+                        <p class="text-xs text-black/40 mt-0.5">
+                            {{ $book->kategoriBukuRelasi->pluck('kategori.nama_kategori')->filter()->implode(', ') ?: '-' }}
+                        </p>
+                    </td>
+                    <td class="pr-2 text-sm">{{ $book->penulis }}</td>
+                    <td class="pr-2 text-sm">{{ $book->isbn_number }}</td>
+                    <td class="pr-2 text-sm">{{ $book->penerbit }}</td>
+                    <td class="pr-2 text-sm">{{ $book->tahun_terbit }}</td>
+                    <td class="pr-2">
+                        <span class="badge {{ $book->stok > 0 ? 'badge-dikembalikan' : 'badge-terlambat' }}">
+                            {{ $book->stok }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex items-center justify-center gap-2">
+                            <button
+                                onclick="openAjaxModal('{{ route('data-buku.detail', $book->id) }}', 'Detail Buku')"
+                                class="rounded-lg cursor-pointer transition-colors" title="Detail">
+                                <i class="size-4" data-lucide="eye"></i>
+                            </button>
+                            <a href="{{ route('data-buku.show', $book->id) }}"
+                                class="rounded-lg text-(--third-color) transition-colors" title="Edit">
+                                <i class="size-4" data-lucide="pencil"></i>
+                            </a>
+                            <form action="{{ route('data-buku.destroy', $book->id) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="rounded-lg text-red-500 cursor-pointer transition-colors" title="Hapus">
+                                    <i class="size-4" data-lucide="trash-2"></i>
                                 </button>
-                                <a href="{{ route('data-buku.show', $book->id) }}"
-                                    class="rounded-lg text-(--third-color) transition-colors" title="Edit">
-                                    <i class="size-4" data-lucide="pencil"></i>
-                                </a>
-                                <form action="{{ route('data-buku.destroy', $book->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="rounded-lg text-red-500 cursor-pointer transition-colors" title="Hapus">
-                                        <i class="size-4" data-lucide="trash-2"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="7" class="text-center text-gray-500 pt-8 pb-4">
-                            <i class="size-12 mx-auto mb-2 text-gray-300" data-lucide="book-x"></i>
-                            <p>Tidak ada data buku</p>
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="7" class="text-center text-gray-500 pt-8 pb-4">
+                        <i class="size-12 mx-auto mb-2 text-gray-300" data-lucide="book-x"></i>
+                        <p>Tidak ada data buku</p>
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
+
+        {{-- Pagination --}}
+        @if ($books->hasPages())
+        <div class="flex justify-center mt-6">
+            {{ $books->links('components.pagination') }}
+        </div>
+        @endif
     </div>
 
     {{-- AJAX Detail Modal --}}

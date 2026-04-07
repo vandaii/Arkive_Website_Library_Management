@@ -50,40 +50,42 @@
         </section>
         <section class="mt-30 px-5">
             <div class="flex justify-between items-center gap-6 mb-10">
-                <h1 class="text-3xl/tight font-medium">Buku Unggulan</h1>
+                <h1 class="text-3xl/tight font-medium">Koleksi Buku Arkive</h1>
                 <a class="flex items-center gap-x-1 border-2 px-4 py-2 rounded-full font-medium"
                     href="{{ route('user.index') }}">Lihat
                     Semua Buku <i class="size-4" data-lucide="arrow-right"></i></a>
             </div>
             <div class="flex gap-6 overflow-x-auto pb-4 snap-mandatory mb-30">
                 @forelse ($books as $book)
-                    <div class="snap-start">
-                        <a class="group block" href="{{ route('book.show', $book->id) }}">
-                            <div class="rounded-2xl overflow-hidden mb-4 w-55 h-73.25 aspect-3/4">
-                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    src="{{ asset('storage/' . $book->cover_buku) }}" alt="cover">
+                <div class="snap-start">
+                    <a class="group block" href="{{ route('book.show', $book->id) }}">
+                        <div class="rounded-2xl overflow-hidden mb-4 w-55 h-73.25 aspect-3/4">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="{{ asset('storage/' . $book->cover_buku) }}" alt="cover">
+                        </div>
+                        <div>
+                            <div class="inline-block py-0.5 rounded-full text-xs">
+                                {{ $book->kategoriBukuRelasi->implode('kategori.nama_kategori', ', ') }}
                             </div>
-                            <div>
-                                <div class="inline-block py-0.5 rounded-full text-xs">
-                                    {{ $book->kategoriBukuRelasi->implode('kategori.nama_kategori', ', ') }}</div>
-                                <h1 class="line-clamp-1 mb-0.5 text-base font-semibold">
-                                    {{ $book->judul }}</h1>
-                                <h2 class="text-sm text-black/50">{{ $book->penulis }}</h2>
-                                <div class="flex items-center gap-1 mt-2">
-                                    <i class="stroke-0 size-4 fill-(--second-color)" data-lucide="star"></i>
-                                    @php
-                                        $avg = $book->averageRating();
-                                    @endphp
+                            <h1 class="line-clamp-1 mb-0.5 text-base font-semibold">
+                                {{ $book->judul }}
+                            </h1>
+                            <h2 class="text-sm text-black/50">{{ $book->penulis }}</h2>
+                            <div class="flex items-center gap-1 mt-2">
+                                <i class="stroke-0 size-4 fill-(--second-color)" data-lucide="star"></i>
+                                @php
+                                $avg = $book->averageRating();
+                                @endphp
 
-                                    <p class="text-xs font-semibold">{{ $avg }}</p>
-                                    <p class="text-xs text-black/40">({{ $book->ulasan->count() }})</p>
+                                <p class="text-xs font-semibold">{{ $avg }}</p>
+                                <p class="text-xs text-black/40">({{ $book->ulasan->count() }})</p>
 
-                                </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
+                </div>
                 @empty
-                    <h1>Tidak Ada Data</h1>
+                <h1>Tidak Ada Data</h1>
                 @endforelse
             </div>
         </section>

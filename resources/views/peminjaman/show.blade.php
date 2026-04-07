@@ -11,9 +11,9 @@
                     </div>
                     <div>
                         @if (in_array($detail->status_peminjaman, ['Pending Dikembalikan', 'Dikembalikan', 'Terlambat']))
-                            <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
+                        <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
                         @else
-                            <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
                         @endif
                     </div>
                 </div>
@@ -63,12 +63,14 @@
                             <img class="w-26 h-34 object-cover rounded-xl shrink-0"
                                 src="{{ asset('storage/' . $detail->buku->cover_buku) }}" alt="cover">
                             <div class="flex flex-col">
-                                @foreach ($detail->buku->kategoriBukuRelasi as $category)
+                                <div class="flex gap-1">
+                                    @foreach ($detail->buku->kategoriBukuRelasi as $category)
                                     <div
-                                        class="inline-block px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
+                                        class="inline-block w-fit px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
                                         {{ $category->kategori->nama_kategori }}
                                     </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                                 <p class="text-black text-lg font-bold mb-1.5">{{ $detail->buku->judul }}</p>
                                 <p class="text-black/55 text-base mb-1.5">{{ $detail->buku->penulis }}</p>
                                 <p class="text-black/40 text-sm mb-1.5">{{ $detail->buku->penerbit }}</p>
@@ -91,17 +93,17 @@
         </div>
 
         @if ($detail->status_peminjaman == 'Dipinjam')
-            <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
-                <div>
-                    <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
-                    <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.
-                    </p>
-                </div>
-                <button type="button" onclick="showFormReturn()"
-                    class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2"><i
-                        class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
-                    Buku</button>
+        <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
+            <div>
+                <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
+                <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.
+                </p>
             </div>
+            <button type="button" onclick="showFormReturn()"
+                class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2"><i
+                    class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
+                Buku</button>
+        </div>
         @endif
 
         <div class="hidden rounded-2xl p-8 bg-white" id="form-return">

@@ -14,9 +14,9 @@
                         class="appearance-none pl-3 pr-8 py-2 text-sm rounded-full border border-black/15 bg-white focus:outline-none focus:border-(--third-color) cursor-pointer transition-all duration-200">
                         <option value="all" {{ request('kategori') == 'all' || !request('kategori') ? 'selected' : '' }}>Semua Kategori</option>
                         @foreach ($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ request('kategori') == $cat->id ? 'selected' : '' }}>
-                                {{ $cat->nama_kategori }}
-                            </option>
+                        <option value="{{ $cat->id }}" {{ request('kategori') == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->nama_kategori }}
+                        </option>
                         @endforeach
                     </select>
                     <i class="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-black/40 pointer-events-none" data-lucide="chevron-down"></i>
@@ -37,54 +37,63 @@
                 </div>
 
                 @if (request('kategori') && request('kategori') !== 'all' || request('sort'))
-                    <a href="{{ route('user.index') }}"
-                        class="flex items-center gap-1 text-xs text-black/50 hover:text-black font-medium transition-colors">
-                        <i class="size-3" data-lucide="x"></i>Reset
-                    </a>
+                <a href="{{ route('user.index') }}"
+                    class="flex items-center gap-1 text-xs text-black/50 hover:text-black font-medium transition-colors">
+                    <i class="size-3" data-lucide="x"></i>Reset
+                </a>
                 @endif
             </form>
         </div>
 
         @if (isset($search) && $search)
-            <div class="flex items-center gap-2 mb-6 px-1">
-                <p class="text-sm text-black/50">Hasil pencarian untuk: <span class="font-semibold text-black">"{{ $search }}"</span></p>
-                <span class="text-xs text-black/30">({{ $books->count() }} buku ditemukan)</span>
-            </div>
+        <div class="flex items-center gap-2 mb-6 px-1">
+            <p class="text-sm text-black/50">Hasil pencarian untuk: <span class="font-semibold text-black">"{{ $search }}"</span></p>
+            <span class="text-xs text-black/30">({{ $books->count() }} buku ditemukan)</span>
+        </div>
         @endif
 
         <div class="flex gap-x-4 gap-y-6 flex-wrap">
             @forelse ($books as $book)
-                <div>
-                    <a class="group block" href="{{ route('book.show', $book->id) }}">
-                        <div class="rounded-md overflow-hidden w-40 aspect-3/4">
-                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                src="{{ asset('storage/' . $book->cover_buku) }}" alt="cover">
+            <div>
+                <a class="group block" href="{{ route('book.show', $book->id) }}">
+                    <div class="rounded-md overflow-hidden w-40 aspect-3/4">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="{{ asset('storage/' . $book->cover_buku) }}" alt="cover">
+                    </div>
+                    <div class="w-40">
+                        <div class="inline-block py-0.5 rounded-full text-xs">
+                            {{ $book->kategoriBukuRelasi->implode('kategori.nama_kategori', ', ') }}
                         </div>
-                        <div class="w-40">
-                            <div class="inline-block py-0.5 rounded-full text-xs">
-                                {{ $book->kategoriBukuRelasi->implode('kategori.nama_kategori', ', ') }}</div>
-                            <h1 class="line-clamp-1 mb-0.5 text-base font-semibold text-ellipsis overflow-hidden">
-                                {{ $book->judul }}</h1>
-                            <h2 class="text-sm text-black/50">{{ $book->penulis }}</h2>
-                            <div class="flex items-center gap-1 mt-2">
+                        <h1 class="line-clamp-1 mb-0.5 text-base font-semibold text-ellipsis overflow-hidden">
+                            {{ $book->judul }}
+                        </h1>
+                        <h2 class="text-sm text-black/50">{{ $book->penulis }}</h2>
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex items-center gap-2">
                                 <i class="stroke-0 size-4 fill-(--second-color)" data-lucide="star"></i>
                                 @php
-                                    $avg = $book->averageRating();
+                                $avg = $book->averageRating();
                                 @endphp
 
                                 <p class="text-xs font-semibold">{{ $avg }}</p>
                                 <p class="text-xs text-black/40">({{ $book->ulasan->count() }})</p>
-
                             </div>
+                            @if($book->stok < 1)
+                                <p class="text-xs text-red-600 font-medium">Tidak Tersedia</p>
+                                @else
+                                <p class="text-xs text-(--third-color) font-medium">Tersedia</p>
+                                @endif
+
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
+            </div>
             @empty
-                <div class="flex flex-col items-center justify-center w-full py-16">
-                    <i class="size-16 text-black/10 mb-4" data-lucide="book-x"></i>
-                    <h2 class="text-lg font-medium text-black/40">Tidak Ada Buku Ditemukan</h2>
-                    <p class="text-sm text-black/30 mt-1">Coba ubah filter atau kata kunci pencarian</p>
-                </div>
+            <div class="flex flex-col items-center justify-center w-full py-16">
+                <i class="size-16 text-black/10 mb-4" data-lucide="book-x"></i>
+                <h2 class="text-lg font-medium text-black/40">Tidak Ada Buku Ditemukan</h2>
+                <p class="text-sm text-black/30 mt-1">Coba ubah filter atau kata kunci pencarian</p>
+            </div>
             @endforelse
         </div>
     </section>

@@ -8,9 +8,21 @@ use Illuminate\Http\Request;
 
 class KelolaPinjamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjamans = Peminjaman::with('buku')->where('status_peminjaman', '!=', 'Pending')->orderBy('id', 'DESC')->paginate(10);
+        $query = Peminjaman::with('buku')->where('status_peminjaman', 'Dipinjam');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('buku', function ($b) use ($search) {
+                    $b->where('judul', 'like', "%{$search}%")->orWhere('penulis', 'like', "%{$search}%");
+                })->orWhereHas('user', function ($u) use ($search) {
+                    $u->where('nama_lengkap', 'like', "%{$search}%");
+                });
+            });
+        }
+        $peminjamans = $query->orderBy('id', 'DESC')->paginate(10)->withQueryString();
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending')->get()->count();
         return view('admin.kelola-pinjam.index', compact('peminjamans', 'counts'), ['title' => 'Data Peminjaman']);
     }

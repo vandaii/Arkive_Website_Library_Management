@@ -11,10 +11,22 @@ use Illuminate\Support\Facades\File;
 
 class BukuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Buku::with(['kategoriBukuRelasi.kategori'])->get();
-        return view('admin.data-buku.index', compact('books'), ['title' => 'Data Buku']);
+        $query = Buku::with(['kategoriBukuRelasi.kategori', 'ulasan']);
+        $categories = Kategori::with('kategoriBukuRelasi')->get();
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('judul', 'like', "%{$search}%")->orWhere('penulis', 'like', "%{$search}%")->orWhere('penerbit', 'like', "%{$search}%")->orWhere('isbn_number', 'like', "%{$search}%");
+        }
+        if ($request->filled('kategori') && $request->kategori !== 'all') {
+            $kategoriId = $request->kategori;
+            $query->whereHas('kategoriBukuRelasi', function ($q) use ($kategoriId) {
+                $q->where('kategori_id', $kategoriId);
+            });
+        }
+        $books = $query->paginate(10)->withQueryString();
+        return view('admin.data-buku.index', compact('books', 'categories'), ['title' => 'Data Buku']);
     }
 
     public function create()
@@ -81,10 +93,9 @@ class BukuController extends Controller
 
     public function show($id)
     {
-        $book = Buku::select('id', 'cover_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok')
-            ->with(['kategoriBukuRelasi' => function ($q) {
-                $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
-            }])->find($id);
+        $book = Buku::with(['kategoriBukuRelasi' => function ($q) {
+            $q->select('id', 'buku_id', 'kategori_id')->with('kategori:id,nama_kategori');
+        }])->find($id);
         $categories = Kategori::select('id', 'nama_kategori')->with('kategoriBukuRelasi.buku')->get();
         $relations = KategoriBukuRelasi::where('buku_id', $book->id)->get();
         return view('admin.data-buku.edit', compact('book', 'categories', 'relations'), ['title' => 'Edit Buku']);
@@ -98,7 +109,10 @@ class BukuController extends Controller
             'penulis' => 'required|string',
             'penerbit' => 'required|string',
             'tahun_terbit' => 'required|integer',
+            'isbn_number' => 'required|string',
+            'jumlah_halaman' => 'required|integer',
             'stok' => 'required|integer',
+            'deskripsi' => 'string|nullable',
             'kategori' => 'required|array',
             'kategori.*' => 'required|exists:kategoris,id'
         ]);
@@ -120,7 +134,10 @@ class BukuController extends Controller
             'penulis' => $validated['penulis'],
             'penerbit' => $validated['penerbit'],
             'tahun_terbit' => $validated['tahun_terbit'],
+            'isbn_number' => $validated['isbn_number'],
+            'jumlah_halaman' => $validated['jumlah_halaman'],
             'stok' => $validated['stok'],
+            'deskripsi' => $validated['deskripsi'],
         ]);
 
         if ($request->has('cover_buku')) {

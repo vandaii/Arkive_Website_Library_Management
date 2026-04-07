@@ -104,10 +104,10 @@ Route::patch('/kelola-kembali/pengajuan-kembali/{id}/setuju', [KelolaKembaliCont
 Route::patch('/kelola-kembali/pengajuan-kembali/{id}/tolak', [KelolaKembaliController::class, 'tolakKembali'])->name('kelola-kembali.tolak-kembali')->middleware(['auth', 'role:admin,petugas']);
 
 // Ulasan (Reviews)
-Route::get('/admin/kelola-ulasan', [UlasanController::class, 'index'])->name('ulasan.index')->middleware('auth')->middleware(['auth', 'role:admin,petugas']);
-Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth')->middleware(['auth', 'role:admin,petugas']);
-Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth')->middleware(['auth', 'role:admin,petugas']);
-Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth')->middleware(['auth', 'role:admin,petugas']);
+Route::get('/admin/kelola-ulasan', [UlasanController::class, 'index'])->name('ulasan.index')->middleware('auth')->middleware('auth');
+Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store')->middleware('auth')->middleware('auth');
+Route::put('/ulasan/{id}', [UlasanController::class, 'update'])->name('ulasan.update')->middleware('auth')->middleware('auth');
+Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy')->middleware('auth')->middleware('auth');
 
 // Koleksi
 Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi.index')->middleware('auth');
@@ -126,8 +126,8 @@ Route::get('/bukti/{id}/cetak', [BuktiController::class, 'cetak'])->name('bukti.
 Route::get('/bukti/{id}/download', [BuktiController::class, 'download'])->name('bukti.download')->middleware('auth');
 
 // Laporan PDF
-Route::get('/admin/laporan/buku', [LaporanController::class, 'laporanBuku'])->name('laporan.buku')->middleware(['auth', 'role:admin', 'role:petugas']);
-Route::get('/admin/laporan/employee', [LaporanController::class, 'laporanEmployee'])->name('laporan.employee')->middleware(['auth', 'role:admin', 'role:petugas']);
-Route::get('/admin/laporan/user', [LaporanController::class, 'laporanUser'])->name('laporan.user')->middleware(['auth', 'role:admin', 'role:petugas']);
-Route::get('/admin/laporan/peminjaman', [LaporanController::class, 'laporanPeminjaman'])->name('laporan.peminjaman')->middleware(['auth', 'role:admin', 'role:petugas']);
-Route::get('/admin/laporan/pengembalian', [LaporanController::class, 'laporanPengembalian'])->name('laporan.pengembalian')->middleware(['auth', 'role:admin', 'role:petugas']);
+Route::get('/admin/laporan/buku', [LaporanController::class, 'laporanBuku'])->name('laporan.buku')->middleware(['auth', 'role:admin,petugas']);
+Route::get('/admin/laporan/employee', [LaporanController::class, 'laporanEmployee'])->name('laporan.employee')->middleware(['auth', 'role:admin,petugas']);
+Route::get('/admin/laporan/user', [LaporanController::class, 'laporanUser'])->name('laporan.user')->middleware(['auth', 'role:admin,petugas']);
+Route::get('/admin/laporan/peminjaman', [LaporanController::class, 'laporanPeminjaman'])->name('laporan.peminjaman')->middleware(['auth', 'role:admin,petugas']);
+Route::get('/admin/laporan/pengembalian', [LaporanController::class, 'laporanPengembalian'])->name('laporan.pengembalian')->middleware(['auth', 'role:admin,petugas']);

@@ -29,13 +29,13 @@
                 </div>
             </form>
             <div class="flex items-center gap-2">
-                <button onclick="window.print()"
+                <!-- <button onclick="window.print()"
                     class="no-print flex items-center gap-1.5 px-4 py-2 rounded-lg bg-(--logo-color) text-white hover:bg-(--logo-color)/70 transition-all duration-200 cursor-pointer">
                     <i class="size-4" data-lucide="printer"></i>Cetak
-                </button>
+                </button> -->
                 <a class="no-print flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 transition-all duration-200"
                     href="{{ route('laporan.employee') }}" target="_blank">
-                    <i class="size-4" data-lucide="file-down"></i>Unduh PDF
+                    <i class="size-4" data-lucide="file-down"></i>Laporan
                 </a>
                 <a class="flex items-center gap-1.5 px-4 py-2 bg-(--third-color) text-white rounded-lg hover:bg-(--second-color) transition-all duration-200 no-print"
                     href="{{ route('employee-management.create') }}"><i class="size-5"
@@ -57,59 +57,60 @@
             </thead>
             <tbody>
                 @forelse ($users as $user)
-                    <tr
-                        class="border-b border-gray-500/40 odd:bg-white even:bg-black/5 hover:bg-blue-50/50 transition-colors duration-150">
-                        <td class="py-3 px-4">{{ $user->nama_lengkap }}</td>
-                        <td class="py-3">{{ $user->username }}</td>
-                        <td class="py-3 truncate">{{ $user->email }}</td>
-                        <td class="py-3">
-                            <span
-                                class="capitalize badge {{ $user->role == 'admin' ? 'badge-dipinjam' : 'badge-dikembalikan' }}">
-                                {{ $user->role }}
-                            </span>
-                        </td>
-                        <td class="py-3 text-sm text-black/50">
-                            {{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}</td>
-                        <td class="py-3">
-                            <div class="flex justify-center gap-2">
+                <tr
+                    class="border-b border-gray-500/40 odd:bg-white even:bg-black/5 transition-colors duration-150">
+                    <td class="py-3 px-4">{{ $user->nama_lengkap }}</td>
+                    <td class="py-3">{{ $user->username }}</td>
+                    <td class="py-3 truncate">{{ $user->email }}</td>
+                    <td class="py-3">
+                        <span
+                            class="capitalize badge {{ $user->role == 'admin' ? 'badge-dipinjam' : 'badge-dikembalikan' }}">
+                            {{ $user->role }}
+                        </span>
+                    </td>
+                    <td class="py-3 text-sm text-black/50">
+                        {{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}
+                    </td>
+                    <td class="py-3">
+                        <div class="flex justify-center gap-2">
+                            <button
+                                onclick="openAjaxModal('{{ route('employee-management.detail', $user->id) }}', 'Detail Petugas')"
+                                class="rounded-lg hover:bg-blue-50 cursor-pointer transition-colors" title="Detail">
+                                <i class="size-4" data-lucide="eye"></i>
+                            </button>
+                            <a class="rounded-lg hover:bg-amber-50 text-(--third-color) transition-colors"
+                                href="{{ route('employee-management.edit', $user->id) }}" title="Edit">
+                                <i class="size-4" data-lucide="user-pen"></i>
+                            </a>
+                            <form onsubmit="return confirm('Yakin ingin menonaktifkan user ini?')"
+                                action="{{ route('employee-management.deactivate', $user->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
                                 <button
-                                    onclick="openAjaxModal('{{ route('employee-management.detail', $user->id) }}', 'Detail Petugas')"
-                                    class="rounded-lg hover:bg-blue-50 cursor-pointer transition-colors" title="Detail">
-                                    <i class="size-4" data-lucide="eye"></i>
+                                    class="rounded-lg hover:bg-red-50 text-red-500 cursor-pointer transition-colors"
+                                    type="submit" title="Nonaktifkan">
+                                    <i class="size-4" data-lucide="trash-2"></i>
                                 </button>
-                                <a class="rounded-lg hover:bg-amber-50 text-(--third-color) transition-colors"
-                                    href="{{ route('employee-management.edit', $user->id) }}" title="Edit">
-                                    <i class="size-4" data-lucide="user-pen"></i>
-                                </a>
-                                <form onsubmit="return confirm('Yakin ingin menonaktifkan user ini?')"
-                                    action="{{ route('employee-management.deactivate', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button
-                                        class="rounded-lg hover:bg-red-50 text-red-500 cursor-pointer transition-colors"
-                                        type="submit" title="Nonaktifkan">
-                                        <i class="size-4" data-lucide="trash-2"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-gray-500 pt-8 pb-4">
-                            <i class="size-12 mx-auto mb-2 text-gray-300" data-lucide="users"></i>
-                            <p>Tidak ada data petugas</p>
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="6" class="text-center text-gray-500 pt-8 pb-4">
+                        <i class="size-12 mx-auto mb-2 text-gray-300" data-lucide="users"></i>
+                        <p>Tidak ada data petugas</p>
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
 
         {{-- Pagination --}}
         @if ($users->hasPages())
-            <div class="flex justify-center mt-6">
-                {{ $users->links('components.pagination') }}
-            </div>
+        <div class="flex justify-center mt-6">
+            {{ $users->links('components.pagination') }}
+        </div>
         @endif
     </div>
 

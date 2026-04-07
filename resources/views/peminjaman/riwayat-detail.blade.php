@@ -12,9 +12,9 @@
                     </div>
                     <div>
                         @if (in_array($detail->status_peminjaman, ['Pending Dikembalikan', 'Dikembalikan', 'Terlambat']))
-                            <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
+                        <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
                         @else
-                            <p class="text-black font-bold mb-0.5">Detail Pinjam</p>
+                        <p class="text-black font-bold mb-0.5">Detail Pinjam</p>
                         @endif
                     </div>
                 </div>
@@ -32,23 +32,23 @@
                                 </p>
                             </div>
                             @if ($detail->tanggal_pengembalian)
-                                <div>
-                                    <p class="text-black/45 text-xs mb-0.5">Tanggal Pengembalian</p>
-                                    <p class="text-black font-semibold text-sm">{{ $detail->tanggal_pengembalian }}</p>
-                                </div>
+                            <div>
+                                <p class="text-black/45 text-xs mb-0.5">Tanggal Pengembalian</p>
+                                <p class="text-black font-semibold text-sm">{{ $detail->tanggal_pengembalian }}</p>
+                            </div>
                             @endif
                             <div>
                                 <p class="text-black/45 text-xs mb-0.5">Status</p>
                                 @php
-                                    $statusColor = match($detail->status_peminjaman) {
-                                        'Pending' => 'bg-yellow-100 text-yellow-700',
-                                        'Dipinjam' => 'bg-blue-100 text-blue-700',
-                                        'Pending Dikembalikan' => 'bg-purple-100 text-purple-700',
-                                        'Dikembalikan' => 'bg-green-100 text-green-700',
-                                        'Terlambat' => 'bg-red-100 text-red-700',
-                                        'Ditolak' => 'bg-gray-100 text-gray-700',
-                                        default => 'bg-gray-100 text-gray-700',
-                                    };
+                                $statusColor = match($detail->status_peminjaman) {
+                                'Pending' => 'bg-yellow-100 text-yellow-700',
+                                'Dipinjam' => 'bg-blue-100 text-blue-700',
+                                'Pending Dikembalikan' => 'bg-purple-100 text-purple-700',
+                                'Dikembalikan' => 'bg-green-100 text-green-700',
+                                'Terlambat' => 'bg-red-100 text-red-700',
+                                'Ditolak' => 'bg-gray-100 text-gray-700',
+                                default => 'bg-gray-100 text-gray-700',
+                                };
                                 @endphp
                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $statusColor }}">
                                     {{ $detail->status_peminjaman }}
@@ -83,6 +83,14 @@
                             <img class="w-26 h-34 object-cover rounded-xl shrink-0"
                                 src="{{ asset('storage/' . $detail->buku->cover_buku) }}" alt="cover">
                             <div class="flex flex-col">
+                                <div class="flex gap-1">
+                                    @foreach ($detail->buku->kategoriBukuRelasi as $category)
+                                    <div
+                                        class="inline-block w-fit px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
+                                        {{ $category->kategori->nama_kategori }}
+                                    </div>
+                                    @endforeach
+                                </div>
                                 <p class="text-black text-lg font-bold mb-1.5">{{ $detail->buku->judul }}</p>
                                 <p class="text-black/55 text-base mb-1.5">{{ $detail->buku->penulis }}</p>
                                 <p class="text-black/40 text-sm mb-1.5">{{ $detail->buku->penerbit }}</p>
@@ -105,17 +113,17 @@
         </div>
 
         @if ($detail->status_peminjaman == 'Dipinjam')
-            <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
-                <div>
-                    <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
-                    <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.
-                    </p>
-                </div>
-                <button type="button" onclick="showFormReturn()"
-                    class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2 cursor-pointer"><i
-                        class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
-                    Buku</button>
+        <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
+            <div>
+                <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
+                <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.
+                </p>
             </div>
+            <button type="button" onclick="showFormReturn()"
+                class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2 cursor-pointer"><i
+                    class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
+                Buku</button>
+        </div>
         @endif
 
         <div class="hidden rounded-2xl p-8 bg-white" id="form-return">

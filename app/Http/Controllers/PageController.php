@@ -78,7 +78,7 @@ class PageController extends Controller
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('penulis', 'like', "%{$search}%");
+                    ->orWhere('penulis', 'like', "%{$search}%");
             });
         }
 

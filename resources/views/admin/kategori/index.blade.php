@@ -24,35 +24,42 @@
             </thead>
             <tbody>
                 @forelse ($categories as $category)
-                    <tr class="border-b-2 border-gray-500/40">
-                        <td>{{ $category->nama_kategori }}</td>
-                        <td class="py-3">
-                            <div class="flex items-center gap-x-2">
-                                <a href="{{ route('kategori.show', $category->id) }}"
-                                    class="rounded-lg hover:bg-amber-50 text-(--third-color) transition-colors"
-                                    title="Edit">
-                                    <i class="size-4" data-lucide="pencil"></i>
-                                </a>
-                                <form onsubmit="return confirm('Yakin?')"
-                                    action="{{ route('kategori.destroy', $category->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="rounded-lg hover:bg-red-50 text-red-500 cursor-pointer transition-colors"
-                                        title="Hapus">
-                                        <i class="size-4" data-lucide="trash-2"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                <tr class="border-b-2 border-gray-500/40">
+                    <td>{{ $category->nama_kategori }}</td>
+                    <td class="py-3">
+                        <div class="flex items-center gap-x-2">
+                            <a href="{{ route('kategori.show', $category->id) }}"
+                                class="rounded-lg hover:bg-amber-50 text-(--third-color) transition-colors"
+                                title="Edit">
+                                <i class="size-4" data-lucide="pencil"></i>
+                            </a>
+                            <form onsubmit="return confirm('Yakin?')"
+                                action="{{ route('kategori.destroy', $category->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="rounded-lg hover:bg-red-50 text-red-500 cursor-pointer transition-colors"
+                                    title="Hapus">
+                                    <i class="size-4" data-lucide="trash-2"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td class="text-base text-gray-600 pt-5">Tidak ada data</td>
-                    </tr>
+                <tr>
+                    <td class="text-base text-gray-600 pt-5">Tidak ada data</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
+
+        {{-- Pagination --}}
+        @if ($categories->hasPages())
+        <div class="flex justify-center mt-6">
+            {{ $categories->links('components.pagination') }}
+        </div>
+        @endif
 
     </div>
 

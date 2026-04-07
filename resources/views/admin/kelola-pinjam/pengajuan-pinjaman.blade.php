@@ -14,79 +14,84 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @forelse ($pengajuans as $pengajuan)
-                <div class="group border border-black/10 rounded-xl p-5 hover:shadow-lg hover:border-black/30 transition-all duration-300 cursor-pointer relative"
-                    onclick="openPengajuanDetail({{ $pengajuan->id }})">
-                    {{-- Status Badge --}}
-                    <div class="absolute top-4 right-4">
-                        <span class="badge badge-pending">
-                            {{ $pengajuan->status_peminjaman }}
-                        </span>
-                    </div>
+            <div class="group border border-black/10 rounded-xl p-5 hover:shadow-lg hover:border-black/30 transition-all duration-300 cursor-pointer relative"
+                onclick="openPengajuanDetail({{ $pengajuan->id }})">
+                {{-- Status Badge --}}
+                <div class="absolute top-4 right-4">
+                    <span class="badge badge-pending">
+                        {{ $pengajuan->status_peminjaman }}
+                    </span>
+                </div>
 
-                    <div class="flex gap-4">
-                        {{-- Book Cover --}}
-                        <img class="w-16 h-24 object-cover rounded-lg shadow-sm shrink-0"
-                            src="{{ asset('storage/' . $pengajuan->buku->cover_buku) }}"
-                            alt="{{ $pengajuan->buku->judul }}">
+                <div class="flex gap-4">
+                    {{-- Book Cover --}}
+                    <img class="w-16 h-24 object-cover rounded-lg shadow-sm shrink-0"
+                        src="{{ asset('storage/' . $pengajuan->buku->cover_buku) }}"
+                        alt="{{ $pengajuan->buku->judul }}">
 
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-semibold text-base line-clamp-1 group-hover:text-black transition-colors">
-                                {{ $pengajuan->buku->judul }}
-                            </h3>
-                            <p class="text-sm text-black/50 mb-3">{{ $pengajuan->buku->penulis }}</p>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-semibold text-base line-clamp-1 group-hover:text-black transition-colors">
+                            {{ $pengajuan->buku->judul }}
+                        </h3>
+                        <p class="text-sm text-black/50 mb-3">{{ $pengajuan->buku->penulis }}</p>
 
-                            <div class="flex items-center gap-2 mb-2">
-                                @if (!empty($pengajuan->user->photo_profile))
-                                    <img class="aspect-square rounded-full w-6 h-6 object-cover"
-                                        src="{{ asset('storage/' . $pengajuan->user->photo_profile) }}" alt="Profil">
-                                @else
-                                    <img class="aspect-square rounded-full w-6 h-6 object-cover"
-                                        src="{{ asset('img/user.png') }}" alt="Profil">
-                                @endif
-                                <div>
-                                    <p class="text-sm font-medium leading-tight">{{ $pengajuan->user->nama_lengkap }}
-                                    </p>
-                                    <p class="text-xs text-black/40">{{ $pengajuan->user->email }}</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4 text-xs text-black/40 mt-2">
-                                <span class="flex items-center gap-1">
-                                    <i class="size-3" data-lucide="calendar"></i>
-                                    {{ $pengajuan->tanggal_peminjaman }}
-                                </span>
+                        <div class="flex items-center gap-2 mb-2">
+                            @if (!empty($pengajuan->user->photo_profile))
+                            <img class="aspect-square rounded-full w-6 h-6 object-cover"
+                                src="{{ asset('storage/' . $pengajuan->user->photo_profile) }}" alt="Profil">
+                            @else
+                            <img class="aspect-square rounded-full w-6 h-6 object-cover"
+                                src="{{ asset('img/user.png') }}" alt="Profil">
+                            @endif
+                            <div>
+                                <p class="text-sm font-medium leading-tight">{{ $pengajuan->user->nama_lengkap }}
+                                </p>
+                                <p class="text-xs text-black/40">{{ $pengajuan->user->email }}</p>
                             </div>
                         </div>
-                    </div>
 
-                    {{-- Action Buttons --}}
-                    <div class="flex gap-2 mt-4 pt-4 border-t border-black/5" onclick="event.stopPropagation()">
-                        <form action="{{ route('kelola-pinjam.setuju-pinjam', $pengajuan->id) }}" method="POST"
-                            class="flex-1" onsubmit="return confirm('Setujui peminjaman ini?')">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit"
-                                class="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-all duration-200 text-sm font-medium cursor-pointer">
-                                <i class="size-4" data-lucide="check"></i>Setujui
-                            </button>
-                        </form>
-                        <form action="{{ route('kelola-pinjam.tolak-pinjam', $pengajuan->id) }}" method="POST"
-                            class="flex-1" onsubmit="return confirm('Tolak peminjaman ini?')">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit"
-                                class="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200 text-sm font-medium cursor-pointer">
-                                <i class="size-4" data-lucide="x"></i>Tolak
-                            </button>
-                        </form>
+                        <div class="flex items-center gap-4 text-xs text-black/40 mt-2">
+                            <span class="flex items-center gap-1">Tanggal Peminjaman:
+                                <i class="size-3" data-lucide="calendar"></i>
+                                {{ $pengajuan->tanggal_peminjaman }}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                Estimasi Tanggal Pengembalian:
+                                <i class="size-3" data-lucide="calendar"></i>
+                                {{ $pengajuan->estimasi_tanggal_pengembalian }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            @empty
-                <div class="col-span-2 text-center py-16">
-                    <i class="size-16 mx-auto mb-3 text-gray-300" data-lucide="inbox"></i>
-                    <p class="text-gray-500 text-lg">Tidak ada pengajuan pinjaman</p>
-                    <p class="text-gray-400 text-sm mt-1">Semua pengajuan sudah diproses</p>
+
+                {{-- Action Buttons --}}
+                <div class="flex gap-2 mt-4 pt-4 border-t border-black/5" onclick="event.stopPropagation()">
+                    <form action="{{ route('kelola-pinjam.setuju-pinjam', $pengajuan->id) }}" method="POST"
+                        class="flex-1" onsubmit="return confirm('Setujui peminjaman ini?')">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-all duration-200 text-sm font-medium cursor-pointer">
+                            <i class="size-4" data-lucide="check"></i>Setujui
+                        </button>
+                    </form>
+                    <form action="{{ route('kelola-pinjam.tolak-pinjam', $pengajuan->id) }}" method="POST"
+                        class="flex-1" onsubmit="return confirm('Tolak peminjaman ini?')">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200 text-sm font-medium cursor-pointer">
+                            <i class="size-4" data-lucide="x"></i>Tolak
+                        </button>
+                    </form>
                 </div>
+            </div>
+            @empty
+            <div class="col-span-2 text-center py-16">
+                <i class="size-16 mx-auto mb-3 text-gray-300" data-lucide="inbox"></i>
+                <p class="text-gray-500 text-lg">Tidak ada pengajuan pinjaman</p>
+                <p class="text-gray-400 text-sm mt-1">Semua pengajuan sudah diproses</p>
+            </div>
             @endforelse
         </div>
     </div>
@@ -100,7 +105,7 @@
                 <h3 class="font-semibold text-lg mb-1" id="pengajuanPinjamTitle">-</h3>
                 <p class="text-sm text-black/60 mb-1" id="pengajuanPinjamAuthor">-</p>
                 <p class="text-sm text-black/40 mb-3" id="pengajuanPinjamUserName">-</p>
-                <span class="badge badge-pending">{{ $pengajuan->status_peminjaman }}</span>
+                <span class="badge badge-pending">{{ $pengajuan->status_peminjaman ?? null}}</span>
             </div>
         </div>
 

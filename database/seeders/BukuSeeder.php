@@ -17,8 +17,8 @@ class BukuSeeder extends Seeder
     {
         $bukus = [
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Laskar Pelangi',
+                'cover_buku' => 'cover/Bintang_cover.jpg',
+                'judul' => 'Bintang',
                 'penulis' => 'Andrea Hirata',
                 'penerbit' => 'Bentang',
                 'tahun_terbit' => 2005,
@@ -28,8 +28,8 @@ class BukuSeeder extends Seeder
                 'stok' => 5,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Anak Semua Bangsa',
+                'cover_buku' => 'cover/educated-terdidik_cover.jpg',
+                'judul' => 'Educated Terdidik',
                 'penulis' => 'B. Rahmanto',
                 'penerbit' => 'Gramedia',
                 'tahun_terbit' => 1980,
@@ -39,8 +39,8 @@ class BukuSeeder extends Seeder
                 'stok' => 3,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Sang Pemimpi',
+                'cover_buku' => 'cover/Home_Sweet_Loan_cover.jpg',
+                'judul' => 'Home Sweet Loan',
                 'penulis' => 'Andrea Hirata',
                 'penerbit' => 'Bentang',
                 'tahun_terbit' => 2006,
@@ -50,8 +50,8 @@ class BukuSeeder extends Seeder
                 'stok' => 4,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Negeri Para Bedebah',
+                'cover_buku' => 'cover/laskar-pelangi_cover.jpg',
+                'judul' => 'Laskar Pelangi',
                 'penulis' => 'Andrea Hirata',
                 'penerbit' => 'Bentang',
                 'tahun_terbit' => 2012,
@@ -61,8 +61,8 @@ class BukuSeeder extends Seeder
                 'stok' => 2,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Rumah Kaca',
+                'cover_buku' => 'cover/Laut-Bercerita_cover.jpg',
+                'judul' => 'Laut Bercerita',
                 'penulis' => 'Pramoedya Ananta Toer',
                 'penerbit' => 'Hasta Mitra',
                 'tahun_terbit' => 1988,
@@ -72,8 +72,8 @@ class BukuSeeder extends Seeder
                 'stok' => 6,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Filosofi Teras',
+                'cover_buku' => 'cover/Nebula_cover.jpg',
+                'judul' => 'Nebula',
                 'penulis' => 'Henry Manampiring',
                 'penerbit' => 'Kompas',
                 'tahun_terbit' => 2017,
@@ -83,8 +83,8 @@ class BukuSeeder extends Seeder
                 'stok' => 8,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Clean Code',
+                'cover_buku' => "cover/pagi-di-amerika_cover'.jpg",
+                'judul' => 'Pagi di Amerika',
                 'penulis' => 'Robert C. Martin',
                 'penerbit' => 'Prentice Hall',
                 'tahun_terbit' => 2008,
@@ -94,8 +94,8 @@ class BukuSeeder extends Seeder
                 'stok' => 3,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'The Pragmatic Programmer',
+                'cover_buku' => 'cover/sagaras_cover.jpeg',
+                'judul' => 'Sagaras',
                 'penulis' => 'David Thomas & Andrew Hunt',
                 'penerbit' => 'Addison-Wesley',
                 'tahun_terbit' => 1999,
@@ -105,8 +105,8 @@ class BukuSeeder extends Seeder
                 'stok' => 2,
             ],
             [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Sapiens',
+                'cover_buku' => 'cover/Selena_cover.jpg',
+                'judul' => 'Selena',
                 'penulis' => 'Yuval Noah Harari',
                 'penerbit' => 'Harvill Secker',
                 'tahun_terbit' => 2011,
@@ -114,17 +114,6 @@ class BukuSeeder extends Seeder
                 'jumlah_halaman' => 443,
                 'deskripsi' => 'Sejarah singkat umat manusia dari perspektif yang unik dan menarik.',
                 'stok' => 7,
-            ],
-            [
-                'cover_buku' => 'cover/83lPEsiz4YvCEVPRO6DIpsYMVerGw6LpGlxc0LxT.jpg',
-                'judul' => 'Homo Deus',
-                'penulis' => 'Yuval Noah Harari',
-                'penerbit' => 'Harvill Secker',
-                'tahun_terbit' => 2015,
-                'isbn_number' => '9781473549616',
-                'jumlah_halaman' => 464,
-                'deskripsi' => 'Menjelajahi masa depan umat manusia di era digital dan teknologi.',
-                'stok' => 4,
             ],
         ];
 
