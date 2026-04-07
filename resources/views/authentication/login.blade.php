@@ -20,6 +20,11 @@
             </div>
             <form action="{{ route('login') }}" method="POST" class="space-y-4">
                 @csrf
+                @error('email')
+                    <div class="text-red-500 text-sm">
+                        <span>{{ $message }}</span>
+                    </div>
+                @enderror
                 <div>
                     <label for="email" class="text-sm font-medium">Email address</label>
                     <div class="relative mt-1.5 text-gray-500 hover:text-black transition-all duration-100">
@@ -28,11 +33,6 @@
                             placeholder="your.email@example.com"
                             class="flex h-9 w-full min-w-0 px-3 py-1 text-base outline-1 outline-black/20 hover:outline-black transition-all duration-100 pl-10 rounded-md" />
                     </div>
-                    @error('email')
-                        <div class="text-red-500 text-sm">
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
                 </div>
 
                 <div>
@@ -43,11 +43,6 @@
                             placeholder="********"
                             class="flex h-9 w-full min-w-0 px-3 py-1 text-base outline-1 outline-black/20 hover:outline-black transition-all duration-100 pl-10 rounded-md" />
                     </div>
-                    @error('password')
-                        <div class="text-red-500 text-sm">
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
                 </div>
 
                 <div>

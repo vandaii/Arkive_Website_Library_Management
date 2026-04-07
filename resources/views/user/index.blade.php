@@ -2,10 +2,56 @@
     <section class="bg-white px-5 py-5 rounded-lg pb-15">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-medium">Jelajahi Buku</h1>
-            <h2 class="font-medium flex items-center gap-x-2">Kategori<i class="size-4" data-lucide="list-filter"></i></h2>
-            <form hidden action="" method="get">
+        </div>
+
+        {{-- Sorting & Filter --}}
+        <div class="flex items-center gap-3 mb-8 flex-wrap">
+            <form id="filterForm" action="{{ route('user.index') }}" method="get" class="flex items-center gap-3 flex-wrap">
+                {{-- Kategori Filter --}}
+                <div class="relative">
+                    <select name="kategori" id="kategori"
+                        onchange="document.getElementById('filterForm').submit()"
+                        class="appearance-none pl-3 pr-8 py-2 text-sm rounded-full border border-black/15 bg-white focus:outline-none focus:border-(--third-color) cursor-pointer transition-all duration-200">
+                        <option value="all" {{ request('kategori') == 'all' || !request('kategori') ? 'selected' : '' }}>Semua Kategori</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('kategori') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->nama_kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <i class="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-black/40 pointer-events-none" data-lucide="chevron-down"></i>
+                </div>
+
+                {{-- Sort Dropdown --}}
+                <div class="relative">
+                    <select name="sort" id="sort"
+                        onchange="document.getElementById('filterForm').submit()"
+                        class="appearance-none pl-3 pr-8 py-2 text-sm rounded-full border border-black/15 bg-white focus:outline-none focus:border-(--third-color) cursor-pointer transition-all duration-200">
+                        <option value="" {{ !request('sort') ? 'selected' : '' }}>Terbaru</option>
+                        <option value="judul_asc" {{ request('sort') == 'judul_asc' ? 'selected' : '' }}>Judul A-Z</option>
+                        <option value="judul_desc" {{ request('sort') == 'judul_desc' ? 'selected' : '' }}>Judul Z-A</option>
+                        <option value="tahun_desc" {{ request('sort') == 'tahun_desc' ? 'selected' : '' }}>Tahun Terbaru</option>
+                        <option value="tahun_asc" {{ request('sort') == 'tahun_asc' ? 'selected' : '' }}>Tahun Terlama</option>
+                    </select>
+                    <i class="absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-black/40 pointer-events-none" data-lucide="chevron-down"></i>
+                </div>
+
+                @if (request('kategori') && request('kategori') !== 'all' || request('sort'))
+                    <a href="{{ route('user.index') }}"
+                        class="flex items-center gap-1 text-xs text-black/50 hover:text-black font-medium transition-colors">
+                        <i class="size-3" data-lucide="x"></i>Reset
+                    </a>
+                @endif
             </form>
         </div>
+
+        @if (isset($search) && $search)
+            <div class="flex items-center gap-2 mb-6 px-1">
+                <p class="text-sm text-black/50">Hasil pencarian untuk: <span class="font-semibold text-black">"{{ $search }}"</span></p>
+                <span class="text-xs text-black/30">({{ $books->count() }} buku ditemukan)</span>
+            </div>
+        @endif
+
         <div class="flex gap-x-4 gap-y-6 flex-wrap">
             @forelse ($books as $book)
                 <div>
@@ -34,7 +80,11 @@
                     </a>
                 </div>
             @empty
-                <h1>Tidak Ada Data</h1>
+                <div class="flex flex-col items-center justify-center w-full py-16">
+                    <i class="size-16 text-black/10 mb-4" data-lucide="book-x"></i>
+                    <h2 class="text-lg font-medium text-black/40">Tidak Ada Buku Ditemukan</h2>
+                    <p class="text-sm text-black/30 mt-1">Coba ubah filter atau kata kunci pencarian</p>
+                </div>
             @endforelse
         </div>
     </section>

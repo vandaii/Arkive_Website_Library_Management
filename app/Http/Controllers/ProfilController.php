@@ -45,7 +45,7 @@ class ProfilController extends Controller
             'phone_number' => $validated['phone_number'],
         ]);
 
-        return redirect()->back()->with('success');
+        return redirect()->back()->with('success', 'Profil berhasil diupdate!');
     }
 
     public function changePassword(Request $request, $id)

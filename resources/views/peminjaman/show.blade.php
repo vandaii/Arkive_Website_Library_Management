@@ -10,7 +10,11 @@
                         <i class="size-5 text-white" data-lucide="file-text"></i>
                     </div>
                     <div>
-                        <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        @if (in_array($detail->status_peminjaman, ['Pending Dikembalikan', 'Dikembalikan', 'Terlambat']))
+                            <p class="text-black font-bold mb-0.5">Bukti Pengembalian</p>
+                        @else
+                            <p class="text-black font-bold mb-0.5">Bukti Peminjaman</p>
+                        @endif
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-8 mb-8">
@@ -59,6 +63,12 @@
                             <img class="w-26 h-34 object-cover rounded-xl shrink-0"
                                 src="{{ asset('storage/' . $detail->buku->cover_buku) }}" alt="cover">
                             <div class="flex flex-col">
+                                @foreach ($detail->buku->kategoriBukuRelasi as $category)
+                                    <div
+                                        class="inline-block px-3 py-1 rounded-full text-sm mb-2 text-white bg-(--third-color)">
+                                        {{ $category->kategori->nama_kategori }}
+                                    </div>
+                                @endforeach
                                 <p class="text-black text-lg font-bold mb-1.5">{{ $detail->buku->judul }}</p>
                                 <p class="text-black/55 text-base mb-1.5">{{ $detail->buku->penulis }}</p>
                                 <p class="text-black/40 text-sm mb-1.5">{{ $detail->buku->penerbit }}</p>
@@ -68,32 +78,39 @@
                     </div>
                 </a>
                 <div class="mt-12 flex gap-4">
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Cetak
-                        Bukti</button>
-                    <button
-                        class="text-sm px-4 py-2 rounded-full border border-black/20 font-medium hover:border-black transition-all duration-200">Unduh
-                        PDF</button>
+                    <a href="{{ route('bukti.cetak', $detail->id) }}" target="_blank"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full border border-black/20 font-medium hover:border-black hover:bg-gray-50 transition-all duration-200">
+                        <i class="size-4" data-lucide="printer"></i>Cetak Bukti
+                    </a>
+                    <a href="{{ route('bukti.download', $detail->id) }}"
+                        class="flex items-center gap-2 text-sm px-5 py-2 rounded-full bg-(--third-color) text-white font-medium hover:bg-(--second-color) transition-all duration-200">
+                        <i class="size-4" data-lucide="download"></i>Unduh PDF
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
-            <div>
-                <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
-                <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.</p>
+        @if ($detail->status_peminjaman == 'Dipinjam')
+            <div class="rounded-2xl p-6 flex items-center justify-between gap-4 bg-white" id="return-button">
+                <div>
+                    <p class="text-black font-bold mb-1">Siap mengembalikan buku ini?</p>
+                    <p class="text-black/50 text-sm">Ajukan permohonan pengembalian untuk menyelesaikan pinjaman Anda.
+                    </p>
+                </div>
+                <button type="button" onclick="showFormReturn()"
+                    class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2"><i
+                        class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
+                    Buku</button>
             </div>
-            <button type="button" onclick="showFormReturn()"
-                class="flex items-center font-medium text-white bg-(--third-color) px-4 py-2 rounded-full hover:bg-(--second-color) gap-2"><i
-                    class="size-4" data-lucide="rotate-ccw"></i>Kembalikan
-                Buku</button>
-        </div>
+        @endif
 
         <div class="hidden rounded-2xl p-8 bg-white" id="form-return">
             <h1 class="text-lg font-medium mb-2">Konfirmasi Pengembalian Buku</h1>
             <p class="text-black/50 text-sm mb-6">Mohon konfirmasi dan tambahkan catatan apa pun tentang kondisi buku
                 tersebut.</p>
-            <form class="space-y-4" action="">
+            <form class="space-y-4" action="{{ route('peminjaman.kembalikanBuku', $detail->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
                 <div class="mb-12">
                     <label class="font-medium" for="notes">Catatan Kondisi (Opsional)</label>
                     <textarea class="w-full bg-gray-100 mt-1 rounded-lg px-4 py-2 focus:outline-black/15 focus:outline-2" name="notes"
