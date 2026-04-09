@@ -1,8 +1,8 @@
 <x-layouts.admin-dashboard>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <div class="ml-45 bg-white px-10 py-8 rounded-lg">
+    <div class="bg-white px-10 py-8 rounded-lg">
         <div class="mb-10">
-            <h1 class="capitalize text-xl">{{ $title }}</h1>
+            <h1 class="capitalize text-2xl font-medium">{{ $title }}</h1>
         </div>
 
         <div>
@@ -20,8 +20,8 @@
                                     input-error 
                                 @enderror" />
                     </div>
-                    @error('name')
-                        <div class="">
+                    @error('nama_lengkap')
+                        <div class="text-xs text-red-600 font-medium">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -39,7 +39,7 @@
                                 @enderror" />
                     </div>
                     @error('username')
-                        <div class="">
+                        <div class="text-xs text-red-600 font-medium">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -57,39 +57,10 @@
                                 @enderror" />
                     </div>
                     @error('email')
-                        <div class="">
+                        <div class="text-xs text-red-600 font-medium">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
-                </div>
-
-                {{-- Alamat --}}
-                <div>
-                    <label for="alamat" class="block text-sm/6 font-medium text-gray-800">Alamat</label>
-                    <div class="mt-1">
-                        <input id="alamat" placeholder="Jakarta" value="{{ old('alamat') }}" type="text"
-                            name="alamat" autocomplete="alamat"
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
-                                @error('alamat')
-                                    input-error
-                                @enderror" />
-                    </div>
-                    @error('alamat')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
-                </div>
-
-                {{-- Password --}}
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm/6 font-medium text-gray-800">Password</label>
-                    </div>
-                    <div class="mt-1">
-                        <input id="password" type="password" name="password" required autocomplete="current-password"
-                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6" />
-                    </div>
                 </div>
 
                 {{-- Role --}}
@@ -97,7 +68,7 @@
                     <label for="role" class="block text-sm/6 font-medium text-gray-800">Role</label>
                     <div class="mt-1">
                         <select
-                            class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/70 bg-black/5 text-base  text-gray-800"
+                            class="outline-1 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/60 bg-black/5 text-base  text-gray-800"
                             name="role" id="role">
                             <option class="outline-2 -outline-offset-1 outline-black/70" value="">Pilih Kategori
                             </option>
@@ -110,26 +81,40 @@
                     </div>
                 </div>
 
+                {{-- Password --}}
+                <div>
+                    <label for="password" class="block text-sm/6 font-medium text-gray-800">Password</label>
+                    <div class="mt-1">
+                        <input id="password" type="password" name="password" required autocomplete="current-password"
+                            placeholder="********"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6" />
+                    </div>
+                    @error('password')
+                        <div class="text-xs text-red-600 font-medium">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+
                 {{-- Konfirmasi Password --}}
                 <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-800">Konfirmasi
-                            Password</label>
-                    </div>
+                    <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-800">Konfirmasi
+                        Password</label>
                     <div class="mt-1">
                         <input id="password_confirmation" type="password" name="password_confirmation" required
+                            placeholder="********"
                             class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6" />
                     </div>
                 </div>
 
                 <div class="col-span-2 w-fit">
-                    <div class="flex gap-x-5">
+                    <div class="flex gap-5">
                         <button type="submit"
-                            class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
-                            user</button>
+                            class="flex items-center gap-1.5 w-full rounded-lg bg-(--third-color)  p-3 text-sm/6 font-medium text-white hover:bg-(--second-color)-700 hover:outline-1 hover:outline-(--second-color) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--second-color) capitalize"><i
+                                class="size-5" data-lucide="user-plus"></i>tambah petugas</button>
 
                         <a href="{{ route('employee-management.index') }}"
-                            class="flex justify-center rounded-md bg-amber-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">Kembali</a>
+                            class="flex justify-center rounded-md bg-yellow-400 px-3 py-3 text-sm/6 font-medium text-white hover:bg-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">Kembali</a>
                     </div>
                 </div>
 

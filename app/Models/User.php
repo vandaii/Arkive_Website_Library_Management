@@ -19,8 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'photo_profile',
         'nama_lengkap',
         'alamat',
+        'phone_number',
         'email',
         'password',
         'role',
@@ -58,5 +60,15 @@ class User extends Authenticatable
     public function ulasan()
     {
         return $this->hasMany(Ulasan::class, 'user_id', 'id');
+    }
+
+    public function koleksi()
+    {
+        return $this->hasMany(Koleksi::class, 'user_id', 'id');
+    }
+
+    public function notifikasi()
+    {
+        return $this->hasMany(Notifikasi::class, 'user_id', 'id');
     }
 }

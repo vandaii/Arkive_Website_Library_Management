@@ -4,15 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = DB::table('users')->where('isActive', '!=', false)->get();
-        return view('admin.user-management.index', compact('users'), ['title' => 'Kelola User']);
+        $query = User::with(['peminjaman' => function ($q) {
+            $q->with('buku')->latest()->limit(5);
+        }])->where('isActive', '!=', false)->where('role', 'peminjam');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($p) use ($search) {
+                $p->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(10)->withQueryString();
+        return view('admin.user-management.index', compact('users'), ['title' => 'Kelola Peminjam']);
+    }
+
+    public function detail($id)
+    {
+        $user = User::with(['peminjaman' => function ($q) {
+            $q->with('buku')->latest()->limit(5);
+        }])->findOrFail($id);
+        return view('admin.user-management._detail', compact('user'));
     }
 
     public function create()
@@ -52,11 +71,11 @@ class UserManagementController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'username' => 'required|string|unique:users,username',
             'nama_lengkap' => 'required|string',
+            'username' => 'required|string|unique:users,username,' . $id,
+            'email' => 'required|string|email|unique:users,email,' . $id,
             'alamat' => 'string|nullable',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+            'phone_number' => 'string|nullable',
             'role' => 'required|string'
         ]);
 
@@ -66,11 +85,25 @@ class UserManagementController extends Controller
             'nama_lengkap' => $validated['nama_lengkap'],
             'alamat' => $validated['alamat'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'phone_number' => $validated['phone_number'],
             'role' => $validated['role']
         ]);
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('user-management.index')->with('success', 'Data berhasil diubah!');
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'password' => 'required|min:8|confirmed'
+        ]);
+
+        $user = User::find($id);
+        $user->update([
+            'password' => $validated['password']
+        ]);
+
+        return redirect()->route('user-management.index')->with('success', 'Password ' . $user->username . ' sudah diubah!');
     }
 
     public function destroy($id)
@@ -78,7 +111,7 @@ class UserManagementController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('user-management.index')->with('success', 'Berhasil hapus pengguna!');
     }
 
     public function deactivate(Request $request, $id)
@@ -88,6 +121,6 @@ class UserManagementController extends Controller
             'isActive' => false
         ]);
 
-        return redirect()->route('user-management.index')->with('success');
+        return redirect()->route('user-management.index')->with('success', 'Berhasil hapus pengguna!');
     }
 }

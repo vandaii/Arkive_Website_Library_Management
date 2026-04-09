@@ -21,7 +21,7 @@ class AuthenticationController extends Controller
             'nama_lengkap' => 'required|string',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'alamat' => 'required|string'
+            'phone_number' => 'required|string'
         ]);
 
         $user = User::create([
@@ -29,12 +29,12 @@ class AuthenticationController extends Controller
             'nama_lengkap' => $validated['nama_lengkap'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'alamat' => $validated['alamat'],
+            'phone_number' => $validated['phone_number'],
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('index')->with('success', 'Selamat datang di Arkivr');
+        return redirect()->route('user.index')->with('success', 'Selamat datang di Arkivr');
     }
 
     public function loginPage()
@@ -52,13 +52,18 @@ class AuthenticationController extends Controller
         if (Auth::attempt($credentials)) {
             if (Auth::user()->isActive == true) {
                 $request->session()->regenerate();
-                return redirect()->intended(route('index'))->with('success', 'Login berhasil');
+
+                if (Auth::user()->role == 'admin' || Auth::user()->role == 'petugas') {
+                    return redirect()->intended(route('admin.index'));
+                }
+
+                return redirect()->intended(route('user.index'))->with('success', 'Login berhasil');
             }
 
             return back();
         }
 
-        return back()->withErrors(['email' => 'dahgdahda'])->onlyInput('email');
+        return back()->withErrors(['email' => 'Email atau Password Salah'])->onlyInput('email');
     }
 
     public function logout(Request $request)

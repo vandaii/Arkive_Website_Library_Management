@@ -1,6 +1,6 @@
 <x-layouts.admin-dashboard>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <div class="ml-45 bg-white px-10 py-8 rounded-lg">
+    <div class="bg-white px-10 py-8 rounded-lg">
         <div class="mb-10">
             <h1 class="capitalize text-xl">{{ $title }}</h1>
         </div>
@@ -20,8 +20,8 @@
                                     input-error 
                                 @enderror" />
                     </div>
-                    @error('name')
-                        <div class="">
+                    @error('nama_kategori')
+                        <div class="text-red-600 font-medium text-xs">
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
@@ -30,10 +30,10 @@
                 <div class="col-span-2 w-fit">
                     <div class="flex gap-x-5">
                         <button type="submit"
-                            class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">tambah
+                            class="flex w-full justify-center rounded-md bg-(--third-color)  px-3 py-3 text-sm/6 font-semibold text-white hover:bg-(--second-color) capitalize">tambah
                             kategori</button>
                         <a href="{{ route('kategori.index') }}"
-                            class="flex justify-center rounded-md bg-amber-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-amber-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">Kembali</a>
+                            class="flex justify-center rounded-md bg-yellow-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-yellow-500 capitalize">Kembali</a>
                     </div>
                 </div>
 

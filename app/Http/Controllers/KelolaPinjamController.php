@@ -2,16 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notifikasi;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
 class KelolaPinjamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjamans = Peminjaman::with('buku')->where('status_peminjaman', '!=', 'Pending')->orderBy('id', 'DESC')->paginate(10);
+        $query = Peminjaman::with('buku')->where('status_peminjaman', 'Dipinjam');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('buku', function ($b) use ($search) {
+                    $b->where('judul', 'like', "%{$search}%")->orWhere('penulis', 'like', "%{$search}%");
+                })->orWhereHas('user', function ($u) use ($search) {
+                    $u->where('nama_lengkap', 'like', "%{$search}%");
+                });
+            });
+        }
+        $peminjamans = $query->orderBy('id', 'DESC')->paginate(10)->withQueryString();
         $counts = Peminjaman::with('buku', 'user')->where('status_peminjaman', 'Pending')->get()->count();
         return view('admin.kelola-pinjam.index', compact('peminjamans', 'counts'), ['title' => 'Data Peminjaman']);
+    }
+
+    public function detail($id)
+    {
+        $peminjaman = Peminjaman::with('buku', 'user')->findOrFail($id);
+        return view('admin.kelola-pinjam._detail', compact('peminjaman'));
     }
 
     public function show($id)
@@ -33,7 +52,16 @@ class KelolaPinjamController extends Controller
             'status_peminjaman' => 'Dipinjam'
         ]);
 
-        return redirect()->route('kelola-pinjam.index')->with('success');
+        // Notifikasi ke user
+        Notifikasi::kirim(
+            $pengajuan->user_id,
+            'Peminjaman Disetujui',
+            "Peminjaman buku \"{$pengajuan->buku->judul}\" telah disetujui. Selamat membaca!",
+            'success',
+            route('peminjaman.show', $pengajuan->id)
+        );
+
+        return redirect()->route('kelola-pinjam.index')->with('success', 'Peminjaman berhasil disetujui');
     }
 
     public function tolakPinjam($id)
@@ -43,6 +71,15 @@ class KelolaPinjamController extends Controller
             'status_peminjaman' => 'Ditolak'
         ]);
 
-        return redirect()->route('kelola-pinjam.index')->with('success');
+        // Notifikasi ke user
+        Notifikasi::kirim(
+            $pengajuan->user_id,
+            'Peminjaman Ditolak',
+            "Peminjaman buku \"{$pengajuan->buku->judul}\" ditolak oleh admin.",
+            'error',
+            route('peminjaman.riwayat-peminjaman')
+        );
+
+        return redirect()->route('kelola-pinjam.index')->with('success', 'Peminjaman berhasil ditolak');
     }
 }

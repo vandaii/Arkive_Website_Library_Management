@@ -31,9 +31,9 @@
                         </div>
                         <p class="text-xs text-gray-500 mt-1">Leave empty to keep the current cover</p>
                         @error('cover_buku')
-                            <div class="">
-                                <span>{{ $message }}</span>
-                            </div>
+                        <div class="">
+                            <span>{{ $message }}</span>
+                        </div>
                         @enderror
                     </div>
                 </div>
@@ -50,9 +50,9 @@
                                 @enderror" />
                     </div>
                     @error('judul')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
 
@@ -69,9 +69,9 @@
                                 @enderror" />
                     </div>
                     @error('penulis')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
 
@@ -88,9 +88,9 @@
                                 @enderror" />
                     </div>
                     @error('penerbit')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
 
@@ -108,9 +108,47 @@
                                 @enderror" />
                     </div>
                     @error('tahun_terbit')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
+                    @enderror
+                </div>
+
+                {{-- No. ISBN --}}
+                <div>
+                    <label for="isbn_number" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">No.
+                        ISBN</label>
+                    <div class="mt-1">
+                        <input id="isbn_number" placeholder="9871xxxxxx" value="{{ old('isbn_number', $book->isbn_number) }}"
+                            type="text" name="isbn_number" required autocomplete="isbn_number"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6
+                                @error('isbn_number')
+                                    input-error
+                                @enderror" />
+                    </div>
+                    @error('isbn_number')
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
+                    @enderror
+                </div>
+
+                {{-- Jumlah Halaman --}}
+                <div>
+                    <label for="jumlah_halaman" class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Jumlah
+                        Halaman</label>
+                    <div class="mt-1">
+                        <input id="jumlah_halaman" placeholder="100" value="{{ old('jumlah_halaman', $book->jumlah_halaman) }}" type="number"
+                            name="jumlah_halaman" required autocomplete="jumlah_halaman"
+                            class="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-gray-800 outline-1 -outline-offset-1 outline-black/20 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-black/70 sm:text-sm/6 
+                                @error('jumlah_halaman') 
+                                    input-error 
+                                @enderror" />
+                    </div>
+                    @error('jumlah_halaman')
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
 
@@ -126,9 +164,9 @@
                                 @enderror" />
                     </div>
                     @error('stok')
-                        <div class="">
-                            <span>{{ $message }}</span>
-                        </div>
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
                     @enderror
                 </div>
 
@@ -136,31 +174,77 @@
                 <div class="col-span-2">
                     <label for="kategori"
                         class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Kategori</label>
-                    @foreach ($relations as $relation)
-                        <div id="parent-input">
-                            <div class="mt-2 flex gap-x-10" id="child-input">
-                                <select
-                                    class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/30 bg-black/5 text-base  text-gray-800"
-                                    name="kategori[]" id="kategori">
-                                    @foreach ($categories as $category)
-                                        <option class="outline-2 -outline-offset-1 outline-black/70"
-                                            value="{{ $category->id }}"
-                                            @if ($relation->kategori_id == $category->id) selected @endif>
-                                            {{ $category->nama_kategori }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="button" class="delete-button cursor-pointer hidden"
-                                    onclick="deleteButtonCategory(this)">Delete</button>
-                            </div>
+
+                    <div id="parent-input">
+                        @foreach ($relations as $relation)
+                        <div class="child-input mt-2 flex gap-x-10">
+                            <select
+                                class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/30 bg-black/5 text-base text-gray-800"
+                                name="kategori[]">
+                                @foreach ($categories as $category)
+                                <option class="outline-2 -outline-offset-1 outline-black/70"
+                                    value="{{ $category->id }}"
+                                    @if ($relation->kategori_id == $category->id) selected @endif>
+                                    {{ $category->nama_kategori }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="delete-button cursor-pointer hidden"
+                                onclick="deleteButtonCategory(this)">
+                                <i class="size-5 text-red-600" data-lucide="trash-2"></i>
+                            </button>
                         </div>
-                    @endforeach
-                    <button type="button" class="text-base/10 cursor-pointer" onclick="addButtonCategory()">Tambah
-                        Kategori</button>
+                        @endforeach
+
+                        <div class="child-input mt-2 flex gap-x-10">
+                            <select
+                                class="outline-2 w-full px-3 py-1.5 rounded-md focus:border-b-none -outline-offset-1 outline-black/30 bg-black/5 text-base text-gray-800"
+                                name="kategori[]">
+                                @foreach ($categories as $category)
+                                <option class="outline-2 -outline-offset-1 outline-black/70"
+                                    value="{{ $category->id }}">
+                                    {{ $category->nama_kategori }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="delete-button cursor-pointer hidden"
+                                onclick="deleteButtonCategory(this)">
+                                <i class="size-5 text-red-600" data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="flex items-center text-sm/10 cursor-pointer"
+                        onclick="addButtonCategory()">
+                        <i class="size-4" data-lucide="plus"></i>Tambah Kategori
+                    </button>
                 </div>
+
+                {{-- Deskripsi --}}
+                <div class="col-span-2">
+                    <label for="deskripsi"
+                        class="block text-sm/6 sm:text-base/6 font-medium text-gray-800">Deskripsi</label>
+                    <div class="mt-1">
+                        <textarea
+                            class="w-full bg-gray-100 mt-1 rounded-lg px-4 py-2 outline outline-black/30 focus:outline-black/30 focus:outline-2"
+                            name="deskripsi" id="deskripsi" rows="3" placeholder="Deskripsi Buku...">{{ $book->deskripsi }}</textarea>
+                    </div>
+                    @error('deskripsi')
+                    <div class="">
+                        <span>{{ $message }}</span>
+                    </div>
+                    @enderror
+                </div>
+
                 <div class="col-span-2 w-fit">
-                    <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-500  px-3 py-3 text-sm/6 sm:text-base/6 font-semibold text-white hover:bg-indigo-700 hover:outline-1 hover:outline-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-200 capitalize">edit
-                        buku</button>
+                    <div class="flex gap-x-5">
+                        <button type="submit"
+                            class="flex gap-1.5 w-full items-center rounded-md bg-(--third-color) px-3 py-3 text-sm/6 sm:text-base/6 font-semibold text-white hover:bg-(--second-color) capitalize cursor-pointer"><i
+                                class="size-4" data-lucide="pencil"></i>edit
+                            buku</button>
+                        <a href="{{ route('data-buku.index') }}"
+                            class="flex rounded-md bg-yellow-400 px-3 py-3 text-sm/6 font-semibold text-white hover:bg-yellow-500 capitalize">Kembali</a>
+                    </div>
                 </div>
 
             </form>
@@ -188,24 +272,47 @@
             reader.readAsDataURL(file);
         }
 
-        function addButtonCategory() {
-            const node = document.getElementById('child-input');
-            const clone = node.cloneNode(true);
-            const cloneBtn = clone.querySelector('.delete-button');
-            cloneBtn.classList.remove('hidden');
+        const categoryContainer = document.getElementById('parent-input');
 
-            parent.appendChild(clone);
-            node.querySelector('.delete-button').classList.remove('hidden');
+        function refreshDeleteButtons() {
+            const children = Array.from(categoryContainer.children);
+            children.forEach(child => {
+                const deleteBtn = child.querySelector('.delete-button');
+                if (children.length === 1) {
+                    deleteBtn.classList.add('hidden');
+                } else {
+                    deleteBtn.classList.remove('hidden');
+                }
+            });
+        }
+
+        function addButtonCategory() {
+            const node = categoryContainer.lastElementChild;
+
+            const originalSelects = node.querySelectorAll('select');
+            const selectedValues = Array.from(originalSelects).map(s => s.value);
+
+            const clone = node.cloneNode(true);
+
+            originalSelects.forEach((select, i) => select.value = selectedValues[i]);
+
+            clone.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+
+            categoryContainer.appendChild(clone);
+
+            refreshDeleteButtons();
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function deleteButtonCategory(blyat) {
-            if (parent.children.length > 1) {
-                blyat.closest('#child-input').remove();
+            if (categoryContainer.children.length > 1) {
+                blyat.closest('.child-input').remove();
             }
 
-            if (parent.children.length === 1) {
-                parent.children[0].querySelector('.delete-button').classList.add('hidden');
-            }
+            refreshDeleteButtons();
         }
+
+        document.addEventListener('DOMContentLoaded', refreshDeleteButtons);
     </Script>
 </x-layouts.admin-dashboard>

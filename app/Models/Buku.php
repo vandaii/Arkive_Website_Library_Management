@@ -12,6 +12,9 @@ class Buku extends Model
         'penulis',
         'penerbit',
         'tahun_terbit',
+        'isbn_number',
+        'jumlah_halaman',
+        'deskripsi',
         'stok'
     ];
 
@@ -28,6 +31,11 @@ class Buku extends Model
     public function ulasan()
     {
         return $this->hasMany(Ulasan::class, 'buku_id', 'id');
+    }
+
+    public function koleksi()
+    {
+        return $this->hasMany(Koleksi::class, 'buku_id', 'id');
     }
 
     /**
