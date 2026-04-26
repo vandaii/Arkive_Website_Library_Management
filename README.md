@@ -151,18 +151,6 @@ Access the application at `http://localhost:8000`
 └── public/                     # Public assets
 ```
 
-## 🔑 Default Users
-
-After seeding, you can login with:
-
-- **Admin**:
-    - Email: `admin@example.com`
-    - Password: `password`
-
-- **Regular User**:
-    - Email: `user@example.com`
-    - Password: `password`
-
 ## 📇 Database Models
 
 - **User** - System users with role-based permissions
